@@ -59,24 +59,15 @@ function loadScript(url, callback)
 	script.src = url;
 	document.body.appendChild(script);
 }
-function getScriptURLWithFileName(jsFileName)
-{
-	var scripts = document.getElementsByTagName("script");
-
-	for (var i = 0; i < scripts.length; i++)
-	{
-		var script = scripts.item(i);
-
-		if (script.src && script.src.match(jsFileName))
-		{
-			return script.src;
-		}
-	}
-}
 /*
 * Functions: Regular expression
 * */
 function regExpG(expStr)
 {
 	return new RegExp(expStr, "g");
+}
+function isURL(url)
+{
+	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
+	return (new RegExp(expression)).test(url);
 }
