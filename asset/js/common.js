@@ -1,4 +1,22 @@
 /*
+* Functions: Operation html;
+* */
+function escapeHTML(text)
+{
+	var map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#039;'
+	};
+
+	return text.replace(/[&<>"']/g, function (m)
+	{
+		return map[m];
+	});
+}
+/*
 * Functions: Dynamic load files in page;
 * */
 function loadLinkCSS(linkArray)
