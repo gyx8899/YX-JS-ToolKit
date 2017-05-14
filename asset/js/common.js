@@ -16,6 +16,16 @@ function escapeHTML(text)
 		return map[m];
 	});
 }
+function replaceTemplateExpressionWithData(template, dataObject)
+{
+	var resultTemplate = template, dataKeys = Object.keys(dataObject), dataItem = null;
+	for (var i = 0, length = dataKeys.length; i < length; i++)
+	{
+		dataItem = dataKeys[i];
+		resultTemplate = resultTemplate.replace(regExpG("{{" + dataItem + "}}"), dataObject[dataItem] || '');
+	}
+	return resultTemplate;
+}
 /*
 * Functions: Dynamic load files in page;
 * */
