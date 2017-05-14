@@ -108,6 +108,13 @@ function isURL(url)
 	return (new RegExp(expression)).test(url);
 }
 /*
+* Functions: URL
+* */
+function getFileNameFromURL(url)
+{
+	return url.split('/').pop().split('#')[0].split('?')[0];
+}
+/*
  * Functions: Tools for processing function who has parameter array;
  * */
 function parameterArrayToItem(fn, param1, param2)
