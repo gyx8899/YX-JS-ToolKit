@@ -43,7 +43,7 @@ function loadCSS(url, callback)
 	link.href = url;
 	link.onload = function ()
 	{
-		callback && callback();
+		callback && window[callback]();
 	};
 	link.onerror = function ()
 	{
@@ -70,7 +70,7 @@ function loadScript(url, callback)
 					script.readyState == "complete")
 			{
 				script.onreadystatechange = null;
-				callback && callback();
+				callback && window[callback]();
 			}
 		};
 	}
@@ -78,7 +78,7 @@ function loadScript(url, callback)
 	{  //Others
 		script.onload = function ()
 		{
-			callback && callback();
+			callback && window[callback]();
 		};
 	}
 
@@ -98,8 +98,8 @@ function isURL(url)
 	return (new RegExp(expression)).test(url);
 }
 /*
-* Functions: Tools for processing function;
-* */
+ * Functions: Tools for processing function;
+ * */
 function parameterArrayToItem(fn, param1, param2)
 {
 	if (Array.isArray(param1))
@@ -109,7 +109,7 @@ function parameterArrayToItem(fn, param1, param2)
 		for (var i = 0, length = param1.length; i < length; i++)
 		{
 			var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
-			fn(param1[i], param2Item);
+			fn && window[fn](param1[i], param2Item);
 		}
 	}
 }
