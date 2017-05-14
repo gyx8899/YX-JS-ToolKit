@@ -1,0 +1,102 @@
+.list-wrapper
+{
+	position: absolute;
+	z-index: 0;
+	top: 40px;
+	bottom: 40px;
+	width: 100%;
+	overflow: hidden;
+}
+.list-wrapper.no-items
+{
+	border-top: 2px solid #f0f0f0;
+}
+.list-scroller
+{
+	position: absolute;
+	z-index: 1;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	width: 100%;
+	-webkit-transform: translateZ(0);
+	-moz-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	-o-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-text-size-adjust: none;
+	-moz-text-size-adjust: none;
+	-ms-text-size-adjust: none;
+	-o-text-size-adjust: none;
+	text-size-adjust: none;
+}
+.hide-pull-down .list-scroller
+{
+	margin-top: -40px;
+}
+.list-scroller ul
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.list-scroller li
+{
+	padding: 0 10px;
+	height: 80px;
+	line-height: 80px;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid #fff;
+	background-color: #fafafa;
+	font-size: 14px;
+}
+.list-scroller .pullDown, .pullUp
+{
+	background: #fff;
+	font-weight: bold;
+	font-size: 0.8em;
+	padding: 5px 0;
+}
+.list-scroller .pullUp
+{
+	padding: 0;
+}
+.list-scroller .pullDown .pullDownIcon,
+.list-scroller .pullUp .pullDownIcon
+{
+	display: block;
+	margin: auto;
+	width: 30px;
+	height: 30px;
+	background: url(../images/loading.png) 0 0 no-repeat;
+	-webkit-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	background-size: 30px 30px;
+	-webkit-transition-property: -webkit-transform;
+	-ms-transition-property: -webkit-transform;
+	-webkit-transition-duration: 250ms;
+	-ms-transition-duration: 250ms
+}
+.list-scroller .pullDown .pullDownIcon,
+.list-scroller .pullUp .pullDownIcon
+{
+	-webkit-transform: rotate(0deg) translateZ(0);
+	-ms-transform: rotate(0deg) translateZ(0)
+}
+.list-scroller .pullDown.flip .pullDownIcon,
+.list-scroller .pullUp.flip .pullDownIcon
+{
+	-webkit-transform: rotate(180deg) translateZ(0);
+	-ms-transform: rotate(180deg) translateZ(0)
+}
+.list-scroller .pullDown.loading .pullDownIcon,
+.list-scroller .pullUp.loading .pullDownIcon
+{
+	background: url(../images/loading.gif) 0 0 no-repeat;
+	-webkit-background-size: 30px 30px;
+	-ms-background-size: 30px 30px;
+	background-size: 30px 30px;
+}
