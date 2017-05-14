@@ -1,6 +1,6 @@
 /*
-* Functions: Operation html;
-* */
+ * Functions: Operation html;
+ * */
 function escapeHTML(text)
 {
 	var map = {
@@ -27,24 +27,16 @@ function replaceTemplateExpressionWithData(template, dataObject)
 	return resultTemplate;
 }
 /*
-* Functions: Dynamic load files in page;
-* */
-function loadLinkCSS(linkArray)
-{
-	for (var i = 0, length = linkArray.length; i < length; i++)
-	{
-		loadCSS(linkArray[i]);
-	}
-}
-function loadScritJS(scriptArray)
-{
-	for (var i = 0, length = scriptArray.length; i < length; i++)
-	{
-		loadScript(scriptArray[i]);
-	}
-}
+ * Functions: Dynamic load files in page;
+ * */
 function loadCSS(url, callback)
 {
+	if (!url)
+		return;
+
+	// Process the url and callback if they are array;
+	parameterArrayToItem("loadCSS", url, callback);
+
 	var link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.type = 'text/css';
@@ -61,6 +53,12 @@ function loadCSS(url, callback)
 }
 function loadScript(url, callback)
 {
+	if (!url)
+		return;
+
+	// Process the url and callback if they are array;
+	parameterArrayToItem("loadScript", url, callback);
+
 	var script = document.createElement("script");
 	script.type = "text/javascript";
 
@@ -88,8 +86,8 @@ function loadScript(url, callback)
 	document.body.appendChild(script);
 }
 /*
-* Functions: Regular expression
-* */
+ * Functions: Regular expression
+ * */
 function regExpG(expStr)
 {
 	return new RegExp(expStr, "g");
@@ -98,4 +96,20 @@ function isURL(url)
 {
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
 	return (new RegExp(expression)).test(url);
+}
+/*
+* Functions: Tools for processing function;
+* */
+function parameterArrayToItem(fn, param1, param2)
+{
+	if (Array.isArray(param1))
+	{
+		var param2IsArray = Array.isArray(param2),
+				param2ArrayLength = param2IsArray && param2.length || 0;
+		for (var i = 0, length = param1.length; i < length; i++)
+		{
+			var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
+			fn(param1[i], param2Item);
+		}
+	}
 }
