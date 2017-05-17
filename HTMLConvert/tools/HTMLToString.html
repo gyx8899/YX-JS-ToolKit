@@ -34,18 +34,14 @@
 			<div id="demoWrap" class="large-12 columns">
 				<div id="demoHTML">
 					<!--Demo's html here-->
-<ul>
-	<li>Wrapping <b>html lines</b> in '' tags, and add + at the end of line;</li>
-</ul>
+<p>Wrapping <b>html lines</b> in '' tags, and add + at the end of line;</p>
 <fieldset>
 	<legend>Input(HTML):</legend>
-	<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
+	<textarea id="input-content" title="input" style="width: 100%; height: 150px;"></textarea>
 </fieldset>
-
-<button onclick="convertCode()">convert</button>
 <fieldset>
 	<legend>Output(Joined-String):</legend>
-	<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
+	<textarea id="output-content" title="output" style="width: 100%; height: 150px;"></textarea>
 </fieldset>
 				</div>
 				<h3 id="overview">Overview</h3>
@@ -73,6 +69,10 @@
 </script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
+	$(document).ready(function ()
+	{
+		$('#input-content').on("change keyup paste", convertCode);
+	});
 function convertCode()
 {
 	var sourceHtml = $('#input-content').val();
