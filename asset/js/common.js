@@ -47,7 +47,7 @@ function loadCSS(url, callback)
 		link.href = url;
 		link.onload = function ()
 		{
-			callback && window[callback]();
+			callback && callback();
 		};
 		link.onerror = function ()
 		{
@@ -79,7 +79,7 @@ function loadScript(url, callback)
 						script.readyState == "complete")
 				{
 					script.onreadystatechange = null;
-					callback && window[callback]();
+					callback && callback();
 				}
 			};
 		}
@@ -87,7 +87,7 @@ function loadScript(url, callback)
 		{  //Others
 			script.onload = function ()
 			{
-				callback && window[callback]();
+				callback && callback();
 			};
 		}
 
