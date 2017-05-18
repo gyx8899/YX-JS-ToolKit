@@ -101,8 +101,7 @@ function getFileContent(url, callback, context)
 		url: url,
 		success: function (data)
 		{
-			context = context || window;
-			callback && context[callback](data);
+			callback && (context ? context[callback](data) : callback(data));
 		}
 	});
 }
