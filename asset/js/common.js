@@ -95,6 +95,17 @@ function loadScript(url, callback)
 		document.body.appendChild(script);
 	}
 }
+function getFileContent(url, callback, context)
+{
+	$.ajax({
+		url: url,
+		success: function (data)
+		{
+			context = context || window;
+			callback && context[callback](data);
+		}
+	});
+}
 /*
  * Functions: Regular expression
  * */
