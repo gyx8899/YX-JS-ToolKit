@@ -1,0 +1,47 @@
+/* Owl-custom nav*/
+.owl-carousel .owl-prev
+{
+	left: 0;
+}
+.owl-carousel .owl-next
+{
+	right: 0;
+	transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+}
+.owl-carousel .owl-nav [class*=owl-]
+{
+	position: absolute;
+	top: 0;
+	width: 34px;
+	height: 100%;
+	cursor: pointer;
+	background: url(../images/nav_left.png) no-repeat calc(100% - 12px) center, url(../images/carousel_nav_shadow.png) repeat left center;
+	background-size: 15px 26px, 48px 100%;
+}
+.owl-carousel.nav-btn .owl-nav [class*=owl-]
+{
+	top: calc(50% - 40px);
+	width: 48px;
+	height: 80px;
+}
+@media (min-resolution: 2dppx)
+{
+	.owl-carousel .owl-nav [class*=owl-]
+	{
+		background-image: url(../images/nav_left@2x.png), url(../images/carousel_nav_shadow.png);
+	}
+}
+.owl-carousel .owl-nav [class*=owl-]:hover
+{
+	opacity: 0.8;
+	color: #FFF;
+	text-decoration: none;
+}
+.owl-carousel .owl-nav [class*=owl-].disabled
+{
+	display: none;
+}

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A demo about the event of owlCarouse2.">
+	<meta name="keywords" content="owl, owl carousel2, demo, event">
+	<meta name="author" content="Steper Kuo">
+	<title>Demo: Owl events using</title>
+
+	<!-- Link *** CSS  -->
+	<link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic,300italic' rel='stylesheet' type='text/css'>
+
+	<!-- Style custom *** CSS -->
+	<link rel="stylesheet" href="styles/owl.carousel.min.css">
+	<link rel="stylesheet" href="styles/owl-theme.css">
+	<link rel="stylesheet" href="styles/owl-navOnSide.css">
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+		.btn
+		{
+			border: solid 1px lightgray;
+			border-radius: 5px;
+			background-color: lightsteelblue;
+			cursor: pointer;
+			width: fit-content;
+			padding: 5px;
+			margin: 2px 0;
+		}
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div id="demoHTML">
+					<!--Demo's html here-->
+<div style="width: 100%; position: relative;">
+	<div style="width: 80%;">
+		<h3>owl items: Equal width</h3>
+		<div id="owl1" class="owl-carousel owl-theme">
+			<div class="item"><h4>1</h4></div>
+			<div class="item"><h4>2</h4></div>
+			<div class="item"><h4>3</h4></div>
+			<div class="item"><h4>4</h4></div>
+			<div class="item"><h4>5</h4></div>
+			<div class="item"><h4>6</h4></div>
+		</div>
+		<h3>owl items: Different width</h3>
+		<div id="owl2" class="owl-carousel owl-theme">
+			<div class="item" style="width:250px"><h4>1</h4></div>
+			<div class="item" style="width:100px"><h4>2</h4></div>
+			<div class="item" style="width:500px"><h4>3</h4></div>
+			<div class="item" style="width:100px"><h4>4</h4></div>
+			<div class="item" style="width:250px"><h4>5</h4></div>
+			<div class="item" style="width:150px"><h4>6</h4></div>
+		</div>
+	</div>
+	<div style="position: absolute; top: 0; right: 0; width: 15%;">
+		<p>Events</p>
+		<div class="actions">
+			<button id="prev" class="btn btn-default">Prev</button>
+			<button id="next" class="btn btn-default">Next</button>
+			<button id="add-left" class="btn btn-default">Add-left</button>
+			<button id="add-right" class="btn btn-default">Add-right</button>
+			<button id="replace" class="btn btn-default">Replace</button>
+			<button id="remove-left" class="btn btn-default">Remove-left</button>
+			<button id="remove-right" class="btn btn-default">Remove-right</button>
+			<button id="destroy" class="btn btn-default">Destroy</button>
+			<button id="re-init-owl" class="btn">ReInit</button>
+			<button id="destroy-reinit" class="btn">Destroy+ReInit</button>
+		</div>
+	</div>
+</div>
+				</div>
+				<h3 id="overview">Overview</h3>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Theme *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/asset/js/common.js"></script>
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer-owl/header-footer.js"></script>
+<script type="text/javascript">$.applyHeaderFooter('owl');</script>
+
+<!-- Script Demo *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode.js"></script>
+<script type="text/javascript">
+	$(document).ready(function ()
+	{
+		previewAll($('#demoWrap'), $('#demoHTML'), $('#demoCSS'), $('#demoJS'));
+	});
+</script>
+<script id="owlCarouselJS" type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+var owlOption1 = {
+//stagePadding: 50,
+	margin: 10,
+	navText: ['', ''],
+//	autoWidth: true,
+//	loop: true,
+//	center: true,
+//	nestedItemSelector: 'item',
+	nav: true,
+	slideBy: 'page',
+	//		responsiveClass: true,
+	//		responsive: {
+	//			0: {
+	//				items: 1,
+	//				nav: true
+	//			},
+	//			600: {
+	//				items: 3,
+	//				nav: false
+	//			},
+	//			800: {
+	//				items: 4,
+	//				nav: false
+	//			},
+	//			1000: {
+	//				items: 5,
+	//				nav: false
+	//			},
+	//			1400: {
+	//				items: 6,
+	//				nav: true,
+	//				loop: false,
+	//				margin: 20
+	//			}
+	//		},
+	items: 4
+};
+var owlOption2 = {
+//  stagePadding: 50,
+	margin: 10,
+	autoWidth: true,
+//	freeDrag: true,
+//	loop: true,
+//	center: true,
+//	nestedItemSelector: 'item',
+	nav: false,
+	items: 1
+};
+
+var owl1 = $('#owl1').owlCarousel(owlOption1);
+var owl2 = $('#owl2').owlCarousel(owlOption2);
+$('#prev').on('click', function ()
+{
+	owl1.trigger('prev.owl.carousel', [500]);
+	owl2.trigger('prev.owl.carousel', [500]);
+});
+$('#next').on('click', function ()
+{
+	owl1.trigger('next.owl.carousel', [500]);
+	owl2.trigger('next.owl.carousel', [500]);
+});
+
+$('#add-left').on('click', function ()
+{
+	var count1 = 11;
+	var count2 = 22;
+	var randomWidth = Math.floor(Math.random() * 1000 + 1);
+	var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
+	var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
+
+	owl1.trigger('add.owl.carousel', [$(content1), 0])
+			.trigger('refresh.owl.carousel')
+			.trigger('to.owl.carousel', [0, 500]);
+	owl2.trigger('add.owl.carousel', [$(content2), 0])
+			.trigger('refresh.owl.carousel')
+			.trigger('to.owl.carousel', [0, 500]);
+});
+$('#add-right').on('click', function ()
+{
+	var count1 = owl1.find('.owl-item').length + 1;
+	var count2 = owl2.find('.owl-item').length + 1;
+	var randomWidth = Math.floor(Math.random() * 1000 + 1);
+	var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
+	var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
+
+	owl1.trigger('add.owl.carousel', [$(content1)])
+			.trigger('refresh.owl.carousel')
+			.trigger('to.owl.carousel', [-1, 500]);
+	owl2.trigger('add.owl.carousel', [$(content2)])
+			.trigger('refresh.owl.carousel')
+			.trigger('to.owl.carousel', [-1, 500]);
+});
+
+$('#replace').on('click', function ()
+{
+	var content1 = '';
+	var content2 = '';
+	for (var i = 1; i < 7; i++)
+	{
+		var randomWidth = Math.floor(Math.random() * 1000 + 1);
+		content1 += '<div class="item"><h4>' + i * 20 + '</h4></div>';
+		content2 += '<div class="item" style="width:' + randomWidth + 'px"><h4>' + i * 20 + '</h4></div>';
+	}
+
+	owl1.trigger('replace.owl.carousel', content1)
+			.trigger('refresh.owl.carousel');
+	owl2.trigger('replace.owl.carousel', content2)
+			.trigger('refresh.owl.carousel');
+});
+
+$('#remove-left').on('click', function ()
+{
+	owl1.trigger('remove.owl.carousel', 0)
+			.trigger('refresh.owl.carousel');
+	owl2.trigger('remove.owl.carousel', 0)
+			.trigger('refresh.owl.carousel');
+});
+
+$('#remove-right').on('click', function ()
+{
+	var count1 = owl1.find('.owl-item').length;
+	var count2 = owl2.find('.owl-item').length;
+	owl1.trigger('remove.owl.carousel', count1 - 1)
+			.trigger('refresh.owl.carousel');
+	owl2.trigger('remove.owl.carousel', count2 - 1)
+			.trigger('refresh.owl.carousel');
+});
+
+$('#destroy').on('click', function ()
+{
+	owl1.trigger('destroy.owl.carousel');
+
+	owl2.trigger('destroy.owl.carousel');
+});
+
+$('#re-init-owl').on('click', function ()
+{
+	owl1 = $('#owl1').owlCarousel(owlOption1);
+	owl2 = $('#owl2').owlCarousel(owlOption2);
+});
+
+$('#destroy-reinit').on('click', function ()
+{
+	//		Destroy
+	owl1.trigger('destroy.owl.carousel');
+	//		Init
+	owl1 = $('#owl1').owlCarousel(owlOption1);
+
+	//		Destroy
+	owl2.trigger('destroy.owl.carousel');
+	//		Init
+	owl2 = $('#owl2').owlCarousel(owlOption2);
+});
+</script>
+</body>
+</html>

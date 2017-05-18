@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A demo of OwlCarousel2 with one item slide.">
+	<meta name="keywords" content="owl, owl carousel2, demo, one item">
+	<meta name="author" content="Steper Kuo">
+	<title>Owl demo: one item page slide</title>
+
+	<!-- Link *** CSS  -->
+	<link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic,300italic' rel='stylesheet' type='text/css'>
+
+	<!-- Style custom *** CSS -->
+	<link rel="stylesheet" href="styles/owl.carousel.min.css">
+	<link rel="stylesheet" href="styles/owl-theme.css">
+	<link rel="stylesheet" href="styles/owl-navOnSide.css">
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+.owl-carousel .item
+{
+	height: auto;
+}
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demo">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div id="demoHTML">
+					<!--Demo's html here-->
+<div id="owlOne" class="owl-carousel owl-theme">
+	<div class="item"><img src="images/fullimage1.jpg" alt=""></div>
+	<div class="item"><img src="images/fullimage2.jpg" alt=""></div>
+	<div class="item"><img src="images/fullimage3.jpg" alt=""></div>
+</div>
+				</div>
+				<h3 id="overview">Overview</h3>
+				<!--Introduction here-->
+				<p>
+					<b>Demo: One</b><br>
+					1. Slider-One item;<br>
+					2. Auto width/height;<br>
+					3. Nav-prev/next over item;<br>
+					4. Dots over item;<br>
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Theme *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/asset/js/common.js"></script>
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer-owl/header-footer.js"></script>
+<script type="text/javascript">$.applyHeaderFooter('owl');</script>
+
+<!-- Script Demo *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode.js"></script>
+<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
+<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+<script type="text/javascript">
+	$(document).ready(function ()
+	{
+		previewAll($('#demoWrap'), $('#demoHTML'), $('#demoCSS'), [$('#demoJS'), $('#commonJS')]);
+	});
+</script>
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+	$(document).ready(function ()
+	{
+		var $owlOne = $('#owlOne');
+		$owlOne = initOwlCarousel($owlOne, {
+			margin: 0,
+			nav: true,
+			navText: ['', ''],
+			items: 1,
+			loop: true
+		});
+		owlItemClickedMonitor($owlOne);
+	})
+</script>
+</body>
+</html>
