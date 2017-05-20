@@ -48,7 +48,7 @@
 				}
 				if (count >= len)
 				{
-					opts.all && opts.all(); // All loaded
+					opts.all && typeof(opts.all) === 'function' && opts.all(); // All loaded
 				}
 				else
 				{
