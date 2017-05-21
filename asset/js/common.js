@@ -37,7 +37,7 @@ function loadCSS(url, callback)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem("loadCSS", url, callback);
+		parameterArrayToItem(arguments.callee.name, url, callback);
 	}
 	else
 	{
@@ -64,7 +64,7 @@ function loadScript(url, callback)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem("loadScript", url, callback);
+		parameterArrayToItem(arguments.callee.name, url, callback);
 	}
 	else
 	{
