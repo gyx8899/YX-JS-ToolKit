@@ -134,6 +134,6 @@ function parameterArrayToItem(fn, param1, param2)
 	for (var i = 0, length = param1.length; i < length; i++)
 	{
 		var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
-		fn && fn(param1[i], param2Item);
+		fn && window[fn](param1[i], param2Item);
 	}
 }
