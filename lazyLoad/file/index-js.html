@@ -56,17 +56,12 @@
 
 <!-- Script Theme *** JS -->
 <script src="https://gyx8899.github.io/YX-JS-ToolKit/asset/js/common.js"></script>
-<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer-owl/header-footer.js"></script>
-<script type="text/javascript">$.applyHeaderFooter('owl', {subTitle: 'Load new js file'});</script>
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/header-footer-auto.js"></script>
+
+<!-- Script Preview code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js"></script>
 
 <!-- Script Demo *** JS -->
-<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode.js"></script>
-<script type="text/javascript">
-	$(document).ready(function ()
-	{
-		previewAll($('#demoWrap'), $('#demoHTML'), $('#demoCSS'), $('#demoJS'))
-	});
-</script>
 <script id="originJS" type="text/javascript" src="scripts/js-origin.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
@@ -112,6 +107,10 @@ function loadJS()
 		//reInit
 		document.getElementById('new').innerHTML = 'New when loaded JS';
 	})
+}
+function headerFooterOwlCallback(type, options, config)
+{
+	$.applyHeaderFooter('owl', {subTitle: 'Load new js file'});
 }
 </script>
 </body>
