@@ -54,7 +54,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="javascript: void(0);" id="nav-more" class="nav-item"></a>
+					<a href="javascript: void(0);" id="nav-more" class="nav-item" data-toggle="popupDismissEveryWhere" data-target="#item-more"  data-toggle-class="open"></a>
 					<div id="item-more">
 						<div class="more-list">
 							<a href="aboutus" class="more-item">
@@ -71,7 +71,7 @@
 				</li>
 			</ul>
 			<div class="headerBtn fr">
-				<ul class="hamburger fl hamburger-normal">
+				<ul class="hamburger fl" data-toggle="popupDismissEveryWhere" data-target="#spNav" data-toggle-class="hamburger-close">
 					<li></li>
 					<li></li>
 					<li></li>
@@ -80,7 +80,7 @@
 		</div>
 	</div>
 </div>
-<ul class="spNav">
+<ul id="spNav" class="spNav">
 	<li><a href="/" class="menuLink menuSel selected">Shows</a></li>
 	<li><a href=/home" class="menuLink menuSel">Featured</a></li>
 	<li><a href="/aboutus" class="menuLink menu-more">About</a></li>
@@ -114,8 +114,8 @@
 		previewAll($('#demoWrap'), $('#demoHTML'), $('#demoCSS'), $('#demoJS'))
 	});
 </script>
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/popupDismiss/popupDismissEverywhere-all.js"></script>
 <script type="text/javascript" src="scripts/sticky.js"></script>
-<script type="text/javascript" src="scripts/hamburger.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
 </script>
