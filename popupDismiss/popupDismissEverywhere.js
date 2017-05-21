@@ -27,7 +27,7 @@
 				eventData.toggledClass && eventData.$popupTrigger.addClass(eventData.toggledClass) && eventData.$popupTarget.addClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'true');
 				$(document).on(eventData.type + "." + eventData.namespace, eventData, method.popupDismiss);
-				eventData.popupHandler && typeof(eventData.popupHandler) === 'function' && eventData.popupHandler(eventData.$popupTarget);
+				eventData.popupHandler && typeof eventData.popupHandler === 'function' && eventData.popupHandler(eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("pointer");
 			}
@@ -66,7 +66,7 @@
 				eventData.toggledClass && eventData.$popupTrigger.removeClass(eventData.toggledClass) && eventData.$popupTarget.removeClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'false');
 				$(document).off(eventData.type + "." + eventData.namespace, method.popupDismiss);
-				eventData.dismissHandler && typeof(eventData.dismissHandler) === 'function' && eventData.dismissHandler(eventData.$popupTarget);
+				eventData.dismissHandler && typeof eventData.dismissHandler === 'function' && eventData.dismissHandler(eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("default");
 			}

@@ -19,7 +19,7 @@ function owlItemClickedMonitor($owl, clickedHandler)
 			if (event.type === 'mouseup' && event.which <= 1) //only for left key
 			{
 				// Clicked (left key)
-				clickedHandler && typeof(clickedHandler) === 'function' && clickedHandler();
+				clickedHandler && typeof clickedHandler === 'function' && clickedHandler();
 			}
 			else
 			{

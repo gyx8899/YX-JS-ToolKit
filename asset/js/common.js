@@ -47,7 +47,7 @@ function loadCSS(url, callback)
 		link.href = url;
 		link.onload = function ()
 		{
-			callback && typeof(callback) === 'function' && callback();
+			callback && typeof callback === 'function' && callback();
 		};
 		link.onerror = function ()
 		{
@@ -79,7 +79,7 @@ function loadScript(url, callback)
 						script.readyState == "complete")
 				{
 					script.onreadystatechange = null;
-					callback && typeof(callback) === 'function' && callback();
+					callback && typeof callback === 'function' && callback();
 				}
 			};
 		}
@@ -87,7 +87,7 @@ function loadScript(url, callback)
 		{  //Others
 			script.onload = function ()
 			{
-				callback && typeof(callback) === 'function' && callback();
+				callback && typeof callback === 'function' && callback();
 			};
 		}
 
@@ -101,7 +101,7 @@ function getFileContent(url, callback, context)
 		url: url,
 		success: function (data)
 		{
-			callback && typeof(callback) === 'function' && (context ? context[callback](data) : callback(data));
+			callback && typeof callback === 'function' && (context ? context[callback](data) : callback(data));
 		}
 	});
 }
@@ -134,6 +134,6 @@ function parameterArrayToItem(fn, param1, param2)
 	for (var i = 0, length = param1.length; i < length; i++)
 	{
 		var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
-		fn && typeof(fn) === 'function' && fn(param1[i], param2Item);
+		fn && typeof fn === 'function' && fn(param1[i], param2Item);
 	}
 }
