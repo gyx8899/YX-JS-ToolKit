@@ -127,4 +127,11 @@
 			$(this).on('click', method.popupEvent);
 		});
 	};
+	$.extend({
+		popupDismissEverywhere: function ()
+		{
+			"use strict";
+			$('body').on('click', '[data-toggle="popupDismissEveryWhere"]', method.popupEvent);
+		}
+	})
 })(jQuery);
