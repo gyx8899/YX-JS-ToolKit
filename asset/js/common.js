@@ -137,3 +137,17 @@ function parameterArrayToItem(fn, param1, param2)
 		fn && window[fn](param1[i], param2Item);
 	}
 }
+/*
+* Functions: throttle, specially in onResize event function;
+* */
+function throttle(method, context)
+{
+	if (method.tId)
+	{
+		clearTimeout(method.tId);
+	}
+	method.tId = setTimeout(function ()
+	{
+		method.call(context);
+	}, 100);
+}
