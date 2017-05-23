@@ -37,7 +37,7 @@ function loadCSS(url, callback)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem(arguments.callee.name, url, callback);
+		parameterArrayToItem(arguments.callee, url, callback);
 	}
 	else
 	{
@@ -64,7 +64,7 @@ function loadScript(url, callback)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem(arguments.callee.name, url, callback);
+		parameterArrayToItem(arguments.callee, url, callback);
 	}
 	else
 	{
@@ -134,7 +134,7 @@ function parameterArrayToItem(fn, param1, param2)
 	for (var i = 0, length = param1.length; i < length; i++)
 	{
 		var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
-		fn && window[fn](param1[i], param2Item);
+		fn && fn(param1[i], param2Item);
 	}
 }
 /*
