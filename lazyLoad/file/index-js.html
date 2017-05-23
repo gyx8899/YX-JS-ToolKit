@@ -56,7 +56,13 @@
 
 <!-- Script Theme *** JS -->
 <script src="https://gyx8899.github.io/YX-JS-ToolKit/asset/js/common.js"></script>
-<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/header-footer-auto.js"></script>
+<script type="text/javascript">
+	function themeHeaderFooterLoaded()
+	{
+		$.applyHeaderFooter('owl', {subTitle: 'Load new js file'});
+	}
+</script>
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/header-footer.js" onload="themeHeaderFooterLoaded()"></script>
 
 <!-- Script Preview code *** JS -->
 <script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js"></script>
@@ -107,10 +113,6 @@ function loadJS()
 		//reInit
 		document.getElementById('new').innerHTML = 'New when loaded JS';
 	})
-}
-function headerFooterOwlCallbackCustom(type, options, config)
-{
-	$.applyHeaderFooter('owl', {subTitle: 'Load new js file'});
 }
 </script>
 </body>
