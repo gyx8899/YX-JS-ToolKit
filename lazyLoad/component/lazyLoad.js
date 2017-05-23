@@ -1,0 +1,63 @@
+var lazyLoadIdArray = [];
+$(document).ready(function ()
+{
+	// Init Lazy load Categories;
+	lazyLoadCategory();
+});
+function lazyLoadCategory()
+{
+	initLazyLoadArray();
+	$(window).trigger( "scroll" );
+	$(window).scroll(lazyLoadScrollMonitor);
+}
+function lazyLoadScrollMonitor()
+{
+	lazyLoadIdArray.length && throttle(checkAndLoadCategory);
+}
+function initLazyLoadArray()
+{
+	var $leafCategory = $('.lazy-load');
+	for (var i = 0, l = $leafCategory.length; i < l; i++)
+	{
+		lazyLoadIdArray[i] = $($leafCategory[i]).attr('id');
+	}
+}
+function checkAndLoadCategory()
+{
+	var scrollTop = $(window).scrollTop(),
+			windowHeight = $(window).height(), windowBottomToTop = scrollTop + windowHeight;
+	for (var i = 0; i < lazyLoadIdArray.length; i++)
+	{
+		var top = $('#' + lazyLoadIdArray[i]).position().top;
+		if (windowBottomToTop > top)
+		{
+			var loadId = lazyLoadIdArray.splice(i, 1)[0];
+			console.log('Load : ' + loadId);
+			loadContent(loadId);
+			i--;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+function throttle(method, context)
+{
+	clearTimeout(method.tId);
+	method.tId = setTimeout(function ()
+	{
+		method.call(context);
+	}, 100);
+}
+function loadContent(id)
+{
+	setTimeout(function ()
+	{
+		$('#' + id).append('<p>1.Content!!!!</p>');
+	}, 1000);
+	setTimeout(function ()
+	{
+		$('#' + id).append('<p>2.Content!!!!</p>');
+	}, 2000);
+}
