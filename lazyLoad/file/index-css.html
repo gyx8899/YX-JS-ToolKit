@@ -63,7 +63,7 @@ function changeCSSFile()
 	//$("#cssfile").attr("href","styles/css-new.css");
 	document.getElementById("cssfile").href = "styles/css-new.css";
 }
-function headerFooterOwlCallback(type, options, config)
+function headerFooterOwlCallbackCustom(type, options, config)
 {
 	$.applyHeaderFooter('owl', {subTitle: 'Change the loaded css file'});
 }
