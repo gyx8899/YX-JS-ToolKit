@@ -7,8 +7,11 @@ $(document).ready(function ()
 function lazyLoadCategory()
 {
 	initLazyLoadArray();
-	$(window).trigger( "scroll" );
 	$(window).scroll(lazyLoadScrollMonitor);
+
+	// Add this scroll trigger when page loaded, the page height don't change;
+	// (When there is no other dynamic page loading)
+	$(window).trigger( "scroll" );
 }
 function lazyLoadScrollMonitor()
 {
