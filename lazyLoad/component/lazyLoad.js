@@ -34,10 +34,8 @@ function checkAndLoadCategory()
 		var top = $('#' + lazyLoadIdArray[i]).position().top;
 		if (windowBottomToTop > top)
 		{
-			var loadId = lazyLoadIdArray.splice(i, 1)[0];
-			console.log('Load : ' + loadId);
+			var loadId = lazyLoadIdArray.splice(i--, 1)[0];
 			loadContent(loadId);
-			i--;
 		}
 		else
 		{
