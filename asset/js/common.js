@@ -29,7 +29,7 @@ function replaceTemplateExpressionWithData(template, dataObject)
 /*
  * Functions: Dynamic load files in page;
  * */
-function loadCSS(url, callback)
+function loadCSS(url, callback, context)
 {
 	if (!url)
 		return;
@@ -47,7 +47,7 @@ function loadCSS(url, callback)
 		link.href = url;
 		link.onload = function ()
 		{
-			callback && callback();
+			callback && (context ? context[callback]() : callback());
 		};
 		link.onerror = function ()
 		{
@@ -56,7 +56,7 @@ function loadCSS(url, callback)
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 }
-function loadScript(url, callback)
+function loadScript(url, callback, context)
 {
 	if (!url)
 		return;
@@ -79,7 +79,7 @@ function loadScript(url, callback)
 						script.readyState == "complete")
 				{
 					script.onreadystatechange = null;
-					callback && callback();
+					callback && (context ? context[callback]() : callback());
 				}
 			};
 		}
@@ -87,7 +87,7 @@ function loadScript(url, callback)
 		{  //Others
 			script.onload = function ()
 			{
-				callback && callback();
+				callback && (context ? context[callback]() : callback());
 			};
 		}
 
