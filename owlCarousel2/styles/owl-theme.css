@@ -4,6 +4,13 @@
 	background: #4DC7A0;
 	padding: 1rem;
 }
+.owl-carousel .owl-stage
+{
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-box;
+	display: box;
+}
 /* owl-theme */
 .owl-theme .owl-dots, .owl-theme .owl-nav
 {

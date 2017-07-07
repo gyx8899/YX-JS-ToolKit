@@ -1,3 +1,10 @@
+.owl-carousel .owl-stage
+{
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-box;
+	display: box;
+}
 /* Owl-custom nav*/
 .owl-carousel .owl-prev
 {
