@@ -70,8 +70,10 @@
 // Compacted by ScriptingMagic.com
 var viewToggle = -1;
 var htmlText;
+	var oldWindowOnload = window.onload;
 window.onload = function ()
 {
+	oldWindowOnload && oldWindowOnload();
 	var a;
 	Init();
 	document.getElementById("vsource").onclick = viewSource;
