@@ -5,7 +5,7 @@
 (function ($)
 {
 	var method = {
-		isTap: false,
+		isTap: undefined,
 
 		popupEvent: function (event)
 		{
@@ -42,7 +42,7 @@
 
 		popupDismiss: function (event)
 		{
-			if (!method.isTap)
+			if (method.isTap === false)
 				return ;
 			var eventData = {}, isListenerEvent = !!event.data;
 			if (isListenerEvent)
@@ -79,6 +79,7 @@
 
 		monitorTap: function ()
 		{
+			method.isTap = undefined;
 			var start = {}, end = {};
 			document.body.addEventListener('mousedown', mouseDown);
 			document.body.addEventListener('mouseup', mouseUp);
