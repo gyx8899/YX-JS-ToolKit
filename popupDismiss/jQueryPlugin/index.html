@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="jQuery plugin: popup and dismiss everywhere">
+	<meta name="keywords" content="web, js demo, popup, dismiss, js, jQuery plugin">
+	<meta name="author" content="Steper Kuo">
+	<title>Demo: popup and dismiss everywhere</title>
+
+	<!-- Link *** CSS  -->
+	<link href='//fonts.googleapis.com/css?family=Lato:300,400,700,400italic,300italic' rel='stylesheet' type='text/css'>
+
+	<!-- Style custom *** CSS -->
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+.trigger-parent
+{
+	color: #000000;
+	font-size: 24px;
+	cursor: pointer;
+	background-color: #1ccacd;
+}
+.trigger-parent.open
+{
+	background-color: blueviolet;
+}
+#demo1List,
+#demo11List,
+#demo12List,
+#demo2List,
+#demo3List
+{
+	display: none;
+}
+#demo1List.open,
+#demo11List.open,
+#demo12List.open,
+#demo2List.open
+{
+	display: block;
+}
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<ul>
+					<li><b>not set in self && parents</b> default is dismiss='true'</li>
+					<li><b>data-popup-dismiss="false"</b>   ----support nest</li>
+					<li><b>data-popup-dismiss="true" </b>   ----support nest</li>
+				</ul>
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<section>
+						<h3>Demo1: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo1List</b>"
+							data-toggle-class="open"</p></h3>
+						<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo1List" data-toggle-class="open">
+							toggle popup
+						</div>
+						<ul id="demo1List">
+							<li>Demo1 popup list1</li>
+							<li data-popup-dismiss="false">Demo1 popup list2, data-popup-dismiss="false"</li>
+							<li>Demo1 popup list3</li>
+							<li>Demo1 popup list4</li>
+							<li>
+								<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo11List" data-toggle-class="open" data-popup-dismiss="false">
+									Demo1 SubSelector, data-popup-dismiss="false"
+								</div>
+								<ul id="demo11List" data-popup-dismiss="true">
+									SubList1-parent : data-popup-dismiss="true"
+									<li>SubList11</li>
+									<li data-popup-dismiss="false">SubList12, data-popup-dismiss="false"</li>
+									<li>SubList13</li>
+								</ul>
+							</li>
+							<li>Demo1 popup list6</li>
+							<li>
+								<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo12List" data-toggle-class="open" data-popup-dismiss="false">
+									Demo1 SubSelector, data-popup-dismiss="false"
+								</div>
+								<ul id="demo12List" data-popup-dismiss="false">
+									SubList2-parent : data-popup-dismiss="false"
+									<li>SubList21</li>
+									<li data-popup-dismiss="true">SubList22, data-popup-dismiss="true"</li>
+									<li>SubList23</li>
+								</ul>
+							</li>
+							<li>Demo1 popup list8</li>
+						</ul>
+					</section>
+					<hr>
+					<section>
+						<h3>Demo2: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo2List</b>"
+							data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler"</p></h3>
+						<textarea id="eventLog"></textarea>
+						<button class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo2List" data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler">
+							toggle popup
+						</button>
+						<ul id="demo2List">
+							<li>Demo2 popup list1</li>
+							<li>Demo2 popup list2</li>
+							<li>Demo2 popup list3</li>
+							<li data-popup-dismiss="false">Demo2 popup list4, data-popup-dismiss="false"</li>
+							<li data-popup-dismiss="false">Demo2 popup list5, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+					<hr>
+					<section>
+						<h3>Demo3: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo3List</b>"
+							data-popup-handler="popupList" data-dismiss-handler="dismissList"</p></h3>
+						<button class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo3List" data-popup-handler="popupList" data-dismiss-handler="dismissList">
+							toggle popup
+						</button>
+						<ul id="demo3List">
+							<li>Demo3 popup list1</li>
+							<li>Demo3 popup list2</li>
+							<li>Demo3 popup list3</li>
+							<li data-popup-dismiss="false">Demo2 popup list4, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+				</div>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/asset/js/common.js"></script>
+
+<!-- Script Theme *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/header-footer-auto.js" async defer></script>
+
+<!-- Script PreViewCode *** JS-->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js" async defer></script>
+
+<!-- Script Demo *** JS -->
+<script src="popupDismissEverywhere.js"></script>
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+$(document).ready(function ()
+{
+//	1. To special items;
+//	$('[data-toggle="popupDismissEveryWhere"]').popupDismissEverywhere();
+
+//	2. To all items on body;
+	$.popupDismissEverywhere();
+});
+
+function popupHandler()
+{
+	outputTextArea("Popup handler triggering...");
+}
+function dismissHandler()
+{
+	outputTextArea("Dismiss handler triggering...");
+}
+function outputTextArea(output)
+{
+	$('#eventLog').text($('#eventLog').text() + '\n' + (new Date()).toLocaleTimeString() + ' -- ' + output);
+	var textarea = document.getElementById('eventLog');
+	textarea.scrollTop = textarea.scrollHeight;
+}
+function popupList($target)
+{
+	$target && $target.fadeIn();
+}
+function dismissList($target)
+{
+	$target && $target.fadeOut();
+}
+</script>
+</body>
+</html>

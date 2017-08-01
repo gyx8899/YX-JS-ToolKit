@@ -1,10 +1,12 @@
 /**
- * JQuery plugin: Popup with dismiss v2.0
+ * JQuery plugin: Popup with dismiss v3.0
  *
  */
 (function ($)
 {
 	var method = {
+		isTap: false,
+
 		popupEvent: function (event)
 		{
 			var $popupTrigger = $(event.target);
@@ -24,6 +26,7 @@
 
 			if (eventData.$popupTarget.data('isPopup') != 'true')
 			{
+				method.monitorTap();
 				eventData.toggledClass && eventData.$popupTrigger.addClass(eventData.toggledClass) && eventData.$popupTarget.addClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'true');
 				$(document).on(eventData.type + "." + eventData.namespace, eventData, method.popupDismiss);
@@ -31,7 +34,7 @@
 
 				method.setBodyCursorInIOS("pointer");
 			}
-			else
+			else if(method.isDismissTrigger($(event.target), eventData.$popupTarget))
 			{
 				method.popupDismiss(eventData);
 			}
@@ -39,6 +42,8 @@
 
 		popupDismiss: function (event)
 		{
+			if (!method.isTap)
+				return ;
 			var eventData = {}, isListenerEvent = !!event.data;
 			if (isListenerEvent)
 			{
@@ -59,7 +64,7 @@
 			}
 
 			if (!isListenerEvent ||
-					(eventData.$dismissTrigger.closest(eventData.$popupTrigger).length == 0
+					(eventData.$dismissTrigger.closest(eventData.$popupTrigger).length === 0
 					&& method.isDismissTrigger(eventData.$dismissTrigger, eventData.$popupTarget)
 					&& eventData.$popupTarget.data('isPopup') == 'true'))
 			{
@@ -72,14 +77,46 @@
 			}
 		},
 
-		// If $child doesn't have parent $parent and $child's closest has data-popup-dismiss="false', return true;
-		// else return false;
+		monitorTap: function ()
+		{
+			var start = {}, end = {};
+			document.body.addEventListener('mousedown', mouseDown);
+			document.body.addEventListener('mouseup', mouseUp);
+
+			function mouseDown(event)
+			{
+				method.isTap = false;
+				start.x = event.pageX;
+				start.y = event.pageY;
+			}
+
+			function mouseUp(event)
+			{
+				end.x = event.pageX;
+				end.y = event.pageY;
+
+				if (Math.abs(end.x - start.x) < 5 && Math.abs(end.y - start.y) < 5 && !method.isSelectingText())
+				{
+					method.isTap = true;
+					document.body.removeEventListener('mousedown', mouseDown);
+					document.body.removeEventListener('mouseup', mouseUp);
+				}
+			}
+		},
+
+		// Default: all be dismiss trigger(return true);
+		// Check click point ($child) has '[data-popup-dismiss="false"]'('[data-popup-dismiss="true"]') or not;
 		isDismissTrigger: function ($child, $parent)
 		{
 			var hasParent = $child.closest($parent);
 			if (hasParent && hasParent.length > 0)
 			{
-				return $child.closest($('[data-popup-dismiss="false"]'), $parent).length == 0;
+				var $parentDismissTrue = $child.closest($('[data-popup-dismiss="true"]'), $parent),
+						$parentDismissFalse = $child.closest($('[data-popup-dismiss="false"]'), $parent);
+				if ($parentDismissFalse.length > 0)
+				{
+					return $parentDismissTrue.length > 0 ? $parentDismissFalse[0].contains($parentDismissTrue[0]) : false;
+				}
 			}
 			return true;
 		},
@@ -116,6 +153,20 @@
 			{
 				// tasks to do if it is a iOS Mobile Device
 				return true;
+			}
+			return false;
+		},
+
+		// Check whether click to select text or not
+		isSelectingText: function ()
+		{
+			if (window.getSelection)
+			{
+				return window.getSelection().toString().length !== 0;
+			}
+			else if (document.selection)
+			{
+				return document.selection.createRange().text.length !== 0;
 			}
 			return false;
 		}
