@@ -3098,14 +3098,17 @@
 
 			// Custom change : #2 Fixed the pagination nav could not scroll to next page when set autoWidth with true and slideBy with 'page';
 			// Stop the rewind of next page
-			if (position == 0 && successor)
+			if (this._core.settings.loop == false)
 			{
-				position = this._pages[length - 1].end;
-			}
-			// Stop the rewind of prev page
-			if (position == this._pages[length - 1].start && !successor)
-			{
-				position = 0;
+				if (position == 0 && successor)
+				{
+					position = this._pages[length - 1].end;
+				}
+				// Stop the rewind of prev page
+				if (position == this._pages[length - 1].start && !successor)
+				{
+					position = 0;
+				}
 			}
 		} else {
 			position = this._core.relative(this._core.current());
