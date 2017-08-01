@@ -95,7 +95,7 @@
 				end.x = event.pageX;
 				end.y = event.pageY;
 
-				if (Math.abs(end.x - start.x) < 5 && Math.abs(end.y - start.y) < 5 && !method.isSelectingText())
+				if (Math.abs(end.x - start.x) < 5 && Math.abs(end.y - start.y) < 5)
 				{
 					method.isTap = true;
 					document.body.removeEventListener('mousedown', mouseDown);
@@ -153,20 +153,6 @@
 			{
 				// tasks to do if it is a iOS Mobile Device
 				return true;
-			}
-			return false;
-		},
-
-		// Check whether click to select text or not
-		isSelectingText: function ()
-		{
-			if (window.getSelection)
-			{
-				return window.getSelection().toString().length !== 0;
-			}
-			else if (document.selection)
-			{
-				return document.selection.createRange().text.length !== 0;
 			}
 			return false;
 		}
