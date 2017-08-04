@@ -15,10 +15,11 @@
  * @todo Test Zepto
  * @todo stagePadding calculate wrong active classes
  *
- * Owl carousel 2 custom changes list:
+ * Owl carousel 4 custom changes list:
  * 1. Fixed the last item space to the right when set autoWith with true;
  * 2. Fixed the pagination nav could not scroll to next page when set autoWidth with true and slideBy with 'page';
  * 3. Fixed with the case of iterator(this._items.length) == 0;
+ * 4. Fixed items scrolled left even when items width small than container width;
  */
 ;(function($, window, document, undefined) {
 
@@ -1163,27 +1164,36 @@
 			coordinate = this._coordinates[newPosition] || 0;
 
 			// Custom change : #1 Fixed the last item space to the right when set autoWith with true;
-			// Custom change : #1 Refixed last item space to right when all items width small than the container width;
-			// Custom change : #3 Fixed with the case of iterator(this._items.length) == 0;
+			// Custom change : #1 Re-fixed last item space to right when all items width small than the container width;
+			// Custom change : #4 Fixed items scrolled left even when items width small than container width;
 			var settings = this.settings,
-				iterator = this._items.length,
-				reciprocalItemsWidth,
-				elementWidth;
-			if ((settings.autoWidth || settings.merge) && !settings.loop && iterator > 0) {
-				reciprocalItemsWidth = this._items[--iterator].width();
-				elementWidth = this.$element.width();
-				var reciprocalAble = false;
-				while (iterator--) {
-					reciprocalItemsWidth += this._items[iterator].width() + this.settings.margin;
-					if (reciprocalItemsWidth > elementWidth)
-					{
-						reciprocalAble = true;
-						break;
-					}
+					iterator = this._items.length,
+					itemsWidthSum = this._items[--iterator].width(),
+					elementWidth = this.$element.width(),
+					accommodate = true;
+
+			while (iterator--) {
+				itemsWidthSum += this._items[iterator].width() + this.settings.margin;
+				if (itemsWidthSum > elementWidth) {
+					accommodate = false;
+					break;
 				}
-				if (reciprocalAble && position > iterator && position > 0) {
-					var tempPosition = position;
-					reciprocalItemsWidth = 0;
+			}
+
+			if (accommodate)
+			{
+				// Custom change : #4 Fixed if items width small than container width, reset coordinate with 0;
+				coordinate = 0;
+			}
+			else
+			{
+				// Custom change : #3 Fixed with the case of iterator(this._items.length) == 0;
+				if ((settings.autoWidth || settings.merge)
+						&& !settings.loop
+						&& iterator > 0 && position > 0
+						&& position > iterator) {
+					var tempPosition = position,
+							reciprocalItemsWidth = 0;
 					while (tempPosition < this._items.length) {
 						reciprocalItemsWidth += this._items[tempPosition++].width() + this.settings.margin;
 					}
