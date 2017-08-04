@@ -4,6 +4,7 @@
  */
 (function ($)
 {
+	"use strict";
 	var method = {
 		isTap: undefined,
 
@@ -125,37 +126,20 @@
 		// Fix issue : In iOS device, the dismiss function could not be triggered;
 		setBodyCursorInIOS: function (val)
 		{
-			if (method.isIOSDevice())
+			if (/iPhone|iPad|iPod/i.test(navigator.userAgent))
 			{
-				var $body = $("body"), popupCount = parseInt($body.data('popup-count') || '0', 10);
+				var $body = $('body'),
+						popupCount = parseInt($body.data('popup-count') || '0', 10);
 				if (val === 'pointer')
 				{
-					popupCount++;
-					if (popupCount === 1)
-					{
-						$body.css("cursor", val);
-					}
+					++popupCount === 1 && $body.css("cursor", val);
 				}
 				else if (val === 'default')
 				{
-					popupCount--;
-					if (popupCount === 0)
-					{
-						$body.css("cursor", val);
-					}
+					--popupCount === 0 && $body.css("cursor", val);
 				}
 				$body.data('popup-count', popupCount);
 			}
-		},
-
-		isIOSDevice: function ()
-		{
-			if (/iPhone|iPad|iPod/i.test(navigator.userAgent))
-			{
-				// tasks to do if it is a iOS Mobile Device
-				return true;
-			}
-			return false;
 		}
 	};
 	$.fn.popupDismissEverywhere = function ()
@@ -168,7 +152,6 @@
 	$.extend({
 		popupDismissEverywhere: function ()
 		{
-			"use strict";
 			$('body').on('click', '[data-toggle="popupDismissEveryWhere"]', method.popupEvent);
 		}
 	})
