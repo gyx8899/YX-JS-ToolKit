@@ -10,7 +10,7 @@
 		popupEvent: function (event)
 		{
 			var $popupTrigger = $(event.target);
-			if ($popupTrigger.data('toggle') != 'popupDismissEveryWhere')
+			if ($popupTrigger.data('toggle') !== 'popupDismissEveryWhere')
 			{
 				$popupTrigger = $popupTrigger.parents('[data-toggle="popupDismissEveryWhere"]');
 			}
@@ -24,13 +24,13 @@
 				dismissHandler: $popupTrigger.data('dismiss-handler') || null
 			};
 
-			if (eventData.$popupTarget.data('isPopup') != 'true')
+			if (eventData.$popupTarget.data('isPopup') !== 'true')
 			{
 				method.monitorTap();
 				eventData.toggledClass && eventData.$popupTrigger.addClass(eventData.toggledClass) && eventData.$popupTarget.addClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'true');
 				$(document).on(eventData.type + "." + eventData.namespace, eventData, method.popupDismiss);
-				eventData.popupHandler != null && window[eventData.popupHandler](eventData.$popupTarget);
+				eventData.popupHandler !== null && window[eventData.popupHandler](eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("pointer");
 			}
@@ -66,12 +66,12 @@
 			if (!isListenerEvent ||
 					(eventData.$dismissTrigger.closest(eventData.$popupTrigger).length === 0
 					&& method.isDismissTrigger(eventData.$dismissTrigger, eventData.$popupTarget)
-					&& eventData.$popupTarget.data('isPopup') == 'true'))
+					&& eventData.$popupTarget.data('isPopup') === 'true'))
 			{
 				eventData.toggledClass && eventData.$popupTrigger.removeClass(eventData.toggledClass) && eventData.$popupTarget.removeClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'false');
 				$(document).off(eventData.type + "." + eventData.namespace, method.popupDismiss);
-				eventData.dismissHandler != null && window[eventData.dismissHandler](eventData.$popupTarget);
+				eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("default");
 			}
@@ -128,18 +128,18 @@
 			if (method.isIOSDevice())
 			{
 				var $body = $("body"), popupCount = parseInt($body.data('popup-count') || '0', 10);
-				if (val == 'pointer')
+				if (val === 'pointer')
 				{
 					popupCount++;
-					if (popupCount == 1)
+					if (popupCount === 1)
 					{
 						$body.css("cursor", val);
 					}
 				}
-				else if (val == 'default')
+				else if (val === 'default')
 				{
 					popupCount--;
-					if (popupCount == 0)
+					if (popupCount === 0)
 					{
 						$body.css("cursor", val);
 					}
