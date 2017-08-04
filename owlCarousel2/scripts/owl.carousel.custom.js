@@ -1163,6 +1163,7 @@
 			coordinate = this._coordinates[newPosition] || 0;
 
 			// Custom change : #1 Fixed the last item space to the right when set autoWith with true;
+			// Custom change : #1 Refixed last item space to right when all items width small than the container width;
 			// Custom change : #3 Fixed with the case of iterator(this._items.length) == 0;
 			var settings = this.settings,
 				iterator = this._items.length,
@@ -1171,13 +1172,16 @@
 			if ((settings.autoWidth || settings.merge) && !settings.loop && iterator > 0) {
 				reciprocalItemsWidth = this._items[--iterator].width();
 				elementWidth = this.$element.width();
+				var reciprocalAble = false;
 				while (iterator--) {
 					reciprocalItemsWidth += this._items[iterator].width() + this.settings.margin;
-					if (reciprocalItemsWidth > elementWidth) {
+					if (reciprocalItemsWidth > elementWidth)
+					{
+						reciprocalAble = true;
 						break;
 					}
 				}
-				if (position > iterator && position > 0){
+				if (reciprocalAble && position > iterator && position > 0) {
 					var tempPosition = position;
 					reciprocalItemsWidth = 0;
 					while (tempPosition < this._items.length) {
