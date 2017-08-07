@@ -117,14 +117,27 @@
 			}
 		};
 		var owl = $('.owl-carousel').owlCarousel(responsiveOption);
+
+		//Custom mousewheel one item for slideBy page;
+		// Add custom script owl.carousel.custom.mousewheel.slideone.js to override owl.carousel.js
+		var mousewheelOneItem = responsiveOption.slideBy === 'page';
+
 		owl.on('mousewheel', '.owl-stage', function (e) {
 			if (e.deltaY > 0)
 			{
-				owl.trigger('next.owl.carousel', [500, true]);
+				// Default
+				//owl.trigger('next.owl');
+
+				//Custom mousewheel one item for slideBy page;
+				owl.trigger('next.owl.carousel', [500, mousewheelOneItem]);
 			}
 			else
 			{
-				owl.trigger('prev.owl.carousel', [500, true]);
+				// Default
+				//owl.trigger('prev.owl');
+
+				//Custom mousewheel one item for slideBy page;
+				owl.trigger('prev.owl.carousel', [500, mousewheelOneItem]);
 			}
 			e.preventDefault();
 		});
