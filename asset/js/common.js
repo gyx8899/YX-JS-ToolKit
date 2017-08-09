@@ -138,7 +138,7 @@ function parameterArrayToItem(fn, param1, param2)
 	}
 }
 /*
-* Functions: throttle, specially in onResize event function;
+* Functions: Throttle, specially in onResize event function;
 * */
 function throttle(method, context)
 {
@@ -150,4 +150,35 @@ function throttle(method, context)
 	{
 		method.call(context);
 	}, 100);
+}
+/*
+* Functions: Debug
+* */
+function consoleLog(fnArguments)
+{
+	if (window.console && window.debug !== false)
+	{
+		var localTime = (new Date()).toTimeString(),
+				fnName = fnArguments.callee.name,
+				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
+				fnArgumentsString = getArrayString(fnArgumentsArray),
+				argumentsArray = Array.prototype.slice.call(arguments, 0),
+				surplusArgumentString = argumentsArray.length > 1 && argumentsArray.shift() && getArrayString(argumentsArray);
+		window.console.log(localTime + ' : ' + fnName + '(' + fnArgumentsString + ') ' + surplusArgumentString);
+	}
+}
+
+function getArrayString(array)
+{
+	return array.map(function (arrayItem) {
+		if (typeof arrayItem === 'object')
+		{
+			arrayItem = JSON.stringify(arrayItem);
+		}
+		else if (Array.isArray(arrayItem))
+		{
+			arrayItem = '[' + arguments.callee(arrayItem) + ']';
+		}
+		return arrayItem.toString();
+	}).join(',');
 }
