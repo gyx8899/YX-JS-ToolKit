@@ -93,7 +93,7 @@
 <script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-	$(document).ready(function () {
+	window.addEventListener("load", function () {
 		var responsiveOption = {
 			loop: true,
 			nav: true,
@@ -144,7 +144,7 @@
 			}
 			e.preventDefault();
 		});
-	});
+	}, false);
 </script>
 </body>
 </html>

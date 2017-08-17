@@ -114,149 +114,152 @@
 <script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-	var owlOption1 = {
+	window.addEventListener("load", function () {
+		var owlOption1 = {
 //stagePadding: 50,
-		margin: 10,
-		navText: ['', ''],
+			margin: 10,
+			navText: ['', ''],
 //	autoWidth: true,
 //	loop: true,
 //	center: true,
 //	nestedItemSelector: 'item',
-		nav: true,
-		slideBy: 'page',
-		//		responsiveClass: true,
-		//		responsive: {
-		//			0: {
-		//				items: 1,
-		//				nav: true
-		//			},
-		//			600: {
-		//				items: 3,
-		//				nav: false
-		//			},
-		//			800: {
-		//				items: 4,
-		//				nav: false
-		//			},
-		//			1000: {
-		//				items: 5,
-		//				nav: false
-		//			},
-		//			1400: {
-		//				items: 6,
-		//				nav: true,
-		//				loop: false,
-		//				margin: 20
-		//			}
-		//		},
-		items: 4
-	};
-	var owlOption2 = {
+			nav: true,
+			slideBy: 'page',
+			//		responsiveClass: true,
+			//		responsive: {
+			//			0: {
+			//				items: 1,
+			//				nav: true
+			//			},
+			//			600: {
+			//				items: 3,
+			//				nav: false
+			//			},
+			//			800: {
+			//				items: 4,
+			//				nav: false
+			//			},
+			//			1000: {
+			//				items: 5,
+			//				nav: false
+			//			},
+			//			1400: {
+			//				items: 6,
+			//				nav: true,
+			//				loop: false,
+			//				margin: 20
+			//			}
+			//		},
+			items: 4
+		};
+		var owlOption2 = {
 //  stagePadding: 50,
-		margin: 10,
-		autoWidth: true,
+			margin: 10,
+			autoWidth: true,
 //	freeDrag: true,
 //	loop: true,
 //	center: true,
 //	nestedItemSelector: 'item',
-		nav: false,
-		items: 1
-	};
+			nav: false,
+			items: 1
+		};
 
-	var owl1 = $('#owl1').owlCarousel(owlOption1);
-	var owl2 = $('#owl2').owlCarousel(owlOption2);
-	$('#prev').on('click', function () {
-		owl1.trigger('prev.owl.carousel', [500]);
-		owl2.trigger('prev.owl.carousel', [500]);
-	});
-	$('#next').on('click', function () {
-		owl1.trigger('next.owl.carousel', [500]);
-		owl2.trigger('next.owl.carousel', [500]);
-	});
+		var owl1 = $('#owl1').owlCarousel(owlOption1);
+		var owl2 = $('#owl2').owlCarousel(owlOption2);
+		$('#prev').on('click', function () {
+			owl1.trigger('prev.owl.carousel', [500]);
+			owl2.trigger('prev.owl.carousel', [500]);
+		});
+		$('#next').on('click', function () {
+			owl1.trigger('next.owl.carousel', [500]);
+			owl2.trigger('next.owl.carousel', [500]);
+		});
 
-	$('#add-left').on('click', function () {
-		var count1 = 11;
-		var count2 = 22;
-		var randomWidth = Math.floor(Math.random() * 1000 + 1);
-		var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
-		var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
-
-		owl1.trigger('add.owl.carousel', [$(content1), 0])
-				.trigger('refresh.owl.carousel')
-				.trigger('to.owl.carousel', [0, 500]);
-		owl2.trigger('add.owl.carousel', [$(content2), 0])
-				.trigger('refresh.owl.carousel')
-				.trigger('to.owl.carousel', [0, 500]);
-	});
-	$('#add-right').on('click', function () {
-		var count1 = owl1.find('.owl-item').length + 1;
-		var count2 = owl2.find('.owl-item').length + 1;
-		var randomWidth = Math.floor(Math.random() * 1000 + 1);
-		var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
-		var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
-
-		owl1.trigger('add.owl.carousel', [$(content1)])
-				.trigger('refresh.owl.carousel')
-				.trigger('to.owl.carousel', [-1, 500]);
-		owl2.trigger('add.owl.carousel', [$(content2)])
-				.trigger('refresh.owl.carousel')
-				.trigger('to.owl.carousel', [-1, 500]);
-	});
-
-	$('#replace').on('click', function () {
-		var content1 = '';
-		var content2 = '';
-		for (var i = 1; i < 7; i++)
-		{
+		$('#add-left').on('click', function () {
+			var count1 = 11;
+			var count2 = 22;
 			var randomWidth = Math.floor(Math.random() * 1000 + 1);
-			content1 += '<div class="item"><h4>' + i * 20 + '</h4></div>';
-			content2 += '<div class="item" style="width:' + randomWidth + 'px"><h4>' + i * 20 + '</h4></div>';
-		}
+			var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
+			var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
 
-		owl1.trigger('replace.owl.carousel', content1)
-				.trigger('refresh.owl.carousel');
-		owl2.trigger('replace.owl.carousel', content2)
-				.trigger('refresh.owl.carousel');
-	});
+			owl1.trigger('add.owl.carousel', [$(content1), 0])
+					.trigger('refresh.owl.carousel')
+					.trigger('to.owl.carousel', [0, 500]);
+			owl2.trigger('add.owl.carousel', [$(content2), 0])
+					.trigger('refresh.owl.carousel')
+					.trigger('to.owl.carousel', [0, 500]);
+		});
+		$('#add-right').on('click', function () {
+			var count1 = owl1.find('.owl-item').length + 1;
+			var count2 = owl2.find('.owl-item').length + 1;
+			var randomWidth = Math.floor(Math.random() * 1000 + 1);
+			var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
+			var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
 
-	$('#remove-left').on('click', function () {
-		owl1.trigger('remove.owl.carousel', 0)
-				.trigger('refresh.owl.carousel');
-		owl2.trigger('remove.owl.carousel', 0)
-				.trigger('refresh.owl.carousel');
-	});
+			owl1.trigger('add.owl.carousel', [$(content1)])
+					.trigger('refresh.owl.carousel')
+					.trigger('to.owl.carousel', [-1, 500]);
+			owl2.trigger('add.owl.carousel', [$(content2)])
+					.trigger('refresh.owl.carousel')
+					.trigger('to.owl.carousel', [-1, 500]);
+		});
 
-	$('#remove-right').on('click', function () {
-		var count1 = owl1.find('.owl-item').length;
-		var count2 = owl2.find('.owl-item').length;
-		owl1.trigger('remove.owl.carousel', count1 - 1)
-				.trigger('refresh.owl.carousel');
-		owl2.trigger('remove.owl.carousel', count2 - 1)
-				.trigger('refresh.owl.carousel');
-	});
+		$('#replace').on('click', function () {
+			var content1 = '';
+			var content2 = '';
+			for (var i = 1; i < 7; i++)
+			{
+				var randomWidth = Math.floor(Math.random() * 1000 + 1);
+				content1 += '<div class="item"><h4>' + i * 20 + '</h4></div>';
+				content2 += '<div class="item" style="width:' + randomWidth + 'px"><h4>' + i * 20 + '</h4></div>';
+			}
 
-	$('#destroy').on('click', function () {
-		owl1.trigger('destroy.owl.carousel');
+			owl1.trigger('replace.owl.carousel', content1)
+					.trigger('refresh.owl.carousel');
+			owl2.trigger('replace.owl.carousel', content2)
+					.trigger('refresh.owl.carousel');
+		});
 
-		owl2.trigger('destroy.owl.carousel');
-	});
+		$('#remove-left').on('click', function () {
+			owl1.trigger('remove.owl.carousel', 0)
+					.trigger('refresh.owl.carousel');
+			owl2.trigger('remove.owl.carousel', 0)
+					.trigger('refresh.owl.carousel');
+		});
 
-	$('#re-init-owl').on('click', function () {
-		owl1 = $('#owl1').owlCarousel(owlOption1);
-		owl2 = $('#owl2').owlCarousel(owlOption2);
-	});
+		$('#remove-right').on('click', function () {
+			var count1 = owl1.find('.owl-item').length;
+			var count2 = owl2.find('.owl-item').length;
+			owl1.trigger('remove.owl.carousel', count1 - 1)
+					.trigger('refresh.owl.carousel');
+			owl2.trigger('remove.owl.carousel', count2 - 1)
+					.trigger('refresh.owl.carousel');
+		});
 
-	$('#destroy-reinit').on('click', function () {
-		//		Destroy
-		owl1.trigger('destroy.owl.carousel');
-		//		Init
-		owl1 = $('#owl1').owlCarousel(owlOption1);
+		$('#destroy').on('click', function () {
+			owl1.trigger('destroy.owl.carousel');
 
-		//		Destroy
-		owl2.trigger('destroy.owl.carousel');
-		//		Init
-		owl2 = $('#owl2').owlCarousel(owlOption2);
-	});
+			owl2.trigger('destroy.owl.carousel');
+		});
+
+		$('#re-init-owl').on('click', function () {
+			owl1 = $('#owl1').owlCarousel(owlOption1);
+			owl2 = $('#owl2').owlCarousel(owlOption2);
+		});
+
+		$('#destroy-reinit').on('click', function () {
+			//		Destroy
+			owl1.trigger('destroy.owl.carousel');
+			//		Init
+			owl1 = $('#owl1').owlCarousel(owlOption1);
+
+			//		Destroy
+			owl2.trigger('destroy.owl.carousel');
+			//		Init
+			owl2 = $('#owl2').owlCarousel(owlOption2);
+		});
+
+	}, false);
 </script>
 </body>
 </html>

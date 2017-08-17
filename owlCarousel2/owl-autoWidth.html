@@ -107,25 +107,25 @@
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
 	var owlAutoWidth = null;
-	$(document).ready(function () {
+	window.addEventListener("load", function () {
 		owlAutoWidth = initOwlCarousel($('#owlAutoWidth'), {
 			autoWidth: true,
 			items: 4
 		});
 		owlItemClickedMonitor($('#owlAutoWidth'));
-	});
+	}, false);
 
-	function switchOwlJS()
-	{
-		$('#owlCarouselJS').remove();
-		loadScript("scripts/owl.carousel.custom.js", function () {
-			owlAutoWidth.trigger('destroy.owl.carousel');
-			initOwlCarousel($('#owlAutoWidth'), {
-				autoWidth: true,
-				items: 4
+		function switchOwlJS()
+		{
+			$('#owlCarouselJS').remove();
+			loadScript("scripts/owl.carousel.custom.js", function () {
+				owlAutoWidth.trigger('destroy.owl.carousel');
+				initOwlCarousel($('#owlAutoWidth'), {
+					autoWidth: true,
+					items: 4
+				})
 			})
-		})
-	}
+		}
 </script>
 </body>
 </html>
