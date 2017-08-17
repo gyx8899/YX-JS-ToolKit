@@ -43,59 +43,59 @@
 				<div id="demoHTML">
 					<p>Basic demo with nav bar on side</p>
 					<!--Demo's html here-->
-<div id="owlBasicBar" class="owl-carousel owl-theme">
-	<div class="item">
-		<h4>1</h4>
-	</div>
-	<div class="item">
-		<h4>2</h4>
-	</div>
-	<div class="item">
-		<h4>3</h4>
-	</div>
-	<div class="item">
-		<h4>4</h4>
-	</div>
-	<div class="item">
-		<h4>5</h4>
-	</div>
-	<div class="item">
-		<h4>6</h4>
-	</div>
-	<div class="item">
-		<h4>7</h4>
-	</div>
-	<div class="item">
-		<h4>8</h4>
-	</div>
-</div>
+					<div id="owlBasicBar" class="owl-carousel owl-theme">
+						<div class="item">
+							<h4>1</h4>
+						</div>
+						<div class="item">
+							<h4>2</h4>
+						</div>
+						<div class="item">
+							<h4>3</h4>
+						</div>
+						<div class="item">
+							<h4>4</h4>
+						</div>
+						<div class="item">
+							<h4>5</h4>
+						</div>
+						<div class="item">
+							<h4>6</h4>
+						</div>
+						<div class="item">
+							<h4>7</h4>
+						</div>
+						<div class="item">
+							<h4>8</h4>
+						</div>
+					</div>
 					<p>Basic demo with nav btn on side</p>
-<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn">
-	<div class="item">
-		<h4>1</h4>
-	</div>
-	<div class="item">
-		<h4>2</h4>
-	</div>
-	<div class="item">
-		<h4>3</h4>
-	</div>
-	<div class="item">
-		<h4>4</h4>
-	</div>
-	<div class="item">
-		<h4>5</h4>
-	</div>
-	<div class="item">
-		<h4>6</h4>
-	</div>
-	<div class="item">
-		<h4>7</h4>
-	</div>
-	<div class="item">
-		<h4>8</h4>
-	</div>
-</div>
+					<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn">
+						<div class="item">
+							<h4>1</h4>
+						</div>
+						<div class="item">
+							<h4>2</h4>
+						</div>
+						<div class="item">
+							<h4>3</h4>
+						</div>
+						<div class="item">
+							<h4>4</h4>
+						</div>
+						<div class="item">
+							<h4>5</h4>
+						</div>
+						<div class="item">
+							<h4>6</h4>
+						</div>
+						<div class="item">
+							<h4>7</h4>
+						</div>
+						<div class="item">
+							<h4>8</h4>
+						</div>
+					</div>
 				</div>
 				<h3 id="overview">Overview</h3>
 				<!--Introduction here-->
@@ -122,30 +122,29 @@
 <script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-$(document).ready(function ()
-{
-	var responsiveOption = {
-		loop: true,
-		margin: 10,
-		nav: true,
-		responsive: {
-			0: {
-				items: 1
-			},
-			600: {
-				items: 3
-			},
-			1000: {
-				items: 5
+	$(document).ready(function () {
+		var responsiveOption = {
+			loop: true,
+			margin: 10,
+			nav: true,
+			responsive: {
+				0: {
+					items: 1
+				},
+				600: {
+					items: 3
+				},
+				1000: {
+					items: 5
+				}
 			}
-		}
-	};
-	initOwlCarousel($('#owlBasicBar'), responsiveOption);
-	owlItemClickedMonitor($('#owlBasicBar'));
+		};
+		initOwlCarousel($('#owlBasicBar'), responsiveOption);
+		owlItemClickedMonitor($('#owlBasicBar'));
 
-	initOwlCarousel($('#owlBasicBtn'), responsiveOption);
-	owlItemClickedMonitor($('#owlBasicBtn'));
-});
+		initOwlCarousel($('#owlBasicBtn'), responsiveOption);
+		owlItemClickedMonitor($('#owlBasicBtn'));
+	});
 </script>
 </body>
 </html>

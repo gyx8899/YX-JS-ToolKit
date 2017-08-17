@@ -15,35 +15,34 @@
 	<!-- Style custom *** CSS -->
 	<style id="demoCSS" type="text/css">
 		/* Demo's CSS here */
-#imageScene
-{
-	width: 320px;
-	height: 180px;
-	margin: 0 auto;
-}
-#imageObj
-{
-	width: 100%;
-	height: 100%;
-}
-
-#progress
-{
-	width: 200px;
-	margin: 0 auto;
-	display: block;
-}
-.prev-next
-{
-	width: 250px;
-	margin: 0 auto;
-}
-.prev-next > a
-{
-	width: 120px;
-	display: inline-block;
-	text-align: center;
-}
+		#imageScene
+		{
+			width: 320px;
+			height: 180px;
+			margin: 0 auto;
+		}
+		#imageObj
+		{
+			width: 100%;
+			height: 100%;
+		}
+		#progress
+		{
+			width: 200px;
+			margin: 0 auto;
+			display: block;
+		}
+		.prev-next
+		{
+			width: 250px;
+			margin: 0 auto;
+		}
+		.prev-next > a
+		{
+			width: 120px;
+			display: inline-block;
+			text-align: center;
+		}
 	</style>
 
 	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -68,16 +67,16 @@
 			<div id="demoWrap" class="large-12 columns">
 				<div id="demoHTML">
 					<!--Demo's html here-->
-<progress id="progress" value="0" max="100"></progress>
-<h3>PreLoad : Photo Album</h3>
+					<progress id="progress" value="0" max="100"></progress>
+					<h3>PreLoad : Photo Album</h3>
 
-<div id="imageScene">
-	<img id="imageObj" src="" alt="natural scenery">
-</div>
-<div class="prev-next">
-	<a href="javascript: void(0);" title="Prev" class="btn" data-control="prev">prev</a>
-	<a href="javascript: void(0);" title="Next" class="btn" data-control="next">next</a>
-</div>
+					<div id="imageScene">
+						<img id="imageObj" src="" alt="natural scenery">
+					</div>
+					<div class="prev-next">
+						<a href="javascript: void(0);" title="Prev" class="btn" data-control="prev">prev</a>
+						<a href="javascript: void(0);" title="Next" class="btn" data-control="next">next</a>
+					</div>
 				</div>
 				<h3 id="overview">Overview</h3>
 				<!--Introduction here-->
@@ -102,70 +101,66 @@
 <script src="preload.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-var images = [
-			'https://ss2.bdstatic.com/lfoZeXSm1A5BphGlnYG/skin/117.jpg'
-			, 'https://ss2.bdstatic.com/kfoZeXSm1A5BphGlnYG/skin/825.jpg'
-			, 'https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/62.jpg'
-			, 'https://ss2.bdstatic.com/lfoZeXSm1A5BphGlnYG/skin/5.jpg'
-			, 'https://ss3.bdstatic.com/lPoZeXSm1A5BphGlnYG/skin/826.jpg'
-			, 'https://ss0.bdstatic.com/k4oZeXSm1A5BphGlnYG/skin/823.jpg'
-		],
-		index = 0;
-$(document).ready(function ()
-{
-	//		Using 'ordered' plugin
-	$.preload(images, {
-		order: 'ordered',
-		each: function (count)
+	var images = [
+				'https://ss2.bdstatic.com/lfoZeXSm1A5BphGlnYG/skin/117.jpg'
+				, 'https://ss2.bdstatic.com/kfoZeXSm1A5BphGlnYG/skin/825.jpg'
+				, 'https://ss3.bdstatic.com/iPoZeXSm1A5BphGlnYG/skin/62.jpg'
+				, 'https://ss2.bdstatic.com/lfoZeXSm1A5BphGlnYG/skin/5.jpg'
+				, 'https://ss3.bdstatic.com/lPoZeXSm1A5BphGlnYG/skin/826.jpg'
+				, 'https://ss0.bdstatic.com/k4oZeXSm1A5BphGlnYG/skin/823.jpg'
+			],
+			index = 0;
+	$(document).ready(function () {
+		//		Using 'ordered' plugin
+		$.preload(images, {
+			order: 'ordered',
+			each: function (count) {
+				$('#progress').attr('value', Math.round((count + 1) / length * 100));
+			},
+			all: function () {
+				$('#progress').hide();
+				updateImageSrc($('#imageObj'), images[index]);
+			}
+		});
+
+		updateImageSrc($('#imageObj'), images[0]);
+	});
+
+	$('.btn').on('click', function () {
+		if ('prev' === $(this).data('control'))
 		{
-			$('#progress').attr('value', Math.round((count + 1) / length * 100));
-		},
-		all: function ()
+			index = Math.max(0, --index);
+			updateImageSrc($('#imageObj'), images[index]);
+		}
+		else
 		{
-			$('#progress').hide();
+			index = Math.min(images.length - 1, ++index);
 			updateImageSrc($('#imageObj'), images[index]);
 		}
 	});
 
-	updateImageSrc($('#imageObj'), images[0]);
-});
+	function updateImageSrc($image, srcValue)
+	{
+		$image.attr('src', srcValue);
+	}
 
-$('.btn').on('click', function ()
-{
-	if ('prev' === $(this).data('control'))
+	// Pre load images function
+	function preLoadImages(imageArray)
 	{
-		index = Math.max(0, --index);
-		updateImageSrc($('#imageObj'), images[index]);
+		var count = 0, length = imageArray.length;
+		$.each(imageArray, function (i, src) {
+			var image = new Image();
+			$(image).on('load error', function () {
+				count++;
+				$('#progress').attr('value', Math.round(count / length * 100));
+				if (count >= length - 1)
+				{
+					$('#progress').hide();
+				}
+			});
+			image.src = src;
+		})
 	}
-	else
-	{
-		index = Math.min(images.length - 1, ++index);
-		updateImageSrc($('#imageObj'), images[index]);
-	}
-});
-function updateImageSrc($image, srcValue)
-{
-	$image.attr('src', srcValue);
-}
-// Pre load images function
-function preLoadImages(imageArray)
-{
-	var count = 0, length = imageArray.length;
-	$.each(imageArray, function (i, src)
-	{
-		var image = new Image();
-		$(image).on('load error', function ()
-		{
-			count++;
-			$('#progress').attr('value', Math.round(count / length * 100));
-			if (count >= length - 1)
-			{
-				$('#progress').hide();
-			}
-		});
-		image.src = src;
-	})
-}
 </script>
 </body>
 </html>

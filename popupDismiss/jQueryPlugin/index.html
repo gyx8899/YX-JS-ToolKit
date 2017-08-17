@@ -15,32 +15,32 @@
 	<!-- Style custom *** CSS -->
 	<style id="demoCSS" type="text/css">
 		/* Demo's CSS here */
-.trigger-parent
-{
-	color: #000000;
-	font-size: 24px;
-	cursor: pointer;
-	background-color: #1ccacd;
-}
-.trigger-parent.open
-{
-	background-color: blueviolet;
-}
-#demo1List,
-#demo11List,
-#demo12List,
-#demo2List,
-#demo3List
-{
-	display: none;
-}
-#demo1List.open,
-#demo11List.open,
-#demo12List.open,
-#demo2List.open
-{
-	display: block;
-}
+		.trigger-parent
+		{
+			color: #000000;
+			font-size: 24px;
+			cursor: pointer;
+			background-color: #1ccacd;
+		}
+		.trigger-parent.open
+		{
+			background-color: blueviolet;
+		}
+		#demo1List,
+		#demo11List,
+		#demo12List,
+		#demo2List,
+		#demo3List
+		{
+			display: none;
+		}
+		#demo1List.open,
+		#demo11List.open,
+		#demo12List.open,
+		#demo2List.open
+		{
+			display: block;
+		}
 	</style>
 
 	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -66,8 +66,8 @@
 				<h3 id="overview">Overview</h3>
 				<ul>
 					<li><b>not set in self && parents</b> default is dismiss='true'</li>
-					<li><b>data-popup-dismiss="false"</b>   ----support nest</li>
-					<li><b>data-popup-dismiss="true" </b>   ----support nest</li>
+					<li><b>data-popup-dismiss="false"</b> ----support nest</li>
+					<li><b>data-popup-dismiss="true" </b> ----support nest</li>
 				</ul>
 				<div id="demoHTML">
 					<!--Demo's html here-->
@@ -161,37 +161,40 @@
 <script src="popupDismissEverywhere.js"></script>
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-$(document).ready(function ()
-{
+	$(document).ready(function () {
 //	1. To special items;
 //	$('[data-toggle="popupDismissEveryWhere"]').popupDismissEverywhere();
 
 //	2. To all items on body;
-	$.popupDismissEverywhere();
-});
+		$.popupDismissEverywhere();
+	});
 
-function popupHandler()
-{
-	outputTextArea("Popup handler triggering...");
-}
-function dismissHandler()
-{
-	outputTextArea("Dismiss handler triggering...");
-}
-function outputTextArea(output)
-{
-	$('#eventLog').text($('#eventLog').text() + '\n' + (new Date()).toLocaleTimeString() + ' -- ' + output);
-	var textarea = document.getElementById('eventLog');
-	textarea.scrollTop = textarea.scrollHeight;
-}
-function popupList($target)
-{
-	$target && $target.fadeIn();
-}
-function dismissList($target)
-{
-	$target && $target.fadeOut();
-}
+	function popupHandler()
+	{
+		outputTextArea("Popup handler triggering...");
+	}
+
+	function dismissHandler()
+	{
+		outputTextArea("Dismiss handler triggering...");
+	}
+
+	function outputTextArea(output)
+	{
+		$('#eventLog').text($('#eventLog').text() + '\n' + (new Date()).toLocaleTimeString() + ' -- ' + output);
+		var textarea = document.getElementById('eventLog');
+		textarea.scrollTop = textarea.scrollHeight;
+	}
+
+	function popupList($target)
+	{
+		$target && $target.fadeIn();
+	}
+
+	function dismissList($target)
+	{
+		$target && $target.fadeOut();
+	}
 </script>
 </body>
 </html>

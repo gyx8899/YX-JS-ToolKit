@@ -40,12 +40,12 @@
 				<h3 id="overview">Overview</h3>
 				<div id="demoHTML">
 					<!--Demo's html here-->
-<div id="c_countdown" class="countdown hidden-xs hidden-xp">
-	<div><span id="c_day"></span>days</div>
-	<div><span id="c_hrs"></span>hrs</div>
-	<div><span id="c_min"></span>mins</div>
-	<div><span id="c_sec"></span>secs</div>
-</div>
+					<div id="c_countdown" class="countdown hidden-xs hidden-xp">
+						<div><span id="c_day"></span>days</div>
+						<div><span id="c_hrs"></span>hrs</div>
+						<div><span id="c_min"></span>mins</div>
+						<div><span id="c_sec"></span>secs</div>
+					</div>
 				</div>
 				<!--Introduction here-->
 				<p>
@@ -75,8 +75,7 @@
 	//	var delay = 100;
 	//	var delay = 10;
 
-	$(document).ready(function ()
-	{
+	$(document).ready(function () {
 		//		1.
 		//		window.setInterval(
 		//				function ()
@@ -129,8 +128,7 @@
 		//		time = oldTime;
 
 		// 3.1 2.1
-		window.setTimeout(function ()
-		{
+		window.setTimeout(function () {
 			startCountdown(day, hrs, min, sec, countdownBox, watchBtn, time);
 		}, delay);
 

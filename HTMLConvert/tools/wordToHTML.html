@@ -39,25 +39,25 @@
 			<div id="demoWrap" class="large-12 columns">
 				<div id="demoHTML">
 					<!--Demo's html here-->
-<h2>Tool: Word(Saved as html, then simplify) to html</h2>
-<ul>
-	<li>Remove all property of html tags, except 'a' tag;</li>
-	<li>Trim the left and right space;</li>
-	<li>Transform 'u' tag to 'a' tag;</li>
-	<li>Remove the un normal line break;</li>
-</ul>
-<p>Similar: WebSite-Tool <a href="http://www.textfixer.com/html/convert-word-to-html.php">Word to HTML
-	Converter</a></p>
-<fieldset>
-	<legend>Input(HTML):</legend>
-	<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
-</fieldset>
+					<h2>Tool: Word(Saved as html, then simplify) to html</h2>
+					<ul>
+						<li>Remove all property of html tags, except 'a' tag;</li>
+						<li>Trim the left and right space;</li>
+						<li>Transform 'u' tag to 'a' tag;</li>
+						<li>Remove the un normal line break;</li>
+					</ul>
+					<p>Similar: WebSite-Tool <a href="http://www.textfixer.com/html/convert-word-to-html.php">Word to HTML
+						Converter</a></p>
+					<fieldset>
+						<legend>Input(HTML):</legend>
+						<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
 
-<button onclick="convertCode()">Convert</button>
-<fieldset>
-	<legend>Output(Result):</legend>
-	<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
-</fieldset>
+					<button onclick="convertCode()">Convert</button>
+					<fieldset>
+						<legend>Output(Result):</legend>
+						<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
 				</div>
 				<h3 id="overview">Overview</h3>
 				<!--Introduction here-->
@@ -78,55 +78,55 @@
 <!-- Script Demo *** JS -->
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-function convertCode()
-{
-	var sourceHtml = $('#input-content').val();
-	var resultString = '';
-
-	if (sourceHtml == '')
+	function convertCode()
 	{
-		resultString = '';
+		var sourceHtml = $('#input-content').val();
+		var resultString = '';
+
+		if (sourceHtml == '')
+		{
+			resultString = '';
+		}
+		else
+		{
+			//			Unwrap the 'html' tag, remove 'head' tag, and unwrap the 'body' tag;
+			sourceHtml = sourceHtml.replace(/<html[^>]*?>((.|\n)*?)<\/html>/g, '$1')
+					.replace(/<head[^>]*?>((.|\n)*?)<\/head>/g, '')
+					.replace(/<body[^>]*?>((.|\n)*?)<\/body>/g, '$1');
+
+			//			Unwrap parent father of "<div sclass=WordSection></div>";
+			sourceHtml = sourceHtml.replace(/<div\sclass=WordSection(\d)+>((.|\n)*?)<\/div>/g, '$2');
+
+			//			Trim the left and right whitespace;
+			sourceHtml = sourceHtml.replace(/(^\s*)/g, "").replace(/(\s*$)/g, "");
+
+			//			Remove the unknown 'o:p' tag;
+			sourceHtml = sourceHtml.replace(/<o:p[^>]*?>((.|\n)*?)<\/o:p>/g, '$1');
+
+			//			Remove the property of tags(name should be alphabet), except 'a' tag;
+			resultString = sourceHtml.replace(/<(\b[^a]\w*\b)(\s)?[^>]*>/g, '<$1>');
+
+			//			Remove empty tags
+			resultString = resultString.replace(/<(\S+)[^>]*?><\/\1>/g, '');
+
+			//			Remove 'span' tag (There may be some nested span tag, then should be replace twice)
+			resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
+			resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
+
+			//			Replace 'u' tag to 'a' tag;
+			resultString = resultString.replace(/<u>((.|\n)*?)<\/u>/g, '<a href="#">$1</a>');
+
+			//			Remove the un normal line break;
+			resultString = resultString.replace(/([^>\s])((\s)*(\n)(\s)*)(.)/g, '$1 $6');
+
+			//			Add 'a' tag to url (unwrapped with 'a' tag)
+			//			resultString = resultString.replace(/(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g, '<a href="$&">$&</a>');
+
+			//			Add classname to bold p(<b>)
+			resultString = resultString.replace(/<p><b>(.*)<\/b><\/p>/g, "<p class='title'><b>$1<\/b><\/p>");
+		}
+		$('#output-content').val(resultString);
 	}
-	else
-	{
-		//			Unwrap the 'html' tag, remove 'head' tag, and unwrap the 'body' tag;
-		sourceHtml = sourceHtml.replace(/<html[^>]*?>((.|\n)*?)<\/html>/g, '$1')
-				.replace(/<head[^>]*?>((.|\n)*?)<\/head>/g, '')
-				.replace(/<body[^>]*?>((.|\n)*?)<\/body>/g, '$1');
-
-		//			Unwrap parent father of "<div sclass=WordSection></div>";
-		sourceHtml = sourceHtml.replace(/<div\sclass=WordSection(\d)+>((.|\n)*?)<\/div>/g, '$2');
-
-		//			Trim the left and right whitespace;
-		sourceHtml = sourceHtml.replace(/(^\s*)/g, "").replace(/(\s*$)/g, "");
-
-		//			Remove the unknown 'o:p' tag;
-		sourceHtml = sourceHtml.replace(/<o:p[^>]*?>((.|\n)*?)<\/o:p>/g, '$1');
-
-		//			Remove the property of tags(name should be alphabet), except 'a' tag;
-		resultString = sourceHtml.replace(/<(\b[^a]\w*\b)(\s)?[^>]*>/g, '<$1>');
-
-		//			Remove empty tags
-		resultString = resultString.replace(/<(\S+)[^>]*?><\/\1>/g, '');
-
-		//			Remove 'span' tag (There may be some nested span tag, then should be replace twice)
-		resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
-		resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
-
-		//			Replace 'u' tag to 'a' tag;
-		resultString = resultString.replace(/<u>((.|\n)*?)<\/u>/g, '<a href="#">$1</a>');
-
-		//			Remove the un normal line break;
-		resultString = resultString.replace(/([^>\s])((\s)*(\n)(\s)*)(.)/g, '$1 $6');
-
-		//			Add 'a' tag to url (unwrapped with 'a' tag)
-		//			resultString = resultString.replace(/(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g, '<a href="$&">$&</a>');
-
-		//			Add classname to bold p(<b>)
-		resultString = resultString.replace(/<p><b>(.*)<\/b><\/p>/g, "<p class='title'><b>$1<\/b><\/p>");
-	}
-	$('#output-content').val(resultString);
-}
 </script>
 </body>
 </html>

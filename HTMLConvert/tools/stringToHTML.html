@@ -39,21 +39,21 @@
 			<div id="demoWrap" class="large-12 columns">
 				<div id="demoHTML">
 					<!--Demo's html here-->
-<ul>
-	<li>Wrapping <b>paragraphs</b> in &#60;p>&#60;/p> tags;</li>
-	<li>Wrapping <b>link/email</b> in &#60;a href="<b>link/email</b>"><b>link/email</b>&#60;/a> tags;</li>
-</ul>
+					<ul>
+						<li>Wrapping <b>paragraphs</b> in &#60;p>&#60;/p> tags;</li>
+						<li>Wrapping <b>link/email</b> in &#60;a href="<b>link/email</b>"><b>link/email</b>&#60;/a> tags;</li>
+					</ul>
 
-<fieldset>
-	<legend>Input(String):</legend>
-	<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
-</fieldset>
+					<fieldset>
+						<legend>Input(String):</legend>
+						<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
 
-<button onclick="convertCode()">convert</button>
-<fieldset>
-	<legend>Output(Html):</legend>
-	<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
-</fieldset>
+					<button onclick="convertCode()">convert</button>
+					<fieldset>
+						<legend>Output(Html):</legend>
+						<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
 				</div>
 				<h3 id="overview">Overview</h3>
 				<!--Introduction here-->
@@ -74,25 +74,25 @@
 <!-- Script Demo *** JS -->
 <script id="demoJS" type="text/javascript">
 	// Demo's JS here
-function convertCode()
-{
-	var sourceHtml = $('#input-content').val();
-	var resultString = '';
+	function convertCode()
+	{
+		var sourceHtml = $('#input-content').val();
+		var resultString = '';
 
-	if (sourceHtml == '')
-	{
-		resultString = '';
+		if (sourceHtml == '')
+		{
+			resultString = '';
+		}
+		else
+		{
+			resultString = sourceHtml.replace(/(^\s*)/g, "<p>")
+					.replace(/(\s*$)/g, "</p>")
+					.replace(/(\s*)(\n+)\s*/g, "</p>$2<p>")
+					.replace(/(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g, '<a href="$&">$&</a>')
+					.replace("''", "'");
+		}
+		$('#output-content').val(resultString);
 	}
-	else
-	{
-		resultString = sourceHtml.replace(/(^\s*)/g, "<p>")
-				.replace(/(\s*$)/g, "</p>")
-				.replace(/(\s*)(\n+)\s*/g, "</p>$2<p>")
-				.replace(/(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g, '<a href="$&">$&</a>')
-				.replace("''", "'");
-	}
-	$('#output-content').val(resultString);
-}
 </script>
 </body>
 </html>
