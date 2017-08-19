@@ -11,11 +11,11 @@ function escapeHTML(text)
 		"'": '&#039;'
 	};
 
-	return text.replace(/[&<>"']/g, function (m)
-	{
+	return text.replace(/[&<>"']/g, function (m) {
 		return map[m];
 	});
 }
+
 function replaceTemplateExpressionWithData(template, dataObject)
 {
 	var resultTemplate = template, dataKeys = Object.keys(dataObject), dataItem = null;
@@ -26,6 +26,7 @@ function replaceTemplateExpressionWithData(template, dataObject)
 	}
 	return resultTemplate;
 }
+
 /*
  * Functions: Dynamic load files in page;
  * */
@@ -45,17 +46,16 @@ function loadCSS(url, callback, context)
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
 		link.href = url;
-		link.onload = function ()
-		{
+		link.onload = function () {
 			callback && (context ? context[callback]() : callback());
 		};
-		link.onerror = function ()
-		{
+		link.onerror = function () {
 			console.log("Error load css:" + url);
 		};
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 }
+
 function loadScript(url, callback, context)
 {
 	if (!url)
@@ -73,8 +73,7 @@ function loadScript(url, callback, context)
 
 		if (script.readyState)
 		{  //IE
-			script.onreadystatechange = function ()
-			{
+			script.onreadystatechange = function () {
 				if (script.readyState == "loaded" ||
 						script.readyState == "complete")
 				{
@@ -85,8 +84,7 @@ function loadScript(url, callback, context)
 		}
 		else
 		{  //Others
-			script.onload = function ()
-			{
+			script.onload = function () {
 				callback && (context ? context[callback]() : callback());
 			};
 		}
@@ -95,16 +93,17 @@ function loadScript(url, callback, context)
 		document.body.appendChild(script);
 	}
 }
+
 function getFileContent(url, callback, context)
 {
 	$.ajax({
 		url: url,
-		success: function (data)
-		{
+		success: function (data) {
 			callback && (context ? context[callback](data) : callback(data));
 		}
 	});
 }
+
 /*
  * Functions: Regular expression
  * */
@@ -112,11 +111,13 @@ function regExpG(expStr)
 {
 	return new RegExp(expStr, "g");
 }
+
 function isURL(url)
 {
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
 	return (new RegExp(expression)).test(url);
 }
+
 /*
 * Functions: URL
 * */
@@ -124,6 +125,7 @@ function getFileNameFromURL(url)
 {
 	return url.split('/').pop().split('#')[0].split('?')[0];
 }
+
 /*
  * Functions: Tools for processing function who has parameter array;
  * */
@@ -137,6 +139,7 @@ function parameterArrayToItem(fn, param1, param2)
 		fn && fn(param1[i], param2Item);
 	}
 }
+
 /*
 * Functions: Throttle, specially in onResize event function;
 * */
@@ -146,11 +149,11 @@ function throttle(method, context)
 	{
 		clearTimeout(method.tId);
 	}
-	method.tId = setTimeout(function ()
-	{
+	method.tId = setTimeout(function () {
 		method.call(context);
 	}, 100);
 }
+
 /*
 * Functions: Debug
 * */
