@@ -94,6 +94,63 @@ function loadScript(url, callback, context)
 	}
 }
 
+// loadCSS with Promise
+function loadCSSWithPromise(url)
+{
+	return new Promise(function (resolve, reject) {
+		if (!url)
+		{
+			reject(new Error("url is null!"));
+		}
+
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = url;
+		link.onload = function () {
+			resolve();
+		};
+		link.onerror = function (error) {
+			reject(new Error(error));
+		};
+		document.getElementsByTagName('head')[0].appendChild(link);
+	});
+}
+
+// loadScript with Promise
+function loadScriptWithPromise(url)
+{
+	return new Promise(function (resolve, reject) {
+		if (!url)
+		{
+			reject(new Error("url is null!"));
+		}
+
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+
+		if (script.readyState)
+		{  //IE
+			script.onreadystatechange = function () {
+				if (script.readyState === "loaded" || script.readyState === "complete")
+				{
+					script.onreadystatechange = null;
+					resolve();
+				}
+			};
+		}
+		else
+		{  //Others
+			script.onload = function () {
+				resolve();
+			};
+		}
+
+		script.src = url;
+		document.body.appendChild(script);
+	});
+}
+
 function getFileContent(url, callback, context)
 {
 	$.ajax({
@@ -124,6 +181,36 @@ function isURL(url)
 function getFileNameFromURL(url)
 {
 	return url.split('/').pop().split('#')[0].split('?')[0];
+}
+
+function checkResourceLoaded(url)
+{
+	var type = getUrlType(url),
+			typeSelector = type['tagName'] || '[src]',
+			allUrls = Array.prototype.slice.call(document.querySelectorAll(typeSelector))
+					.map(function (scriptElement) {
+						return scriptElement[type['urlAttrName']];
+					});
+	return allUrls.indexOf(url) !== -1;
+}
+
+function getUrlType(url)
+{
+	// Current only support js and css resources;
+	var types = {
+				'js': {name: 'js', tagName: 'script', urlAttrName: 'src'},
+				'css': {name: 'css', tagName: 'link', urlAttrName: 'href'}
+			},
+			resourceName = getFileNameFromURL(url),
+			resourceNameSplitArray = resourceName.split('.');
+	if (resourceNameSplitArray.length === 1)
+	{
+		return null;
+	}
+	else
+	{
+		return types[resourceNameSplitArray[resourceNameSplitArray.length - 1]];
+	}
 }
 
 /*
@@ -184,4 +271,30 @@ function getArrayString(array)
 		}
 		return arrayItem.toString();
 	}).join(',');
+}
+
+// Functions: Copy - deep copy and shadow copy with out jQuery
+function deepExtend(out) // arguments: (source, source1, source2, ...)
+{
+	out = out || {};
+
+	for (var i = 1; i < arguments.length; i++)
+	{
+		var obj = arguments[i];
+
+		if (!obj)
+			continue;
+
+		for (var key in obj)
+		{
+			if (obj.hasOwnProperty(key))
+			{
+				if (typeof obj[key] === 'object')
+					out[key] = arguments.callee(out[key], obj[key]);
+				else
+					out[key] = obj[key];
+			}
+		}
+	}
+	return out;
 }
