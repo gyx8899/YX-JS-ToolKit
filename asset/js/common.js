@@ -178,6 +178,7 @@ function isURL(url)
 /*
 * Functions: URL
 * */
+
 function getFileNameFromURL(url)
 {
 	return url.split('/').pop().split('#')[0].split('?')[0];
@@ -185,7 +186,7 @@ function getFileNameFromURL(url)
 
 function checkResourceLoaded(url)
 {
-	var type = getUrlType(url),
+	var type = getUrlTypeInfo(url),
 			typeSelector = type['tagName'] || '[src]',
 			allUrls = Array.prototype.slice.call(document.querySelectorAll(typeSelector))
 					.map(function (scriptElement) {
@@ -194,23 +195,32 @@ function checkResourceLoaded(url)
 	return allUrls.indexOf(url) !== -1;
 }
 
-function getUrlType(url)
+function getUrlTypeInfo(url)
 {
 	// Current only support js and css resources;
-	var types = {
-				'js': {name: 'js', tagName: 'script', urlAttrName: 'src'},
-				'css': {name: 'css', tagName: 'link', urlAttrName: 'href'}
-			},
-			resourceName = getFileNameFromURL(url),
+	var resourceName = getFileNameFromURL(url),
 			resourceNameSplitArray = resourceName.split('.');
-	if (resourceNameSplitArray.length === 1)
+	if (resourceNameSplitArray.length > 1)
 	{
-		return null;
+		var urlType = {
+			'js': {
+				name: 'js',
+				tagName: 'script',
+				urlAttrName: 'src',
+				loadFnName: 'loadJS',
+				loadFnPromiseName: 'loadJStWithPromise'
+			},
+			'css': {
+				name: 'css',
+				tagName: 'link',
+				urlAttrName: 'href',
+				loadFnName: 'loadCSS',
+				loadFnPromiseName: 'loadCSSWithPromise'
+			}
+		};
+		return urlType[resourceNameSplitArray[resourceNameSplitArray.length - 1]];
 	}
-	else
-	{
-		return types[resourceNameSplitArray[resourceNameSplitArray.length - 1]];
-	}
+	return null;
 }
 
 /*
