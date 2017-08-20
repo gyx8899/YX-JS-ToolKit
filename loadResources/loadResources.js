@@ -1,5 +1,16 @@
 /**
- * Javascript plugin: LoadResources V1.0
+ * Javascript plugin:   V1.0
+ * Support list:
+ * 1. css file;
+ * 2. js file;
+ *
+ * Params:
+ * 1. urls: single url string or url string array;
+ * 2. callback: execute when resource success;
+ *
+ * No support:
+ * 1. Not in IE when set callback and url string array;
+ *
  * */
 (function () {
 	this.LoadResources = function (urls, callback) {
@@ -49,6 +60,7 @@
 			LoadResources[getUrlTypeInfo(url).loadFnName](url);
 		}
 	};
+
 	// Tools: functions
 	function loadUrls(urls, callback)
 	{
@@ -164,6 +176,7 @@
 			document.body.appendChild(script);
 		});
 	}
+
 	function getFileNameFromURL(url)
 	{
 		return url.split('/').pop().split('#')[0].split('?')[0];
