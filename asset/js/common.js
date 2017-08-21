@@ -248,6 +248,22 @@ function getUrlTypeInfo(url)
 	return null;
 }
 
+function getCurrentScriptPath(scriptName)
+{
+	var scripts = document.getElementsByTagName("script");
+
+	for (var i = 0; i < scripts.length; i++)
+	{
+		var script = scripts.item(i);
+
+		if (script.src && script.src.match(scriptName))
+		{
+			return script.src;
+		}
+	}
+	return null;
+}
+
 /*
  * Functions: Tools for processing function who has parameter array;
  * */
