@@ -324,7 +324,7 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 		{
 			if (obj.hasOwnProperty(key))
 			{
-				if (typeof obj[key] === 'object')
+				if (typeof obj[key] === 'object' && !Array.isArray(obj[key]))
 					out[key] = arguments.callee(out[key], obj[key]);
 				else
 					out[key] = obj[key];
