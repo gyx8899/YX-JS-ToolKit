@@ -296,13 +296,13 @@ function consoleLog(fnArguments)
 function getArrayString(array)
 {
 	return array.map(function (arrayItem) {
-		if (typeof arrayItem === 'object')
-		{
-			arrayItem = JSON.stringify(arrayItem);
-		}
-		else if (Array.isArray(arrayItem))
+		if (Array.isArray(arrayItem))
 		{
 			arrayItem = '[' + arguments.callee(arrayItem) + ']';
+		}
+		else if (typeof arrayItem === 'object')
+		{
+			arrayItem = JSON.stringify(arrayItem);
 		}
 		return arrayItem.toString();
 	}).join(',');
