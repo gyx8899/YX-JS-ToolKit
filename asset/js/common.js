@@ -151,6 +151,7 @@ function loadScriptWithPromise(url)
 	});
 }
 
+// Dependency: jQuery ajax
 function getFileContent(url, callback, context)
 {
 	$.ajax({
@@ -159,6 +160,30 @@ function getFileContent(url, callback, context)
 			callback && (context ? context[callback](data) : callback(data));
 		}
 	});
+}
+
+function getFileContentJS(url, callback, context)
+{
+	var request = new XMLHttpRequest();
+	request.open('GET', url, true);
+
+	request.onload = function () {
+		if (request.status >= 200 && request.status < 400)
+		{
+			// Success
+			callback && (context ? context[callback](request.responseText) : callback(request.responseText));
+		}
+		else
+		{
+			// We reached our target server, but it returned an error
+		}
+	};
+
+	request.onerror = function () {
+		// There was a connection error of some sort
+	};
+
+	request.send();
 }
 
 /*
