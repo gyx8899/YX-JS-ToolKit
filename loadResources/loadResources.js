@@ -27,7 +27,7 @@
 				}
 				else if (urls.length === 1)
 				{
-					loadResource(urls[0], callback);
+					loadResource(urls[0]);
 				}
 				else
 				{
@@ -46,7 +46,7 @@
 			}
 			else if (String(urls) === urls)
 			{
-				loadResource(urls, callback);
+				loadResource(urls);
 			}
 		}
 		else
