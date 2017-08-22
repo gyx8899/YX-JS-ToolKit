@@ -349,3 +349,22 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 	}
 	return out;
 }
+
+// Functions: Dynamic set callback function in window
+function setCallback(typeName)
+{
+	var typeCallback = typeName + "Callback";
+	if (!window[typeCallback])
+	{
+		window[typeCallback] = function (data)
+		{
+			window[typeName] = data;
+		};
+		return typeCallback;
+	}
+	return null;
+}
+function getCallbackName(typeName)
+{
+	return typeName + "Callback";
+}
