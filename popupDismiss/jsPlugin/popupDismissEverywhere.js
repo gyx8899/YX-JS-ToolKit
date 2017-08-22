@@ -3,6 +3,7 @@
  *
  */
 (function () {
+	var bodyElement = null;
 	var method = {
 		isTap: undefined,
 
@@ -246,7 +247,8 @@
 		}
 	};
 
-	var bodyElement = method.extendOnOff(document.querySelector('body'));
+	bodyElement = method.extendOnOff(document.querySelector('body'));
+
 	this.PopupDismissEverywhere = function (elements) {
 		if (elements)
 		{
