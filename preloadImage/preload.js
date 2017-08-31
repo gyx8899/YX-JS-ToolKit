@@ -6,7 +6,7 @@
 		this.imgs = (typeof imgs === 'string') ? [imgs] : imgs;
 		this.opts = $.extend({}, PreLoad.DEFAULTS, options);
 
-		if (this.opts.order == 'ordered')
+		if (this.opts.order === 'ordered')
 		{
 			this._ordered();
 		}
@@ -23,7 +23,6 @@
 	};
 	PreLoad.prototype._ordered = function ()
 	{
-		"use strict";
 		var imgs = this.imgs,
 				count = 0,
 				errorIndex = -1,
@@ -44,7 +43,7 @@
 				}
 				else // Ignore the error which the same object loaded twice error.
 				{
-					errorIndex != count ? errorIndex = count : count++;
+					errorIndex !== count ? errorIndex = count : count++;
 				}
 				if (count >= len)
 				{
@@ -60,7 +59,6 @@
 	};
 	PreLoad.prototype._unordered = function ()
 	{
-		"use strict";
 		var imgs = this.imgs,
 				opts = this.opts,
 				count = 0;
@@ -87,8 +85,7 @@
 	$.extend({
 		preload: function (imgs, options)
 		{
-			"use strict";
-			new PreLoad(imgs, options);
+			return new PreLoad(imgs, options);
 		}
 	})
 })(jQuery);

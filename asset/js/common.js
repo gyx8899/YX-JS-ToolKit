@@ -18,11 +18,11 @@ function escapeHTML(text)
 
 function replaceTemplateExpressionWithData(template, dataObject)
 {
-	var resultTemplate = template, dataKeys = Object.keys(dataObject), dataItem = null;
+	var resultTemplate = template,
+			dataKeys = Object.keys(dataObject);
 	for (var i = 0, length = dataKeys.length; i < length; i++)
 	{
-		dataItem = dataKeys[i];
-		resultTemplate = resultTemplate.replace(regExpG("{{" + dataItem + "}}"), dataObject[dataItem] || '');
+		resultTemplate = resultTemplate.replace(regExpG("{{" + dataKeys[i] + "}}"), dataObject[dataKeys[i]] || '');
 	}
 	return resultTemplate;
 }
@@ -74,8 +74,7 @@ function loadScript(url, callback, context)
 		if (script.readyState)
 		{  //IE
 			script.onreadystatechange = function () {
-				if (script.readyState == "loaded" ||
-						script.readyState == "complete")
+				if (script.readyState === "loaded" || script.readyState === "complete")
 				{
 					script.onreadystatechange = null;
 					callback && (context ? context[callback]() : callback());

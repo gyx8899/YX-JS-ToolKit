@@ -23,7 +23,7 @@ $(document).ready(function ()
 			$header.removeClass('sticky-animation').removeClass('sticky-bg');
 			setTimeout(function ()
 			{
-				if ($(window).scrollTop() == 0 && !$header.hasClass('sticky-bg'))
+				if ($(window).scrollTop() === 0 && !$header.hasClass('sticky-bg'))
 				{
 					$header.removeClass('sticky-animation sticky');
 					$('.header-placeholder').removeClass('sticky');

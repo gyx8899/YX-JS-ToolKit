@@ -37,7 +37,6 @@
 					}
 					else
 					{
-						var that = this;
 						urls.map(function (url) {
 							loadResource(url);
 						})

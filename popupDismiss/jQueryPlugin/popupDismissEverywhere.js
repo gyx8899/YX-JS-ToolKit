@@ -4,7 +4,6 @@
  */
 (function ($)
 {
-	"use strict";
 	var method = {
 		isTap: undefined,
 
@@ -45,7 +44,7 @@
 		{
 			if (method.isTap === false)
 				return ;
-			var eventData = {}, isListenerEvent = !!event.data;
+			var eventData = event, isListenerEvent = !!event.data;
 			if (isListenerEvent)
 			{
 				eventData = {
@@ -58,10 +57,6 @@
 					dismissHandler: event.data.dismissHandler
 				};
 				event.stopPropagation();
-			}
-			else
-			{
-				eventData = event;
 			}
 
 			if (!isListenerEvent ||

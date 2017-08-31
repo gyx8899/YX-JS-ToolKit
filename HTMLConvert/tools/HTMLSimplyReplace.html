@@ -110,7 +110,7 @@
 		var sourceHtml = $('#input-content').val();
 		var resultString = '';
 
-		if (sourceHtml == '')
+		if (sourceHtml === '')
 		{
 			resultString = '';
 		}
@@ -135,29 +135,29 @@
 				//	var regexpStr = '/\s'+removeProperty+'=('+'\''+'|\")?([A-Z])\w+('+'\''+'|\")?/g';
 				//	resultString = sourceHtml.replace(regexpStr,'');
 				var removeProperty = $(removeProArray[j]).val();
-				if (removeProperty == 'class')
+				if (removeProperty === 'class')
 				{
 					resultString = sourceHtml.replace(/\sclass(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
 				}
-				else if (removeProperty == 'id')
+				else if (removeProperty === 'id')
 				{
 					resultString = sourceHtml.replace(/\sid(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
 				}
-				else if (removeProperty == 'style')
+				else if (removeProperty === 'style')
 				{
 					resultString = sourceHtml.replace(/\bstyle(\s)*=(\s)*('.*'|".*")/g, '');
 				}
-				else if (removeProperty == 'name')
+				else if (removeProperty === 'name')
 				{
 					resultString = sourceHtml.replace(/\sname(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
 				}
-				else if (removeProperty == 'value')
+				else if (removeProperty === 'value')
 				{
 					resultString = sourceHtml.replace(/\svalue(\s)*=(\s)*('.*'|".*")/g, '');
 				}
 			}
 			//				Unwrap the 'html' tag, remove 'head' tag, and unwrap the 'body' tag;
-			if (document.getElementById("checkUnwrap1").checked == true)
+			if (document.getElementById("checkUnwrap1").checked === true)
 			{
 				sourceHtml = sourceHtml.replace(/<html[^>]*?>((.|\n)*?)<\/html>/g, '$1')
 						.replace(/<head[^>]*?>((.|\n)*?)<\/head>/g, '')
@@ -165,7 +165,7 @@
 			}
 
 			//			Unwrap parent father of "<div sclass=WordSection></div>";
-			if (document.getElementById("checkUnwrap2").checked == true)
+			if (document.getElementById("checkUnwrap2").checked === true)
 			{
 				sourceHtml = sourceHtml.replace(/<div\sclass=WordSection(\d)+>((.|\n)*?)<\/div>/g, '$2');
 			}

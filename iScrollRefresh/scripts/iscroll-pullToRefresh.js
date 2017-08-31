@@ -149,7 +149,7 @@ pullToRefreshiScroll.prototype = {
 	pullDownAction: function (self, callback)
 	{
 		var that = self ? self : this;
-		if (typeof(callback) == 'function')
+		if (typeof(callback) === 'function')
 		{
 			that.pullDownLoading();
 			callback();
@@ -158,19 +158,12 @@ pullToRefreshiScroll.prototype = {
 	},
 	pullUpAction: function (self, callback)
 	{
-		var nextPage = 1, dataPage = this.options.$iscrollUl.data('page');
-		if (dataPage)
-		{
-			nextPage = parseInt(dataPage, 10) + 1;
-		}
-		else
-		{
-			nextPage = 2;
-		}
+		var dataPage = this.options.$iscrollUl.data('page'),
+				nextPage = dataPage ? (parseInt(dataPage, 10) + 1) : 2;
 		this.options.$iscrollUl.data('page', nextPage);
 
 		var that = self ? self : this;
-		if (typeof(callback) == 'function')
+		if (typeof(callback) === 'function')
 		{
 			that.pullUpLoading();
 			callback();
