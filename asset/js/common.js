@@ -28,8 +28,86 @@ function replaceTemplateExpressionWithData(template, dataObject)
 }
 
 /*
- * Functions: Dynamic load files in page;
+ * Functions: Dynamic load resource in page;
  * */
+function loadResource(url, callback)
+{
+	if (!checkResourceLoaded(url))
+	{
+		window[getUrlTypeInfo(url).loadFn](url, callback);
+	}
+}
+
+function loadResources(urls, callback)
+{
+	if (urls !== null && urls !== '')
+	{
+		if (Array.isArray(urls))
+		{
+			urls = urls.filter(function (url) {
+				return (String(url) === url && url !== '');
+			});
+			if (urls.length === 0)
+			{
+				callback && callback();
+			}
+			else if (urls.length === 1)
+			{
+				loadResource(urls[0], callback);
+			}
+			else
+			{
+				if (callback)
+				{
+					loadUrls(urls, callback);
+				}
+				else
+				{
+					urls.map(function (url) {
+						loadResource(url);
+					})
+				}
+			}
+		}
+		else if (String(urls) === urls)
+		{
+			loadResource(urls, callback);
+		}
+	}
+	else
+	{
+		callback && callback();
+	}
+}
+
+function loadUrls(urls, callback)
+{
+	var unLoadedResourcesInfo = urls.map(function (resource) {
+				var resourceInfo = getUrlTypeInfo(resource);
+				resourceInfo.url = resource;
+				return resourceInfo;
+			});
+	// If support Promise, use Promise
+	if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1)
+	{
+		var resourcePromise = unLoadedResourcesInfo.map(function (resourceInfo) {
+			return window[resourceInfo.loadFnPromise](resourceInfo.url);
+		});
+		Promise.all(resourcePromise).then(function () {
+			callback && callback();
+		}).catch(function (error) {
+			console.log("Error: in load resources! " + error);
+		});
+	}
+	else
+	{
+		unLoadedResourcesInfo.forEach(function (resourceInfo) {
+			window[resourceInfo.loadFn](resourceInfo.url);
+		});
+		callback && callback();
+	}
+}
+
 function loadCSS(url, callback, context)
 {
 	if (!url)
@@ -231,18 +309,18 @@ function getUrlTypeInfo(url)
 				name: 'js',
 				tagName: 'script',
 				urlAttrName: 'src',
-				loadFnName: 'loadJS',
-				loadFnPromiseName: 'loadJStWithPromise'
+				loadFn: loadScript.name,
+				loadFnPromise: loadScriptWithPromise.name
 			},
 			'css': {
 				name: 'css',
 				tagName: 'link',
 				urlAttrName: 'href',
-				loadFnName: 'loadCSS',
-				loadFnPromiseName: 'loadCSSWithPromise'
+				loadFn: loadCSS.name,
+				loadFnPromise: loadCSSWithPromise.name
 			}
 		};
-		return urlType[resourceNameSplitArray[resourceNameSplitArray.length - 1]];
+		return urlType[resourceNameSplitArray.pop()];
 	}
 	return null;
 }
