@@ -263,6 +263,21 @@ function getCurrentScriptPath(scriptName)
 	return null;
 }
 
+function getQueryParamValue(param)
+{
+	var query = window.location.search.substring(1);
+	var queryParams = query.split("&");
+	for (var i = 0; i < queryParams.length; i++)
+	{
+		var queryParam = queryParams[i].split("=");
+		if (queryParam[0] === param)
+		{
+			return queryParam[1];
+		}
+	}
+	return false;
+}
+
 /*
  * Functions: Tools for processing function who has parameter array;
  * */
