@@ -309,15 +309,15 @@ function getUrlTypeInfo(url)
 				name: 'js',
 				tagName: 'script',
 				urlAttrName: 'src',
-				loadFn: loadScript.name,
-				loadFnPromise: loadScriptWithPromise.name
+				loadFn: 'loadScript',
+				loadFnPromise: 'loadScriptWithPromise'
 			},
 			'css': {
 				name: 'css',
 				tagName: 'link',
 				urlAttrName: 'href',
-				loadFn: loadCSS.name,
-				loadFnPromise: loadCSSWithPromise.name
+				loadFn: 'loadCSS',
+				loadFnPromise: 'loadCSSWithPromise'
 			}
 		};
 		return urlType[resourceNameSplitArray.pop()];
