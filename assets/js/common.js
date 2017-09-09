@@ -386,6 +386,11 @@ function throttle(method, context)
 
 /*
 * Functions: Debug
+* Demo:
+* function doSomething(param1, param2)
+* {
+	consoleLog(arguments, 'anything...');
+* }
 * */
 function consoleLog(fnArguments)
 {
