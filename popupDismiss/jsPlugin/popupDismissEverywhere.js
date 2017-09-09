@@ -3,15 +3,16 @@
  *
  */
 (function () {
+	var pluginName = 'popupDismissEveryWhere';
 	var bodyElement = null;
 	var method = {
 		isTap: undefined,
 
 		popupEvent: function (event) {
 			var popupTrigger = event.target;
-			if (popupTrigger.getAttribute('data-toggle') !== 'popupDismissEveryWhere')
+			if (popupTrigger.getAttribute('data-toggle') !== pluginName)
 			{
-				popupTrigger = method.findAncestor(popupTrigger, '[data-toggle="popupDismissEveryWhere"]');
+				popupTrigger = method.findAncestor(popupTrigger, '[data-toggle="' + pluginName + '"]');
 			}
 			var eventData = {
 				type: event.type,
@@ -270,7 +271,7 @@
 		}
 		else
 		{
-			method.on('body', 'click', '[data-toggle="popupDismissEveryWhere"]', method.popupEvent);
+			method.on('body', 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 		}
 	};
 })();

@@ -1,18 +1,19 @@
 /**
- * JQuery plugin: Popup with dismiss v3.0
+ * JQuery plugin: Popup with dismiss v3.1
  *
  */
 (function ($)
 {
+	var pluginName = 'popupDismissEveryWhere';
 	var method = {
 		isTap: undefined,
 
 		popupEvent: function (event)
 		{
 			var $popupTrigger = $(event.target);
-			if ($popupTrigger.data('toggle') !== 'popupDismissEveryWhere')
+			if ($popupTrigger.data('toggle') !== pluginName)
 			{
-				$popupTrigger = $popupTrigger.parents('[data-toggle="popupDismissEveryWhere"]');
+				$popupTrigger = $popupTrigger.parents('[data-toggle="' + pluginName + '"]');
 			}
 			var eventData = {
 				type: event.type,
@@ -147,7 +148,7 @@
 	$.extend({
 		popupDismissEverywhere: function ()
 		{
-			$('body').on('click', '[data-toggle="popupDismissEveryWhere"]', method.popupEvent);
+			$('body').on('click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 		}
 	})
 })(jQuery);
