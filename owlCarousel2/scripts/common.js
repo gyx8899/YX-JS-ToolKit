@@ -14,18 +14,20 @@ function owlItemClickedMonitor($owl, clickedHandler)
 {
 	$owl.on('mousedown', '.item', function ()
 	{
-		$(this).on('mouseup mousemove', function (event)
-		{
-			if (event.type === 'mouseup' && event.which <= 1) //only for left key
-			{
-				// Clicked (left key)
-				clickedHandler && clickedHandler();
-			}
-			else
-			{
-				// Dragged
-			}
-			$(this).off('mouseup mousemove', handler);
-		});
+		$(this).on('mouseup mousemove', handler);
 	});
+
+	function handler(event)
+	{
+		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		{
+			// Clicked (left key)
+			clickedHandler && clickedHandler();
+		}
+		else
+		{
+			// Dragged
+		}
+		$(event.target).off('mouseup mousemove', handler);
+	}
 }
