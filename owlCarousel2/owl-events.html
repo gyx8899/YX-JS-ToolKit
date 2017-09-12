@@ -15,7 +15,6 @@
 
 	<!-- Style custom *** CSS -->
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
-	<link rel="stylesheet" href="styles/owl.theme.css">
 	<link rel="stylesheet" href="styles/owl-navOnSide.css">
 	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
 		/* Demo's CSS here */
@@ -28,6 +27,12 @@
 			width: fit-content;
 			padding: 5px;
 			margin: 2px 0;
+		}
+		.owl-carousel .item
+		{
+			height: 10rem;
+			background: #4DC7A0;
+			padding: 1rem;
 		}
 	</style>
 
@@ -56,7 +61,7 @@
 					<div style="width: 100%; position: relative;">
 						<div style="width: 80%;">
 							<h3>owl items: Equal width</h3>
-							<div id="owl1" class="owl-carousel owl-theme">
+							<div id="owl1" class="owl-carousel">
 								<div class="item"><h4>1</h4></div>
 								<div class="item"><h4>2</h4></div>
 								<div class="item"><h4>3</h4></div>
@@ -65,7 +70,7 @@
 								<div class="item"><h4>6</h4></div>
 							</div>
 							<h3>owl items: Different width</h3>
-							<div id="owl2" class="owl-carousel owl-theme">
+							<div id="owl2" class="owl-carousel">
 								<div class="item" style="width:250px"><h4>1</h4></div>
 								<div class="item" style="width:100px"><h4>2</h4></div>
 								<div class="item" style="width:500px"><h4>3</h4></div>
