@@ -140,7 +140,7 @@
 			}
 		}
 	};
-	$.fn.popupDismissEverywhere = function ()
+	$.fn.popupDismiss = function ()
 	{
 		return this.each(function ()
 		{
@@ -148,7 +148,7 @@
 		});
 	};
 	$.extend({
-		popupDismissEverywhere: function ()
+		popupDismiss: function ()
 		{
 			$('body').on('click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 		}

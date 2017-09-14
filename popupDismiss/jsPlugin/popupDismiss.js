@@ -294,7 +294,7 @@
 
 	documentExtend = method.extendOnOff(document);
 
-	this.PopupDismissEverywhere = function (elements) {
+	this.popupDismiss = function (elements) {
 		if (elements)
 		{
 			if (elements.jquery)

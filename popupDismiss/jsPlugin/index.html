@@ -184,20 +184,20 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js" defer></script>
 
 <!-- Script Demo *** JS -->
-<script src="popupDismissEverywhere.js"></script>
+<script src="popupDismiss.js"></script>
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
 	$(document).ready(function () {
 		initColor();
 
 //	1. To special items;
-		new PopupDismissEverywhere(document.querySelectorAll('[data-toggle="popupDismiss"]'));
-//		new PopupDismissEverywhere(document.querySelector('[data-toggle="popupDismiss"]'));
-//		new PopupDismissEverywhere($('[data-toggle="popupDismiss"]'));
-//		new PopupDismissEverywhere($('#tapId'));
+		new popupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		new popupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
+//		new popupDismiss($('[data-toggle="popupDismiss"]'));
+//		new popupDismiss($('#tapId'));
 
 //	2. To all items on body;
-//		new PopupDismissEverywhere();
+//		new popupDismiss();
 	});
 
 	function popupHandler()
