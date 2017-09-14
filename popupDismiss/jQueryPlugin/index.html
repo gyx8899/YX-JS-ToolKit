@@ -21,26 +21,39 @@
 			color: #000000;
 			font-size: 24px;
 			cursor: pointer;
-			background-color: #1ccacd;
+			background-color: #006bb6;
 		}
-		.trigger-parent.open
+		.trigger-parent:focus
 		{
-			background-color: blueviolet;
+			background-color: #006bb6;
 		}
-		#demo1List,
-		#demo11List,
-		#demo12List,
-		#demo2List,
-		#demo3List
+		section
+		{
+			position: relative;
+		}
+		.popup-list
 		{
 			display: none;
 		}
-		#demo1List.open,
-		#demo11List.open,
-		#demo12List.open,
-		#demo2List.open
+		.popup-list.open
 		{
 			display: block;
+			width: 100%;
+			position: absolute;
+			background-color: white;
+			list-style: none;
+			margin: 0;
+			border: 2px solid #006bb6;
+			border-radius: 3px;
+			z-index: 2;
+		}
+		.dismiss-false
+		{
+			background-color: graytext !important;
+		}
+		.dismiss-true
+		{
+			background-color: #1ccacd !important;
 		}
 	</style>
 
@@ -65,29 +78,24 @@
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
 				<h3 id="overview">Overview</h3>
-				<ul>
-					<li><b>not set in self && parents</b> default is dismiss='true'</li>
-					<li><b>data-popup-dismiss="false"</b> ----support nest</li>
-					<li><b>data-popup-dismiss="true" </b> ----support nest</li>
-				</ul>
 				<div data-toggle="previewCode" data-target="#demoWrap">
 					<!--Demo's html here-->
 					<section>
-						<h3>Demo1: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo1List</b>"
+						<h3>Demo1: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo1List</b>"
 							data-toggle-class="open"</p></h3>
-						<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo1List" data-toggle-class="open">
+						<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo1List" data-toggle-class="open">
 							toggle popup
 						</div>
-						<ul id="demo1List">
+						<ul id="demo1List" class="popup-list">
 							<li>Demo1 popup list1</li>
 							<li data-popup-dismiss="false">Demo1 popup list2, data-popup-dismiss="false"</li>
 							<li>Demo1 popup list3</li>
 							<li>Demo1 popup list4</li>
 							<li>
-								<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo11List" data-toggle-class="open" data-popup-dismiss="false">
+								<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo11List" data-toggle-class="open" data-popup-dismiss="false">
 									Demo1 SubSelector, data-popup-dismiss="false"
 								</div>
-								<ul id="demo11List" data-popup-dismiss="true">
+								<ul id="demo11List" class="popup-list" data-popup-dismiss="true">
 									SubList1-parent : data-popup-dismiss="true"
 									<li>SubList11</li>
 									<li data-popup-dismiss="false">SubList12, data-popup-dismiss="false"</li>
@@ -96,10 +104,10 @@
 							</li>
 							<li>Demo1 popup list6</li>
 							<li>
-								<div class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo12List" data-toggle-class="open" data-popup-dismiss="false">
+								<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo12List" data-toggle-class="open" data-popup-dismiss="false">
 									Demo1 SubSelector, data-popup-dismiss="false"
 								</div>
-								<ul id="demo12List" data-popup-dismiss="false">
+								<ul id="demo12List" class="popup-list" data-popup-dismiss="false">
 									SubList2-parent : data-popup-dismiss="false"
 									<li>SubList21</li>
 									<li data-popup-dismiss="true">SubList22, data-popup-dismiss="true"</li>
@@ -111,13 +119,13 @@
 					</section>
 					<hr>
 					<section>
-						<h3>Demo2: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo2List</b>"
+						<h3>Demo2: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo2List</b>"
 							data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler"</p></h3>
 						<textarea id="eventLog"></textarea>
-						<button class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo2List" data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler">
+						<button class="trigger-parent" data-toggle="popupDismiss" data-target="#demo2List" data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler">
 							toggle popup
 						</button>
-						<ul id="demo2List">
+						<ul id="demo2List" class="popup-list">
 							<li>Demo2 popup list1</li>
 							<li>Demo2 popup list2</li>
 							<li>Demo2 popup list3</li>
@@ -126,17 +134,34 @@
 						</ul>
 					</section>
 					<hr>
-					<section>
-						<h3>Demo3: <p>data-toggle="<b>popupDismissEveryWhere</b>" data-target="<b>#demo3List</b>"
+					<section class="demo4-scope">
+						<h3>Demo3: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo3List</b>"
 							data-popup-handler="popupList" data-dismiss-handler="dismissList"</p></h3>
-						<button class="trigger-parent" data-toggle="popupDismissEveryWhere" data-target="#demo3List" data-popup-handler="popupList" data-dismiss-handler="dismissList">
+						<button class="trigger-parent" data-toggle="popupDismiss" data-target="#demo3List" data-popup-handler="popupList" data-dismiss-handler="dismissList">
 							toggle popup
 						</button>
-						<ul id="demo3List">
+						<ul id="demo3List" class="popup-list">
 							<li>Demo3 popup list1</li>
 							<li>Demo3 popup list2</li>
 							<li>Demo3 popup list3</li>
-							<li data-popup-dismiss="false">Demo2 popup list4, data-popup-dismiss="false"</li>
+							<li data-popup-dismiss="false">Demo3 popup list4, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+					<hr>
+					<section class="demo4-scope">
+						<h3>Demo4:
+							<p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo4List</b>"
+								data-toggle-class="open" data-dismiss-scope=".demo4-scope" <br>
+							</p>
+						</h3>
+						<button id="demo4Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="#demo4List" data-toggle-class="open" data-dismiss-scope=".demo4-scope">
+							toggle popup
+						</button>
+						<ul id="demo4List" class="popup-list">
+							<li>Demo4 popup list1</li>
+							<li>Demo4 popup list2</li>
+							<li data-popup-dismiss="false">Demo4 popup list3, data-popup-dismiss="false"</li>
+							<li>Demo4 popup list4</li>
 						</ul>
 					</section>
 				</div>
@@ -164,10 +189,12 @@
 	// Demo's JS here
 	$(document).ready(function () {
 //	1. To special items;
-//	$('[data-toggle="popupDismissEveryWhere"]').popupDismissEverywhere();
+//	$('[data-toggle="popupDismiss"]').popupDismissEverywhere();
 
 //	2. To all items on body;
 		$.popupDismissEverywhere();
+
+		initColor();
 	});
 
 	function popupHandler()
@@ -190,12 +217,19 @@
 	function popupList($target)
 	{
 		$target && $target.fadeIn();
+		$target.addClass('open');
 	}
-
 	function dismissList($target)
 	{
 		$target && $target.fadeOut();
+		$target.removeClass('open');
 	}
+
+  function initColor()
+  {
+  	$('[data-popup-dismiss="false"]').addClass('dismiss-false');
+  	$('[data-popup-dismiss="true"]').addClass('dismiss-true');
+  }
 </script>
 </body>
 </html>

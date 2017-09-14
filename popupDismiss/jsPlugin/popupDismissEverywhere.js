@@ -1,10 +1,10 @@
 /**
- * Javascript plugin: Popup with dismiss v3.0
+ * Javascript plugin: popupDismiss v4
  *
  */
 (function () {
-	var pluginName = 'popupDismissEveryWhere';
-	var bodyElement = null;
+	var pluginName = 'popupDismiss';
+	var documentExtend = null;
 	var method = {
 		isTap: undefined,
 
@@ -14,15 +14,18 @@
 			{
 				popupTrigger = method.findAncestor(popupTrigger, '[data-toggle="' + pluginName + '"]');
 			}
-			var eventData = {
-				type: event.type,
-				namespace: popupTrigger.getAttribute('data-target'),
-				popupTrigger: popupTrigger,
-				popupTarget: document.querySelector(popupTrigger.getAttribute('data-target')),
-				toggledClass: popupTrigger.getAttribute('data-toggle-class') || null, // Recommend: 'open'
-				popupHandler: popupTrigger.getAttribute('data-popup-handler') || null,
-				dismissHandler: popupTrigger.getAttribute('data-dismiss-handler') || null
-			};
+			var dataDismissScope = popupTrigger.getAttribute('data-dismiss-scope'),
+				dismissScopes = getScopeElementArray(dataDismissScope),
+				eventData = {
+					type: event.type,
+					namespace: popupTrigger.getAttribute('data-target'),
+					popupTrigger: popupTrigger,
+					popupTarget: document.querySelector(popupTrigger.getAttribute('data-target')),
+					toggledClass: popupTrigger.getAttribute('data-toggle-class') || null, // Recommend: 'open'
+					popupHandler: popupTrigger.getAttribute('data-popup-handler') || null,
+					dismissHandler: popupTrigger.getAttribute('data-dismiss-handler') || null,
+					dismissScopes: dismissScopes
+				};
 
 			if (eventData.popupTarget.getAttribute('data-isPopup') !== 'true')
 			{
@@ -33,22 +36,23 @@
 					method.addClass(eventData.popupTarget, eventData.toggledClass);
 				}
 				eventData.popupTarget.setAttribute('data-isPopup', 'true');
-				bodyElement.on(eventData.type + "." + eventData.namespace, function (newEvent) {
-					if (event === newEvent)
-					{
-						return;
-					}
-					var newEventData = {
-						type: eventData.type,
-						namespace: eventData.namespace,
-						dismissTrigger: newEvent.target,
-						popupTrigger: eventData.popupTrigger,
-						popupTarget: eventData.popupTarget,
-						toggledClass: eventData.toggledClass,
-						dismissHandler: eventData.dismissHandler
-					};
-					newEvent.stopPropagation();
-					method.popupDismiss(newEventData, true);
+				eventData.dismissScopes.forEach(function (scope) {
+					scope.on(eventData.type + "." + eventData.namespace, function (newEvent) {
+						if (event === newEvent)
+							return;
+						var newEventData = {
+							type: eventData.type,
+							namespace: eventData.namespace,
+							dismissTrigger: newEvent.target,
+							popupTrigger: eventData.popupTrigger,
+							popupTarget: eventData.popupTarget,
+							toggledClass: eventData.toggledClass,
+							dismissHandler: eventData.dismissHandler,
+							dismissScopes: eventData.dismissScopes
+						};
+						newEvent.stopPropagation();
+						method.popupDismiss(newEventData, true);
+					});
 				});
 				eventData.popupHandler !== null && window[eventData.popupHandler](eventData.popupTarget);
 				method.setBodyCursorInIOS("pointer");
@@ -57,6 +61,32 @@
 			{
 				eventData.dismissTrigger = popupTrigger;
 				method.popupDismiss(eventData);
+			}
+			function getScopeElementArray(scopeSelectors)
+			{
+				if (!scopeSelectors)
+				{
+					return [documentExtend];
+				}
+				var scopeElements = [],
+					scopeSelectorArray = scopeSelectors.split(',');
+				for (var i = 0, l = scopeSelectorArray.length; i < l; i++)
+				{
+					var trimmedScopeSelector = scopeSelectorArray[i].trim();
+					if (trimmedScopeSelector === 'document')
+					{
+						scopeElements.push(documentExtend);
+					}
+					else
+					{
+						var scopeNodeList = method.convertNodeListToArray(document.querySelectorAll(scopeSelectorArray[i]));
+						scopeNodeList.map(function (t) {
+							method.extendOnOff(t);
+						});
+						scopeElements = scopeElements.concat(scopeNodeList);
+					}
+				}
+				return scopeElements;
 			}
 		},
 
@@ -77,8 +107,10 @@
 					method.removeClass(eventData.popupTarget, eventData.toggledClass);
 				}
 				eventData.popupTarget.setAttribute('data-isPopup', 'false');
-				bodyElement.off(eventData.type + "." + eventData.namespace, function () {
-					method.popupDismiss(eventData, true);
+				eventData.dismissScopes.forEach(function (scope) {
+					scope.off(eventData.type + "." + eventData.namespace, function () {
+						method.popupDismiss(eventData, true);
+					});
 				});
 				eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.popupTarget);
 
@@ -159,6 +191,16 @@
 			return el;
 		},
 
+		convertNodeListToArray: function (nodeList)
+		{
+			var resultArray = [];
+			for (var i = 0, l = nodeList.length; i < l; i++)
+			{
+				resultArray[i] = nodeList[i];
+			}
+			return resultArray;
+		},
+
 		hasCloset: function (el, parentElement) {
 			if (el === parentElement)
 			{
@@ -223,6 +265,8 @@
 
 		//Extend on/off methods
 		extendOnOff: function (el) {
+			if (el.length === 0)
+				return null;
 			var events = {
 				on: function (event, callback, opts) {
 					if (!this.namespaces) // save the namespaces on the DOM element itself
@@ -248,7 +292,7 @@
 		}
 	};
 
-	bodyElement = method.extendOnOff(document.querySelector('body'));
+	documentExtend = method.extendOnOff(document);
 
 	this.PopupDismissEverywhere = function (elements) {
 		if (elements)

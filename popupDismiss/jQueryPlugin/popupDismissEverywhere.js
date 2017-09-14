@@ -1,10 +1,10 @@
 /**
- * JQuery plugin: Popup with dismiss v3.1
+ * JQuery plugin: popupDismiss v4
  *
  */
 (function ($)
 {
-	var pluginName = 'popupDismissEveryWhere';
+	var pluginName = 'popupDismiss';
 	var method = {
 		isTap: undefined,
 
@@ -15,22 +15,29 @@
 			{
 				$popupTrigger = $popupTrigger.parents('[data-toggle="' + pluginName + '"]');
 			}
-			var eventData = {
-				type: event.type,
-				namespace: $popupTrigger.data('target'),
-				$popupTrigger: $popupTrigger,
-				$popupTarget: $($popupTrigger.data('target')),
-				toggledClass: $popupTrigger.data('toggle-class') || null, // Recommend: 'open'
-				popupHandler: $popupTrigger.data('popup-handler') || null,
-				dismissHandler: $popupTrigger.data('dismiss-handler') || null
-			};
+			var dataDismissScope = $popupTrigger.data('dismiss-scope'),
+				dismissScopes = dataDismissScope ? dataDismissScope.split(',').map(function (t) {
+					return $(t.trim() === 'document' ? window.document : t.trim())
+				}) : [$(document)],
+				eventData = {
+					type: event.type,
+					namespace: $popupTrigger.data('target'),
+					$popupTrigger: $popupTrigger,
+					$popupTarget: $($popupTrigger.data('target')),
+					toggledClass: $popupTrigger.data('toggle-class') || null, // Recommend: 'open'
+					popupHandler: $popupTrigger.data('popup-handler') || null,
+					dismissHandler: $popupTrigger.data('dismiss-handler') || null,
+					dismissScopes: dismissScopes
+				};
 
 			if (eventData.$popupTarget.data('isPopup') !== 'true')
 			{
 				method.monitorTap();
 				eventData.toggledClass && eventData.$popupTrigger.addClass(eventData.toggledClass) && eventData.$popupTarget.addClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'true');
-				$(document).on(eventData.type + "." + eventData.namespace, eventData, method.popupDismiss);
+				eventData.dismissScopes.forEach(function (scope) {
+					scope.on(eventData.type + "." + eventData.namespace, eventData, method.popupDismiss);
+				});
 				eventData.popupHandler !== null && window[eventData.popupHandler](eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("pointer");
@@ -48,15 +55,8 @@
 			var eventData = event, isListenerEvent = !!event.data;
 			if (isListenerEvent)
 			{
-				eventData = {
-					type: event.data.type,
-					namespace: event.data.namespace,
-					$dismissTrigger: $(event.target),
-					$popupTrigger: event.data.$popupTrigger,
-					$popupTarget: event.data.$popupTarget,
-					toggledClass: event.data.toggledClass,
-					dismissHandler: event.data.dismissHandler
-				};
+				eventData = $.extend({}, event, event.data);
+				eventData.$dismissTrigger = $(event.target);
 				event.stopPropagation();
 			}
 
@@ -67,7 +67,9 @@
 			{
 				eventData.toggledClass && eventData.$popupTrigger.removeClass(eventData.toggledClass) && eventData.$popupTarget.removeClass(eventData.toggledClass);
 				eventData.$popupTarget.data('isPopup', 'false');
-				$(document).off(eventData.type + "." + eventData.namespace, method.popupDismiss);
+				eventData.dismissScopes.forEach(function (scope) {
+					scope.off(eventData.type + "." + eventData.namespace, method.popupDismiss);
+				});
 				eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.$popupTarget);
 
 				method.setBodyCursorInIOS("default");
