@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Dynamic import style file</title>
+
+	<!-- Style custom *** CSS -->
+	<style type="text/css">
+		/* Demo's CSS here */
+		.font-color
+		{
+			color: white;
+		}
+	</style>
+	<link data-toggle="previewCode" data-target="#demoWrap" data-fetch="file" rel="stylesheet" href="style1-blue.css">
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Script Google Analytics *** JS -->
+	<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-google-analytics/googleAnalytics.js"></script>
+
+	<script type="text/javascript">
+		var aaa = 0;
+	</script>
+	<script data-toggle="previewCode" data-target="#demoWrap" data-fetch="file" src="script1-hello.js"></script>
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview: default load style1-blue.css</h3>
+				<br>
+				<div class="bg-color font-color">Class: bg-color</div>
+				<br>
+				<button onclick="loadStyle2RedBefore1()">Load style2-red Before style1</button>
+				<button onclick="loadStyle2RedAfter1()">Load style2-red After style1</button>
+
+				<br>
+				<h3 id="overview2">Overview: default load script1 hello function</h3>
+				<button onclick="loadScript2Before1()">Load script2 Before script1</button>
+				<button onclick="loadScript2After1()">Load script2 After script1</button>
+				<br>
+				<button onclick="hello()">Say Hello</button>
+
+				<h5><b>Conclusions</b></h5>
+				<h5>1. The last css file in dom (add to dom) has the higher priority;<br>2. The sequence of js file in dom don't have an affect on override;</h5>
+
+				<div class="preview-code"><h3 class="h3-title">style2-red.css</h3>
+					<pre><code class=" hljs css"><span class="hljs-class">.bg-color</span>
+				<span class="hljs-rules">{
+				  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> red</span></span>;
+				<span class="hljs-rule">}</span></span></code></pre>
+				</div>
+				<div class="preview-code"><h3 class="h3-title">script2-hello.js</h3>
+					<pre><code class=" hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span>
+				{</span>
+				  alert(<span class="hljs-string">'I am Script 2'</span>);
+				}
+				<span class="hljs-keyword"></span> aaa = <span class="hljs-number">2</span>;</code></pre>
+				</div>
+				<div id="demoHTML">
+					<!--Demo's html here-->
+
+				</div>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Theme *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/owl/headerFooter-owl.js"></script>
+
+<!-- Script PreViewCode *** JS-->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js" defer></script>
+
+<!-- Script Demo *** JS -->
+<script type="text/javascript">
+	// Demo's JS here
+
+	function loadStyle2RedBefore1()
+	{
+		removeElement('style2');
+		nlLoadStyle1('style2-red.css');
+	}
+
+	function loadStyle2RedAfter1()
+	{
+		removeElement('style2');
+		nlLoadStyle2('style2-red.css');
+	}
+
+	function loadScript2Before1()
+	{
+		removeElement('script2');
+		nlLoadScript1('script2-hello.js');
+	}
+
+	function loadScript2After1()
+	{
+		removeElement('script2');
+		nlLoadScript2('script2-hello.js');
+	}
+
+	function nlLoadStyle1(src)
+	{
+		var link = document.createElement("link");
+		link.id = 'style2';
+		link.type = "text/css";
+		link.rel = "stylesheet";
+		link.href = src;
+		var stag = document.getElementsByTagName("link")[0];
+		stag.parentNode.insertBefore(link, stag);
+
+		// document.getElementsByTagName('head')[0].appendChild(link);
+	}
+
+	function nlLoadStyle2(src)
+	{
+		var link = document.createElement("link");
+		link.id = 'style2';
+		link.type = "text/css";
+		link.rel = "stylesheet";
+		link.href = src;
+//		var stag = document.getElementsByTagName("script")[0];
+//		stag.parentNode.insertBefore(link, stag);
+
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+
+	function nlLoadScript1(src)
+	{
+		var script = document.createElement("script");
+		script.id = 'script2';
+		script.type = "text/javascript";
+		script.src = src;
+		var stag = document.getElementsByTagName("script")[0];
+		stag.parentNode.insertBefore(script, stag);
+
+//		document.getElementsByTagName('head')[0].appendChild(script);
+	}
+
+	function nlLoadScript2(src)
+	{
+		var script = document.createElement("script");
+		script.id = 'script2';
+		script.type = "text/javascript";
+		script.src = src;
+//		var stag = document.getElementsByTagName("script")[0];
+//		stag.parentNode.insertBefore(script, stag);
+
+		document.getElementsByTagName('head')[0].appendChild(script);
+	}
+
+	function removeElement(id)
+	{
+		var element = document.getElementById(id);
+		element && element.parentNode.removeChild(element);
+	}
+</script>
+</body>
+</html>
