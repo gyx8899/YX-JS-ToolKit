@@ -89,14 +89,16 @@
 	// Demo's JS here
 	function loadStyle2(isFirst)
 	{
-		removeElement('style2');
-		loadStyleCustom('style2-red.css', 'style2', isFirst);
+		var styleId = 'style2';
+		removeElement(styleId);
+		loadStyleCustom('style2-red.css', styleId, isFirst);
 	}
 
   function loadScript2(isFirst)
   {
-	  removeElement('script2');
-	  loadScriptCustom('script2-hello.js', 'script2', isFirst, function () {
+  	var scriptId = 'script2';
+	  removeElement(scriptId);
+	  loadScriptCustom('script2-hello.js', scriptId, isFirst, function () {
 		  hello();
 	  });
   }
