@@ -562,6 +562,24 @@ function scrollTo(element, to, duration)
 	}, 10);
 }
 
+function addChildElement(parentElement, childElement, position)
+{
+	switch (position && position.toLowerCase())
+	{
+		case 'prepend':
+			parentElement.insertBefore(childElement, parentElement.firstChild);
+			break;
+		case 'insertbefore':
+			parentElement.insertAdjacentHTML('beforebegin', childElement.outerHTML);
+			break;
+		case 'insertafter':
+			parentElement.insertAdjacentHTML('afterend', childElement.outerHTML);
+			break;
+		default: //'append'
+			parentElement.appendChild(childElement);
+	}
+}
+
 // Functions: Classes without jQuery
 function hasClass(element, className)
 {
