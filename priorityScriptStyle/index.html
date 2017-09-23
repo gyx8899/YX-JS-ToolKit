@@ -51,13 +51,13 @@
 				<br>
 				<div class="bg-color font-color">Class: bg-color</div>
 				<br>
-				<button onclick="loadStyle2RedBefore1()">insert Before style1</button>
-				<button onclick="loadStyle2RedAfter1()">insert After style1</button>
+				<button onclick="loadStyle2(true)">insert Before style1</button>
+				<button onclick="loadStyle2(false)">insert After style1</button>
 
 				<br>
 				<h4>JS: dynamic load script2 hello function</h4>
-				<button onclick="loadScript2Before1()">insert Before script1</button>
-				<button onclick="loadScript2After1()">insert After script1</button>
+				<button onclick="loadScript2(true)">insert Before script1</button>
+				<button onclick="loadScript2(false)">insert After script1</button>
 				<br>
 
 				<h5><b>Conclusions</b></h5>
@@ -87,30 +87,16 @@
 <!-- Script Demo *** JS -->
 <script type="text/javascript">
 	// Demo's JS here
-	function loadStyle2RedBefore1()
+	function loadStyle2(isFirst)
 	{
 		removeElement('style2');
-		loadStyleCustom('style2-red.css', 'style2', true);
+		loadStyleCustom('style2-red.css', 'style2', isFirst);
 	}
 
-	function loadStyle2RedAfter1()
-	{
-		removeElement('style2');
-		loadStyleCustom('style2-red.css', 'style2', false);
-	}
-
-  function loadScript2Before1()
+  function loadScript2(isFirst)
   {
 	  removeElement('script2');
-	  loadScriptCustom('script2-hello.js', 'script2', true, function () {
-		  hello();
-	  });
-  }
-
-  function loadScript2After1()
-  {
-	  removeElement('script2');
-	  loadScriptCustom('script2-hello.js', 'script2', false, function () {
+	  loadScriptCustom('script2-hello.js', 'script2', isFirst, function () {
 		  hello();
 	  });
   }
