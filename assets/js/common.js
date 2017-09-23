@@ -16,15 +16,22 @@ function escapeHTML(text)
 	});
 }
 
-function replaceTemplateExpressionWithData(template, dataObject)
+function initTemplate(template, data, functionData)
 {
-	var resultTemplate = template,
-			dataKeys = Object.keys(dataObject);
-	for (var i = 0, length = dataKeys.length; i < length; i++)
+	var result = template;
+	for (var key in data)
 	{
-		resultTemplate = resultTemplate.replace(regExpG("{{" + dataKeys[i] + "}}"), dataObject[dataKeys[i]] || '');
+		if (data.hasOwnProperty(key))
+		{
+			var dataValue = data[key];
+			if (typeof data[key] === 'function')
+			{
+				dataValue = data[key](functionData);
+			}
+			result = result.replace(new RegExp('{{' + key + '}}', "g"), dataValue);
+		}
 	}
-	return resultTemplate;
+	return result;
 }
 
 /*
@@ -437,8 +444,13 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 		{
 			if (obj.hasOwnProperty(key))
 			{
-				if (typeof obj[key] === 'object' && !Array.isArray(obj[key]))
+				if (typeof obj[key] === 'object'
+						&& !Array.isArray(obj[key])
+						&& !(obj[key] instanceof Date)
+						&& !(obj[key] === 'function'))
+				{
 					out[key] = arguments.callee(out[key], obj[key]);
+				}
 				else
 					out[key] = obj[key];
 			}
@@ -464,4 +476,113 @@ function setCallback(typeName)
 function getCallbackName(typeName)
 {
 	return typeName + "Callback";
+}
+
+// Functions: Elements without jQuery
+function getElement(element)
+{
+	var resultElement = null;
+	if (element.jquery)
+	{
+		element = element.length > 1 ? element.get() : element[0];
+	}
+	if (NodeList.prototype.isPrototypeOf(element) || Array.isArray(element))
+	{
+		resultElement = element[0];
+	}
+	else if (element.nodeType)
+	{
+		resultElement = element;
+	}
+	return resultElement;
+}
+function findParent(element, selector)
+{
+	while ((element = element.parentElement) && !((element.matches || element.matchesSelector).call(element, selector))) ;
+	return element;
+}
+function closet(element, className)
+{
+	var closetElement = null;
+	if (hasClass(element, className))
+	{
+		closetElement = element;
+	}
+	else
+	{
+		closetElement = findParent(element, '.' + className);
+	}
+	return closetElement;
+}
+function scrollListToIndex(listFolder, index, toTopIndex, duration)
+{
+	if (index === 0)
+	{
+		scrollTo(listFolder, 0, duration);
+	}
+	else
+	{
+		var listItems = listFolder.childNodes,
+				scrollOffset = 0,
+				contentHeight = 0,
+				scrollToCenter = 0;
+		duration = (duration === undefined ? 500 : duration);
+		for (var i = 0, l = listItems.length; i < l; i++)
+		{
+			var listItemHeight = listItems[i].offsetHeight;
+			if (i < index)
+			{
+				scrollOffset += listItemHeight;
+				if (i > toTopIndex - 1)
+				{
+					scrollToCenter += listItems[i - toTopIndex].offsetHeight;
+				}
+			}
+			contentHeight += listItemHeight;
+		}
+		scrollOffset = scrollToCenter;
+		if (scrollOffset + listFolder.offsetHeight > contentHeight)
+		{
+			scrollOffset = contentHeight - listFolder.offsetHeight;
+		}
+		scrollTo(listFolder, scrollOffset, duration);
+	}
+}
+
+function scrollTo(element, to, duration)
+{
+	if (duration <= 0) return;
+	var difference = to - element.scrollTop;
+	var perTick = difference / duration * 10;
+
+	setTimeout(function () {
+		element.scrollTop = element.scrollTop + perTick;
+		if (element.scrollTop === to) return;
+		scrollTo(element, to, duration - 10);
+	}, 10);
+}
+
+// Functions: Classes without jQuery
+function hasClass(element, className)
+{
+	if (element.classList)
+		return element.classList.contains(className);
+	else
+		return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
+}
+
+function addClass(element, className)
+{
+	if (element.classList)
+		element.classList.add(className);
+	else
+		element.className += ' ' + className;
+}
+
+function removeClass(element, className)
+{
+	if (element.classList)
+		element.classList.remove(className);
+	else
+		element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 }
