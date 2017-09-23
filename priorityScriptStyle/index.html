@@ -7,7 +7,7 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta name="author" content="Steper Kuo">
-	<title>Dynamic import style file</title>
+	<title>Priority when dynamic import js/css file</title>
 
 	<!-- Style custom *** CSS -->
 	<style type="text/css">
@@ -17,7 +17,7 @@
 			color: white;
 		}
 	</style>
-	<link data-toggle="previewCode" data-target="#demoWrap" data-fetch="file" rel="stylesheet" href="style1-blue.css">
+	<link data-toggle="previewCode" data-target="#cssCode" data-position="prepend" data-fetch="file" rel="stylesheet" href="style1-blue.css">
 
 	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
@@ -30,9 +30,9 @@
 	<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-google-analytics/googleAnalytics.js"></script>
 
 	<script type="text/javascript">
-		var aaa = 0;
+	  var aaa = 0;
 	</script>
-	<script data-toggle="previewCode" data-target="#demoWrap" data-fetch="file" src="script1-hello.js"></script>
+	<script data-toggle="previewCode" data-target="#jsCode" data-position="prepend" data-fetch="file" src="script1-hello.js"></script>
 
 </head>
 <body>
@@ -46,44 +46,30 @@
 	<section id="demos">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<h3 id="overview">Overview: default load style1-blue.css</h3>
+				<h3 id="overview">Priority when dynamic import js/css file</h3>
+				<h4>CSS: dynamic load style2-blue.css</h4>
 				<br>
 				<div class="bg-color font-color">Class: bg-color</div>
 				<br>
-				<button onclick="loadStyle2RedBefore1()">Load style2-red Before style1</button>
-				<button onclick="loadStyle2RedAfter1()">Load style2-red After style1</button>
+				<button onclick="loadStyle2RedBefore1()">insert Before style1</button>
+				<button onclick="loadStyle2RedAfter1()">insert After style1</button>
 
 				<br>
-				<h3 id="overview2">Overview: default load script1 hello function</h3>
-				<button onclick="loadScript2Before1()">Load script2 Before script1</button>
-				<button onclick="loadScript2After1()">Load script2 After script1</button>
+				<h4>JS: dynamic load script2 hello function</h4>
+				<button onclick="loadScript2Before1()">insert Before script1</button>
+				<button onclick="loadScript2After1()">insert After script1</button>
 				<br>
-				<button onclick="hello()">Say Hello</button>
 
 				<h5><b>Conclusions</b></h5>
-				<h5>1. The last css file in dom (add to dom) has the higher priority;<br>2. The sequence of js file in dom don't have an affect on override;</h5>
+				<h5>1. The last css file in dom (add to dom) has the higher priority;<br>2. The sequence of js file in dom don't
+					have an affect on override;</h5>
 
-				<div class="preview-code"><h3 class="h3-title">style2-red.css</h3>
-					<pre><code class=" hljs css"><span class="hljs-class">.bg-color</span>
-				<span class="hljs-rules">{
-				  <span class="hljs-rule"><span class="hljs-attribute">background-color</span>:<span class="hljs-value"> red</span></span>;
-				<span class="hljs-rule">}</span></span></code></pre>
+				<div id="cssCode">
+					<div data-toggle="previewCode" data-target="self" data-title="style2-blue.css" data-fetch="file" data-src="style2-red.css"></div>
 				</div>
-				<div class="preview-code"><h3 class="h3-title">script2-hello.js</h3>
-					<pre><code class=" hljs javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">()</span>
-				{</span>
-				  alert(<span class="hljs-string">'I am Script 2'</span>);
-				}
-				<span class="hljs-keyword"></span> aaa = <span class="hljs-number">2</span>;</code></pre>
+				<div id="jsCode">
+					<div data-toggle="previewCode" data-target="self" data-title="script2-hello.js" data-fetch="file" data-src="script2-hello.js"></div>
 				</div>
-				<div id="demoHTML">
-					<!--Demo's html here-->
-
-				</div>
-				<!--Introduction here-->
-				<p>
-
-				</p>
 			</div>
 		</div>
 	</section>
@@ -101,79 +87,79 @@
 <!-- Script Demo *** JS -->
 <script type="text/javascript">
 	// Demo's JS here
-
 	function loadStyle2RedBefore1()
 	{
 		removeElement('style2');
-		nlLoadStyle1('style2-red.css');
+		loadStyleCustom('style2-red.css', 'style2', true);
 	}
 
 	function loadStyle2RedAfter1()
 	{
 		removeElement('style2');
-		nlLoadStyle2('style2-red.css');
+		loadStyleCustom('style2-red.css', 'style2', false);
 	}
 
-	function loadScript2Before1()
-	{
-		removeElement('script2');
-		nlLoadScript1('script2-hello.js');
-	}
+  function loadScript2Before1()
+  {
+	  removeElement('script2');
+	  loadScriptCustom('script2-hello.js', 'script2', true, function () {
+		  hello();
+	  });
+  }
 
-	function loadScript2After1()
-	{
-		removeElement('script2');
-		nlLoadScript2('script2-hello.js');
-	}
+  function loadScript2After1()
+  {
+	  removeElement('script2');
+	  loadScriptCustom('script2-hello.js', 'script2', false, function () {
+		  hello();
+	  });
+  }
 
-	function nlLoadStyle1(src)
+	function loadStyleCustom(src, id, isFirst)
 	{
 		var link = document.createElement("link");
-		link.id = 'style2';
+		link.id = id;
 		link.type = "text/css";
 		link.rel = "stylesheet";
 		link.href = src;
-		var stag = document.getElementsByTagName("link")[0];
-		stag.parentNode.insertBefore(link, stag);
-
-		// document.getElementsByTagName('head')[0].appendChild(link);
+		if (isFirst)
+		{
+			var stag = document.getElementsByTagName("link")[0];
+			stag.parentNode.insertBefore(link, stag);
+		}
+		else
+		{
+			document.getElementsByTagName('head')[0].appendChild(link);
+		}
 	}
 
-	function nlLoadStyle2(src)
-	{
-		var link = document.createElement("link");
-		link.id = 'style2';
-		link.type = "text/css";
-		link.rel = "stylesheet";
-		link.href = src;
-//		var stag = document.getElementsByTagName("script")[0];
-//		stag.parentNode.insertBefore(link, stag);
-
-		document.getElementsByTagName('head')[0].appendChild(link);
-	}
-
-	function nlLoadScript1(src)
+	function loadScriptCustom(src, id, isFirst, callback)
 	{
 		var script = document.createElement("script");
-		script.id = 'script2';
+		script.id = id;
 		script.type = "text/javascript";
+		script.onload = script.onreadystatechange = function (_, isAbort) {
+			if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState))
+			{
+				script.onload = script.onreadystatechange = null;
+				script = undefined;
+
+				if (!isAbort)
+				{
+					if (callback) callback();
+				}
+			}
+		};
+		if (isFirst)
+		{
+			var stag = document.getElementsByTagName("script")[0];
+			stag.parentNode.insertBefore(script, stag);
+		}
+		else
+		{
+			document.getElementsByTagName('head')[0].appendChild(script);
+		}
 		script.src = src;
-		var stag = document.getElementsByTagName("script")[0];
-		stag.parentNode.insertBefore(script, stag);
-
-//		document.getElementsByTagName('head')[0].appendChild(script);
-	}
-
-	function nlLoadScript2(src)
-	{
-		var script = document.createElement("script");
-		script.id = 'script2';
-		script.type = "text/javascript";
-		script.src = src;
-//		var stag = document.getElementsByTagName("script")[0];
-//		stag.parentNode.insertBefore(script, stag);
-
-		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 
 	function removeElement(id)
