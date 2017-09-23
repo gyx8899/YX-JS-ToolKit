@@ -403,7 +403,7 @@ function consoleLog(fnArguments)
 {
 	if (window.console && window.debug !== false)
 	{
-		var localTime = (new Date()).toTimeString(),
+		var localTime = (new Date()).toLocaleTimeString(),
 				fnName = fnArguments.callee.name,
 				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
 				fnArgumentsString = getArrayString(fnArgumentsArray),
