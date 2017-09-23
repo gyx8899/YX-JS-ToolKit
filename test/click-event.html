@@ -74,8 +74,8 @@
 
 		function log(event)
 		{
-			if (event.type === "touchstart") touchstartBeginTime = Date.now();
-//			console.log(event.type, Date.now() - touchstartBeginTime);
+			if (event.type === "touchstart")
+				touchstartBeginTime = Date.now();
 			consoleLog(arguments, event.type);
 			consoleLog(arguments, event.type, Date.now() - touchstartBeginTime);
 			consoleLog(arguments, event.type + (Date.now() - touchstartBeginTime));
