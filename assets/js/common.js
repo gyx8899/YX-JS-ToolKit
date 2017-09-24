@@ -486,7 +486,7 @@ function getElements(elements)
 	{
 		resultElement = elements.length > 1 ? elements.get() : [elements[0]];
 	}
-	else if (elements instanceof HTMLCollection)
+	else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection)
 	{
 		resultElement = Array.prototype.slice.call(elements);
 	}
