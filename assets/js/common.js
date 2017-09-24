@@ -478,21 +478,25 @@ function getCallbackName(typeName)
 	return typeName + "Callback";
 }
 
-// Functions: Elements without jQuery
-function getElement(element)
+// Functions: Elements without jQuery, return element array
+function getElements(elements)
 {
-	var resultElement = null;
-	if (element.jquery)
+	var resultElement = [];
+	if (elements.jquery)
 	{
-		element = element.length > 1 ? element.get() : element[0];
+		resultElement = elements.length > 1 ? elements.get() : [elements[0]];
 	}
-	if (NodeList.prototype.isPrototypeOf(element) || Array.isArray(element))
+	else if (elements instanceof HTMLCollection)
 	{
-		resultElement = element[0];
+		resultElement = Array.prototype.slice.call(elements);
 	}
-	else if (element.nodeType)
+	else if (Array.isArray(elements))
 	{
-		resultElement = element;
+		resultElement = elements;
+	}
+	else if (elements.nodeType)
+	{
+		resultElement = [elements];
 	}
 	return resultElement;
 }
