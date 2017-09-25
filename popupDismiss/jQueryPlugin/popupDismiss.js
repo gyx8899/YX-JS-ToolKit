@@ -1,5 +1,5 @@
 /**
- * JQuery plugin: popupDismiss v4
+ * JQuery plugin: popupDismiss v4.1
  *
  */
 (function ($)
@@ -57,7 +57,6 @@
 			{
 				eventData = $.extend({}, event, event.data);
 				eventData.$dismissTrigger = $(event.target);
-				event.stopPropagation();
 			}
 
 			if (!isListenerEvent ||

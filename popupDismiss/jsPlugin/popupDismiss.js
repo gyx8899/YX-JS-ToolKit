@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4
+ * Javascript plugin: popupDismiss v4.1
  *
  */
 (function () {
@@ -50,7 +50,6 @@
 							dismissHandler: eventData.dismissHandler,
 							dismissScopes: eventData.dismissScopes
 						};
-						newEvent.stopPropagation();
 						method.popupDismiss(newEventData, true);
 					});
 				});
@@ -187,7 +186,7 @@
 		},
 
 		findAncestor: function (el, sel) {
-			while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el, sel))) ;
+			while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el, sel))) {}
 			return el;
 		},
 
