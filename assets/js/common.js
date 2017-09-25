@@ -502,7 +502,7 @@ function getElements(elements)
 }
 function findParent(element, selector)
 {
-	while ((element = element.parentElement) && !((element.matches || element.matchesSelector).call(element, selector))) ;
+	while ((element = element.parentElement) && !((element.matches || element.matchesSelector).call(element, selector))) {}
 	return element;
 }
 function closet(element, className)
