@@ -192,15 +192,18 @@
 
 //	1. To special items;
 //		new popupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		new popupDismiss(document.querySelectorAll('.trigger-parent'));
+//		new popupDismiss(document.querySelectorAll('#tapId'));
 //		new popupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
 //		new popupDismiss($('[data-toggle="popupDismiss"]'));
+		new popupDismiss($('.trigger-parent'));
 //		new popupDismiss($('#tapId'));
 
 //	2. To all items on body;
 //		new popupDismiss();
 
 //	3. To all subItems on '#demos';
-		new popupDismissDelegate('#demos');
+//		new popupDismissDelegate('#demos');
 	});
 
 	function popupHandler()

@@ -304,7 +304,7 @@
 			{
 				elements = elements.length > 1 ? elements.get() : elements[0];
 			}
-			if (NodeList.prototype.isPrototypeOf(elements) || Array.isArray(elements))
+			if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection || Array.isArray(elements))
 			{
 				for (var i = 0, l = elements.length; i < l; i++)
 				{
