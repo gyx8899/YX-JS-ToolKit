@@ -151,13 +151,13 @@
 					</section>
 					<hr>
 					<section class="demo4-scope">
-						<h3>Demo4: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo4List</b>"
+						<h3>Demo4: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>.demo4List</b>"
 							data-dismiss-scope=".demo4-scope"
 							data-popup-handler="popupList" data-dismiss-handler="dismissList"</p></h3>
-						<button id="demo4Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="#demo4List" data-dismiss-scope=".demo4-scope" data-popup-handler="popupList" data-dismiss-handler="dismissList">
+						<button id="demo4Btn" class="trigger-parent" data-toggle="popupDismiss" data-target=".demo4List" data-dismiss-scope=".demo4-scope" data-popup-handler="popupList" data-dismiss-handler="dismissList">
 							toggle popup
 						</button>
-						<ul id="demo4List" class="popup-list">
+						<ul class="popup-list demo4List">
 							<li>Demo4 popup list1</li>
 							<li>Demo4 popup list2</li>
 							<li>Demo4 popup list3</li>
@@ -191,13 +191,16 @@
 		initColor();
 
 //	1. To special items;
-		new popupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		new popupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
 //		new popupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
 //		new popupDismiss($('[data-toggle="popupDismiss"]'));
 //		new popupDismiss($('#tapId'));
 
 //	2. To all items on body;
 //		new popupDismiss();
+
+//	3. To all subItems on '#demos';
+		new popupDismissDelegate('#demos');
 	});
 
 	function popupHandler()
@@ -228,10 +231,10 @@
 	}
 
 	function initColor()
-  {
-  	$('[data-popup-dismiss="false"]').addClass('dismiss-false');
-  	$('[data-popup-dismiss="true"]').addClass('dismiss-true');
-  }
+	{
+		$('[data-popup-dismiss="false"]').addClass('dismiss-false');
+		$('[data-popup-dismiss="true"]').addClass('dismiss-true');
+	}
 </script>
 </body>
 </html>

@@ -192,7 +192,10 @@
 //	$('[data-toggle="popupDismiss"]').popupDismiss();
 
 //	2. To all items on body;
-		$.popupDismiss();
+//		$.popupDismiss();
+
+//	3. To all subElements of '#demos';
+		$.popupDismissDelegate('#demos');
 
 		initColor();
 	});

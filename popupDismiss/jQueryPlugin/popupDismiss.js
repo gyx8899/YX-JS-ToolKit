@@ -1,5 +1,5 @@
 /**
- * JQuery plugin: popupDismiss v4.1
+ * JQuery plugin: popupDismiss v4.2
  *
  */
 (function ($)
@@ -149,7 +149,11 @@
 	$.extend({
 		popupDismiss: function ()
 		{
-			$('body').on('click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+			popupDismissDelegate('body');
+		},
+		popupDismissDelegate: function (elSelector)
+		{
+			$(elSelector).on('click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 		}
 	})
 })(jQuery);

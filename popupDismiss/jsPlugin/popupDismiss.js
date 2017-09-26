@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.1
+ * Javascript plugin: popupDismiss v4.2
  *
  */
 (function () {
@@ -293,6 +293,10 @@
 
 	documentExtend = method.extendOnOff(document);
 
+	this.popupDismissDelegate = function (elSelector) {
+		method.on(elSelector, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+	};
+
 	this.popupDismiss = function (elements) {
 		if (elements)
 		{
@@ -314,7 +318,7 @@
 		}
 		else
 		{
-			method.on('body', 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+			this.popupDismissDelegate('body');
 		}
 	};
 })();
