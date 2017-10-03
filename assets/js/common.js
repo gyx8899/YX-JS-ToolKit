@@ -123,7 +123,9 @@ function loadCSS(url, callback, context)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem(arguments.callee, url, callback);
+		parameterArrayToItem(function (urlParam, callbackParam) {
+			loadCSS(urlParam, callbackParam);
+		}, url, callback);
 	}
 	else
 	{
@@ -149,7 +151,9 @@ function loadScript(url, callback, context)
 	if (Array.isArray(url))
 	{
 		// Process the url and callback if they are array;
-		parameterArrayToItem(arguments.callee, url, callback);
+		parameterArrayToItem(function (urlParam, callbackParam) {
+			loadScript(urlParam, callbackParam);
+		}, url, callback);
 	}
 	else
 	{
