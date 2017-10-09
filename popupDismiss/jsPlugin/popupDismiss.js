@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.2
+ * Javascript plugin: popupDismiss v4.3
  *
  */
 (function () {
@@ -187,6 +187,8 @@
 			},
 
 			findAncestor: function (el, sel) {
+				// Fix el.matches(matchesSelector) not fully support in IE 11
+				if(!Element.prototype.matches){Element.prototype.matches=Element.prototype.matchesSelector||Element.prototype.mozMatchesSelector||Element.prototype.msMatchesSelector||Element.prototype.oMatchesSelector||Element.prototype.webkitMatchesSelector||function(s){var matches=(this.document||this.ownerDocument).querySelectorAll(s),i=matches.length;while(--i>=0&&matches.item(i)!==this){}return i>-1}};
 				while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el, sel))) {}
 				return el;
 			},
