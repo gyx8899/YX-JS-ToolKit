@@ -1,10 +1,9 @@
 /**
- * Javascript plugin: popupDismiss v4.3
+ * Javascript plugin: popupDismiss v4.4
  *
  */
 (function () {
 	var pluginName = 'popupDismiss',
-		documentExtend = null,
 		that = this,
 		method = {
 			isTap: undefined,
@@ -13,10 +12,10 @@
 				var popupTrigger = event.target;
 				if (popupTrigger.getAttribute('data-toggle') !== pluginName)
 				{
-					popupTrigger = method.findAncestor(popupTrigger, '[data-toggle="' + pluginName + '"]');
+					popupTrigger = findParent(popupTrigger, '[data-toggle="' + pluginName + '"]');
 				}
 				var dataDismissScope = popupTrigger.getAttribute('data-dismiss-scope'),
-					dismissScopes = getScopeElementArray(dataDismissScope),
+					dismissScopes = getSelectorsElements(dataDismissScope),
 					eventData = {
 						type: event.type,
 						namespace: popupTrigger.getAttribute('data-target'),
@@ -33,12 +32,12 @@
 					method.monitorTap();
 					if (eventData.toggledClass)
 					{
-						method.addClass(eventData.popupTrigger, eventData.toggledClass);
-						method.addClass(eventData.popupTarget, eventData.toggledClass);
+						addClass(eventData.popupTrigger, eventData.toggledClass);
+						addClass(eventData.popupTarget, eventData.toggledClass);
 					}
 					eventData.popupTarget.setAttribute('data-isPopup', 'true');
 					eventData.dismissScopes.forEach(function (scope) {
-						scope.on(eventData.type + "." + eventData.namespace, function (newEvent) {
+						extendOnOff(scope).on(eventData.type + "." + eventData.namespace, function (newEvent) {
 							if (event === newEvent)
 								return;
 							var newEventData = {
@@ -62,32 +61,6 @@
 					eventData.dismissTrigger = popupTrigger;
 					method.popupDismiss(eventData);
 				}
-				function getScopeElementArray(scopeSelectors)
-				{
-					if (!scopeSelectors)
-					{
-						return [documentExtend];
-					}
-					var scopeElements = [],
-						scopeSelectorArray = scopeSelectors.split(',');
-					for (var i = 0, l = scopeSelectorArray.length; i < l; i++)
-					{
-						var trimmedScopeSelector = scopeSelectorArray[i].trim();
-						if (trimmedScopeSelector === 'document')
-						{
-							scopeElements.push(documentExtend);
-						}
-						else
-						{
-							var scopeNodeList = method.convertNodeListToArray(document.querySelectorAll(scopeSelectorArray[i]));
-							scopeNodeList.map(function (t) {
-								method.extendOnOff(t);
-							});
-							scopeElements = scopeElements.concat(scopeNodeList);
-						}
-					}
-					return scopeElements;
-				}
 			},
 
 			popupDismiss: function (eventData, isTrigger) {
@@ -95,7 +68,7 @@
 					return;
 
 				if (!isTrigger ||
-						(!method.hasCloset(eventData.dismissTrigger, eventData.popupTrigger)
+						(!hasCloset(eventData.dismissTrigger, eventData.popupTrigger)
 								&& method.isDismissTrigger(eventData.dismissTrigger, eventData.popupTarget)
 								&& eventData.popupTarget.getAttribute('data-isPopup') === 'true'
 						)
@@ -103,8 +76,8 @@
 				{
 					if (eventData.toggledClass)
 					{
-						method.removeClass(eventData.popupTrigger, eventData.toggledClass);
-						method.removeClass(eventData.popupTarget, eventData.toggledClass);
+						removeClass(eventData.popupTrigger, eventData.toggledClass);
+						removeClass(eventData.popupTarget, eventData.toggledClass);
 					}
 					eventData.popupTarget.setAttribute('data-isPopup', 'false');
 					eventData.dismissScopes.forEach(function (scope) {
@@ -148,21 +121,18 @@
 			// Default: all be dismiss trigger(return true);
 			// Check click point ($child) has '[data-popup-dismiss="false"]'('[data-popup-dismiss="true"]') or not;
 			isDismissTrigger: function (child, parent) {
-				if (method.hasCloset(child, parent))
+				if (hasCloset(child, parent))
 				{
-					var parentDismissTrue = method.findAncestor(child, '[data-popup-dismiss="true"]'),
-							parentDismissFalse = method.findAncestor(child, '[data-popup-dismiss="false"]');
-					if (child.getAttribute('data-popup-dismiss') === 'false')
+					var dataPopupDismiss = child.getAttribute('data-popup-dismiss'),
+							parentDismissFalse;
+					if (dataPopupDismiss === 'false' || dataPopupDismiss === 'true')
 					{
-						return false;
+						return dataPopupDismiss === 'true';
 					}
-					else if (child.getAttribute('data-popup-dismiss') === 'true')
+					else if (parentDismissFalse = findParent(child, '[data-popup-dismiss="false"]'))
 					{
-						return true;
-					}
-					else if (parentDismissFalse)
-					{
-						return parentDismissTrue ? method.hasCloset(parentDismissTrue, parentDismissFalse) : false;
+						var parentDismissTrue = findParent(child, '[data-popup-dismiss="true"]');
+						return parentDismissTrue ? hasCloset(parentDismissTrue, parentDismissFalse) : false;
 					}
 				}
 				return true;
@@ -184,144 +154,205 @@
 					}
 					body.setAttribute('popup-count', popupCount.toString());
 				}
-			},
-
-			findAncestor: function (el, sel) {
-				// Fix el.matches(matchesSelector) not fully support in IE 11
-				if(!Element.prototype.matches){Element.prototype.matches=Element.prototype.matchesSelector||Element.prototype.mozMatchesSelector||Element.prototype.msMatchesSelector||Element.prototype.oMatchesSelector||Element.prototype.webkitMatchesSelector||function(s){var matches=(this.document||this.ownerDocument).querySelectorAll(s),i=matches.length;while(--i>=0&&matches.item(i)!==this){}return i>-1}};
-				while ((el = el.parentElement) && !((el.matches || el.matchesSelector).call(el, sel))) {}
-				return el;
-			},
-
-			convertNodeListToArray: function (nodeList)
-			{
-				var resultArray = [];
-				for (var i = 0, l = nodeList.length; i < l; i++)
-				{
-					resultArray[i] = nodeList[i];
-				}
-				return resultArray;
-			},
-
-			hasCloset: function (el, parentElement) {
-				if (el === parentElement)
-				{
-					return true;
-				}
-				// If no parentSelector defined will bubble up all the way to *document*
-				if (parentElement === undefined)
-				{
-					parentElement = document;
-				}
-
-				var parents = [];
-				var p = el.parentNode;
-
-				while (p !== parentElement && p.parentNode)
-				{
-					var o = p;
-					parents.push(o);
-					p = o.parentNode;
-				}
-
-				return p === parentElement;
-			},
-
-			on: function (elSelector, eventName, selector, fn) {
-				var element = document.querySelector(elSelector);
-				element.addEventListener(eventName, function (event) {
-					var possibleTargets = element.querySelectorAll(selector);
-					var target = event.target;
-
-					for (var i = 0, l = possibleTargets.length; i < l; i++)
-					{
-						var el = target;
-						var p = possibleTargets[i];
-
-						while (el && el !== element)
-						{
-							if (el === p)
-							{
-								return fn.call(p, event);
-							}
-
-							el = el.parentNode;
-						}
-					}
-				});
-			},
-
-			addClass: function (el, className) {
-				if (el.classList)
-					el.classList.add(className);
-				else
-					el.className += ' ' + className;
-			},
-
-			removeClass: function (el, className) {
-				if (el.classList)
-					el.classList.remove(className);
-				else
-					el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-			},
-
-			//Extend on/off methods
-			extendOnOff: function (el) {
-				if (el.length === 0)
-					return null;
-				var events = {
-					on: function (event, callback, opts) {
-						if (!this.namespaces) // save the namespaces on the DOM element itself
-							this.namespaces = {};
-
-						this.namespaces[event] = callback;
-						var options = opts || false;
-
-						this.addEventListener(event.split('.')[0], callback, options);
-						return this;
-					},
-					off: function (event) {
-						this.removeEventListener(event.split('.')[0], this.namespaces[event]);
-						delete this.namespaces[event];
-						return this;
-					}
-				};
-
-				// Extend the DOM with these above custom methods
-				el.on = Element.prototype.on = events.on;
-				el.off = Element.prototype.off = events.off;
-				return el;
 			}
 		};
 
-	documentExtend = method.extendOnOff(document);
+	// Utils
+	function addClass(el, className)
+	{
+		if (el.classList)
+			el.classList.add(className);
+		else
+			el.className += ' ' + className;
+	}
 
-	this.popupDismissDelegate = function (elSelector) {
-		method.on(elSelector, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+	function removeClass(el, className)
+	{
+		if (el.classList)
+			el.classList.remove(className);
+		else
+			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
+
+	function findParent(element, selector)
+	{
+		while ((element = element.parentElement) && !matches(element, selector)) {}
+		return element;
+	}
+
+	function matches(el, selector)
+	{
+		return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+	}
+
+	function hasCloset(el, parentElement)
+	{
+		if (el === parentElement)
+		{
+			return true;
+		}
+		if (parentElement === undefined)
+		{
+			return false;
+		}
+
+		var parents = [], p = el.parentNode;
+		while (p !== parentElement && p.parentNode)
+		{
+			var o = p;
+			parents.push(o);
+			p = o.parentNode;
+		}
+		return p === parentElement;
+	}
+
+	function convertNodeListToArray(nodeList)
+	{
+		var resultArray = [];
+		for (var i = 0, l = nodeList.length; i < l; i++)
+		{
+			resultArray[i] = nodeList[i];
+		}
+		return resultArray;
+	}
+
+	function getSelectorsElements(selectorString)
+	{
+		if (!selectorString || (selectorString && selectorString.trim() === ''))
+		{
+			return [document];
+		}
+		var selectorsElements = [],
+				selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
+					return selectorStringItem.trim();
+				});
+		selectorsArray = uniqueArray(selectorsArray);
+		for (var i = 0, l = selectorsArray.length; i < l; i++)
+		{
+			if (selectorsArray[i] === 'document')
+			{
+				selectorsElements.push(document);
+			}
+			else
+			{
+				var scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
+				selectorsElements = selectorsElements.concat(scopeNodeList);
+			}
+		}
+		return selectorsElements;
+	}
+
+	function uniqueArray(sourceArray)
+	{
+		var resultArray = [], hash = {};
+		for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
+		{
+			if (!hash[elem])
+			{
+				resultArray.push(elem);
+				hash[elem] = true;
+			}
+		}
+		return resultArray;
+	}
+
+
+	//Extend on/off methods
+	function extendOnOff(el)
+	{
+		if (el.length === 0)
+			return null;
+		var events = {
+			on: function (event, callback, opts) {
+				if (!this.namespaces) // save the namespaces on the DOM element itself
+					this.namespaces = {};
+
+				this.namespaces[event] = callback;
+				var options = opts || false;
+
+				this.addEventListener(event.split('.')[0], callback, options);
+				return this;
+			},
+			off: function (event) {
+				this.removeEventListener(event.split('.')[0], this.namespaces[event]);
+				delete this.namespaces[event];
+				return this;
+			}
+		};
+
+		// Extend the DOM with these above custom methods
+		if (!el.isExtendOnOff)
+		{
+			el.on = Element.prototype.on = events.on;
+			el.off = Element.prototype.off = events.off;
+			el.isExtendOnOff = true;
+		}
+		return el;
+	}
+
+	function delegate(element, eventName, selector, handler)
+	{
+		var possibleTargets = element.querySelectorAll(selector);
+		element.addEventListener(eventName, listenerHandler);
+
+		function listenerHandler(event)
+		{
+			var target = event.target;
+
+			for (var i = 0, l = possibleTargets.length; i < l; i++)
+			{
+				var el = target,
+						p = possibleTargets[i];
+
+				while (el && el !== element)
+				{
+					if (el === p)
+					{
+						return handler.call(p, event);
+					}
+					el = el.parentNode;
+				}
+			}
+		}
+	}
+
+	function getElements(elements)
+	{
+		var resultElement = [];
+		if (elements.jquery)
+		{
+			resultElement = elements.length > 1 ? elements.get() : [elements[0]];
+		}
+		else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection)
+		{
+			resultElement = Array.prototype.slice.call(elements);
+		}
+		else if (Array.isArray(elements))
+		{
+			resultElement = elements;
+		}
+		else if (elements.nodeType)
+		{
+			resultElement = [elements];
+		}
+		return resultElement;
+	}
+
+	this.popupDismissDelegate = function (elements) {
+		delegate(elements, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 	};
 
 	this.popupDismiss = function (elements) {
 		if (elements)
 		{
-			if (elements.jquery)
-			{
-				elements = elements.length > 1 ? elements.get() : elements[0];
-			}
-			if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection || Array.isArray(elements))
-			{
-				for (var i = 0, l = elements.length; i < l; i++)
-				{
-					elements[i].addEventListener("click", method.popupEvent);
-				}
-			}
-			else if (elements.nodeType)
-			{
-				elements.addEventListener("click", method.popupEvent);
-			}
+			var allElements = getElements(elements);
+			allElements.map(function (element) {
+				element.addEventListener("click", method.popupEvent);
+			});
 		}
 		else
 		{
-			that.popupDismissDelegate('body');
+			that.popupDismissDelegate(document.body);
 		}
 	};
 })();
