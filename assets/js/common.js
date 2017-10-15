@@ -1,4 +1,21 @@
 /*
+* Function: Process
+* */
+function uniqueArray(sourceArray)
+{
+	var resultArray = [], hash = {};
+	for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
+	{
+		if (!hash[elem])
+		{
+			resultArray.push(elem);
+			hash[elem] = true;
+		}
+	}
+	return resultArray;
+}
+
+/*
  * Functions: Operation html;
  * */
 function escapeHTML(text)
@@ -408,7 +425,7 @@ function consoleLog(fnArguments)
 	if (window.console && window.debug !== false)
 	{
 		var localTime = (new Date()).toLocaleTimeString(),
-				fnName = fnArguments.callee.name,
+				fnName = fnArguments.callee ? fnArguments.callee.name : '',
 				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
 				fnArgumentsString = getArrayString(fnArgumentsArray),
 				argumentsArray = Array.prototype.slice.call(arguments, 0),
@@ -482,7 +499,10 @@ function getCallbackName(typeName)
 	return typeName + "Callback";
 }
 
-// Functions: Elements without jQuery, return element array
+/*
+* Functions: Elements operation
+*
+* */
 function getElements(elements)
 {
 	var resultElement = [];
@@ -504,11 +524,44 @@ function getElements(elements)
 	}
 	return resultElement;
 }
+
+function getSelectorsElements(selectorString)
+{
+	if (!selectorString || (selectorString && selectorString.trim() === ''))
+	{
+		return [document];
+	}
+	var selectorsElements = [],
+			selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
+				return selectorStringItem.trim();
+			});
+	selectorsArray = uniqueArray(selectorsArray);
+	for (var i = 0, l = selectorsArray.length; i < l; i++)
+	{
+		if (selectorsArray[i] === 'document')
+		{
+			selectorsElements.push(document);
+		}
+		else
+		{
+			var scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
+			selectorsElements = selectorsElements.concat(scopeNodeList);
+		}
+	}
+	return selectorsElements;
+}
+
 function findParent(element, selector)
 {
-	while ((element = element.parentElement) && !((element.matches || element.matchesSelector).call(element, selector))) {}
+	while ((element = element.parentElement) && !matches(element, selector)) {}
 	return element;
 }
+
+function matches(el, selector)
+{
+	return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+}
+
 function closet(element, className)
 {
 	var closetElement = null;
@@ -522,6 +575,41 @@ function closet(element, className)
 	}
 	return closetElement;
 }
+
+function hasCloset(el, parentElement)
+{
+	if (el === parentElement)
+	{
+		return true;
+	}
+	if (parentElement === undefined)
+	{
+		return false;
+	}
+
+	var parents = [], p = el.parentNode;
+	while (p !== parentElement && p.parentNode)
+	{
+		var o = p;
+		parents.push(o);
+		p = o.parentNode;
+	}
+	return p === parentElement;
+}
+
+function convertNodeListToArray(nodeList)
+{
+	var resultArray = [];
+	for (var i = 0, l = nodeList.length; i < l; i++)
+	{
+		resultArray[i] = nodeList[i];
+	}
+	return resultArray;
+}
+
+/*
+* Tools: Page operation
+* */
 function scrollListToIndex(listFolder, index, toTopIndex, duration)
 {
 	if (index === 0)
@@ -611,4 +699,65 @@ function removeClass(element, className)
 		element.classList.remove(className);
 	else
 		element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+}
+/*
+* Function: Event operation
+* */
+//Extend on/off methods
+function extendOnOff(el)
+{
+	if (el.length === 0)
+		return null;
+	var events = {
+		on: function (event, callback, opts) {
+			if (!this.namespaces) // save the namespaces on the DOM element itself
+				this.namespaces = {};
+
+			this.namespaces[event] = callback;
+			var options = opts || false;
+
+			this.addEventListener(event.split('.')[0], callback, options);
+			return this;
+		},
+		off: function (event) {
+			this.removeEventListener(event.split('.')[0], this.namespaces[event]);
+			delete this.namespaces[event];
+			return this;
+		}
+	};
+
+	// Extend the DOM with these above custom methods
+	if (!el.isExtendOnOff)
+	{
+		el.on = Element.prototype.on = events.on;
+		el.off = Element.prototype.off = events.off;
+		el.isExtendOnOff = true;
+	}
+	return el;
+}
+
+function delegate(element, eventName, selector, handler)
+{
+	var possibleTargets = element.querySelectorAll(selector);
+	element.addEventListener(eventName, listenerHandler);
+
+	function listenerHandler(event)
+	{
+		var target = event.target;
+
+		for (var i = 0, l = possibleTargets.length; i < l; i++)
+		{
+			var el = target,
+					p = possibleTargets[i];
+
+			while (el && el !== element)
+			{
+				if (el === p)
+				{
+					return handler.call(p, event);
+				}
+				el = el.parentNode;
+			}
+		}
+	}
 }
