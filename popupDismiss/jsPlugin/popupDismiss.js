@@ -256,7 +256,6 @@
 		return resultArray;
 	}
 
-
 	//Extend on/off methods
 	function extendOnOff(el)
 	{
