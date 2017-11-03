@@ -39,6 +39,18 @@
 		{
 			border: 1px solid red;
 		}
+		.window.set-content
+		{
+			background-color: #4DC7A0;
+		}
+		.window .window-content
+		{
+			text-align: center;
+			height: 220px;
+			line-height: 180px;
+			font-size: 22px;
+			color: white;
+		}
 		.owl-carousel .item:hover
 		{
 			cursor: move;
@@ -64,7 +76,7 @@
 <main>
 
 	<!-- Demos -->
-	<section id="demo">
+	<section id="demos">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
 				<div data-toggle="previewCode" data-target="#demoWrap">
@@ -72,28 +84,28 @@
 					<!--Demo's html here-->
 					<div id="owlBasicBar" class="owl-carousel">
 						<div class="item" id="game_1111" draggable="true">
-							<h4>1</h4>
+							<h4>1111</h4>
 						</div>
 						<div class="item" id="game_2222" draggable="true">
-							<h4>2</h4>
+							<h4>2222</h4>
 						</div>
 						<div class="item" id="game_3333" draggable="true">
-							<h4>3</h4>
+							<h4>3333</h4>
 						</div>
 						<div class="item" id="game_4444" draggable="true">
-							<h4>4</h4>
+							<h4>4444</h4>
 						</div>
 						<div class="item" id="game_5555" draggable="true">
-							<h4>5</h4>
+							<h4>5555</h4>
 						</div>
 						<div class="item" id="game_6666" draggable="true">
-							<h4>6</h4>
+							<h4>6666</h4>
 						</div>
 						<div class="item" id="game_7777" draggable="true">
-							<h4>7</h4>
+							<h4>7777</h4>
 						</div>
 						<div class="item" id="game_8888" draggable="true">
-							<h4>8</h4>
+							<h4>8888</h4>
 						</div>
 					</div>
 					<label for="switchOwlBtn">Disable owl carousel slide drag:</label>
@@ -101,10 +113,22 @@
 					<div id="playerDebug"></div>
 					<div id="player" class="player clearfix">
 						<ul class="windows">
-							<li id="window_0" class="window">Window 0</li>
-							<li id="window_1" class="window">Window 1</li>
-							<li id="window_2" class="window">Window 2</li>
-							<li id="window_3" class="window">Window 3</li>
+							<li id="window_0" class="window">
+								<div class="window-id">Window 0</div>
+								<div class="window-content"></div>
+							</li>
+							<li id="window_1" class="window">
+								<div class="window-id">Window 1</div>
+								<div class="window-content"></div>
+							</li>
+							<li id="window_2" class="window">
+								<div class="window-id">Window 2</div>
+								<div class="window-content"></div>
+							</li>
+							<li id="window_3" class="window">
+								<div class="window-id">Window 3</div>
+								<div class="window-content"></div>
+							</li>
 						</ul>
 					</div>
 				</div>
@@ -191,19 +215,14 @@
 
 	function initDragAndDrop()
 	{
-		/*
-		 1) .schedule.game 监听dragStart
-		 2) drag发生时, 生成一个独立的drag对象(dom), 原有elem状态不变.
-		 3) .player.window 监听drop, drop发生时, 获取gameId.
-		 */
 		$(".owl-carousel .item").on("dragstart", function (event) {
 			event.originalEvent.dataTransfer.setData("gameId", event.target.id.split("_")[1]);
 		});
 		$("#player .window").on("drop", function (event) {
 			event.preventDefault();
-			$(this).removeClass("drop-able");
 			var gameId = event.originalEvent.dataTransfer.getData("gameId");
-			$("#playerDebug").text("index: " + $(this).attr("id").split("_")[1] + " gameId: " + gameId);
+			$(this).removeClass("drop-able").addClass('set-content');
+			$(this).find('.window-content')[0].innerText = gameId;
 		}).on("dragover", function (event) {
 			event.preventDefault();
 		}).on("dragenter", function (event) {
