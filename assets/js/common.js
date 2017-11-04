@@ -701,6 +701,18 @@ function removeClass(element, className)
 	else
 		element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 }
+
+function toggleClass(element, className)
+{
+	if (hasClass(element, className))
+	{
+		removeClass(element, className);
+	}
+	else
+	{
+		addClass(element, className);
+	}
+}
 /*
 * Function: Event operation
 * */
@@ -760,5 +772,30 @@ function delegate(element, eventName, selector, handler)
 				el = el.parentNode;
 			}
 		}
+	}
+}
+
+function bindClickIgnoreDrag(elements, callback, isBind)
+{
+	var eventListenerName = isBind !== false ? 'on' : 'off';
+
+	[].forEach.call(elements, function (element) {
+		extendOnOff(element)[eventListenerName]('mousedown', mouseDownHandler);
+	});
+
+	function mouseDownHandler(event)
+	{
+		event.target.addEventListener('mouseup', mouseUpMoveHandler);
+		event.target.addEventListener('mousemove', mouseUpMoveHandler);
+	}
+
+	function mouseUpMoveHandler(event)
+	{
+		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		{
+			callback(event);
+		}
+		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
+		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
 	}
 }
