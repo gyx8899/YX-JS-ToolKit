@@ -52,3 +52,13 @@
 {
 	display: none;
 }
+.owl-carousel.nav-disappear .owl-nav [class*=owl-]
+{
+	transition: visibility 2s linear;
+}
+.owl-carousel.nav-disappear .owl-nav [class*=owl-].disabled
+{
+	opacity: 0;
+	visibility: hidden;
+	display: inherit;
+}

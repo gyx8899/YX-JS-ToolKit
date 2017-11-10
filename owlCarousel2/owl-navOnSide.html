@@ -49,7 +49,7 @@
 				<div data-toggle="previewCode" data-target="#demoWrap">
 					<p>Basic demo with nav bar on side</p>
 					<!--Demo's html here-->
-					<div id="owlBasicBar" class="owl-carousel">
+					<div id="owlBasicBar" class="owl-carousel nav-disappear">
 						<div class="item">
 							<h4>1</h4>
 						</div>
@@ -76,7 +76,7 @@
 						</div>
 					</div>
 					<p>Basic demo with nav btn on side</p>
-					<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn">
+					<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn nav-disappear">
 						<div class="item">
 							<h4>1</h4>
 						</div>
@@ -133,7 +133,7 @@
 	// Demo's JS here
 	window.addEventListener("load", function () {
 		var responsiveOption = {
-			loop: true,
+			loop: false,
 			margin: 10,
 			nav: true,
 			responsive: {
@@ -144,15 +144,18 @@
 					items: 3
 				},
 				1000: {
-					items: 5
+					items: 3
 				}
 			}
 		};
 		initOwlCarousel($('#owlBasicBar'), responsiveOption);
-		owlItemClickedMonitor($('#owlBasicBar'));
+//		owlItemClickedMonitor($('#owlBasicBar'));
 
 		initOwlCarousel($('#owlBasicBtn'), responsiveOption);
-		owlItemClickedMonitor($('#owlBasicBtn'));
+//		owlItemClickedMonitor($('#owlBasicBtn'));
+		$('.item').on('click', function () {
+			alert('Clicked');
+		});
 	}, false);
 </script>
 </body>
