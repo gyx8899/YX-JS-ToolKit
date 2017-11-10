@@ -82,17 +82,19 @@
 		{
 			if (event.type === "touchstart")
 				touchstartBeginTime = Date.now();
-			consoleLog(arguments, event.type);
 			consoleLog(arguments, event.type, Date.now() - touchstartBeginTime);
-			consoleLog(arguments, event.type + (Date.now() - touchstartBeginTime));
 		}
 
 		target.onclick = log;
 		target.ontouchstart = log;
 		target.ontouchend = log;
 		target.ontouchmove = log;
-		target.onmouseover = log;
 		target.onmousedown = log;
+		target.onmouseenter = log;
+		target.onmouseleave = log;
+		target.onmousemove = log;
+		target.onmouseout = log;
+		target.onmouseover = log;
 		target.onmouseup = log;
 	}();
 </script>
