@@ -716,6 +716,101 @@ function toggleClass(element, className)
 /*
 * Function: Event operation
 * */
+
+function delegate(element, eventName, selector, handler)
+{
+	var possibleTargets = element.querySelectorAll(selector);
+	element.addEventListener(eventName, listenerHandler);
+
+	function listenerHandler(event)
+	{
+		var target = event.target;
+
+		for (var i = 0, l = possibleTargets.length; i < l; i++)
+		{
+			var el = target,
+					p = possibleTargets[i];
+
+			while (el && el !== element)
+			{
+				if (el === p)
+				{
+					return handler.call(p, event);
+				}
+				el = el.parentNode;
+			}
+		}
+	}
+}
+
+// Custom for click which can ignore drag trigger click
+function delegateClickIgnoreDrag(element, selector, handler)
+{
+	var possibleTargets = element.querySelectorAll(selector);
+	element.addEventListener('mousedown', listenerHandler);
+
+	function listenerHandler(event)
+	{
+		var target = event.target;
+
+		for (var i = 0, l = possibleTargets.length; i < l; i++)
+		{
+			var el = target,
+					p = possibleTargets[i];
+
+			while (el && el !== element)
+			{
+				if (el === p)
+				{
+					return mouseDownHandler.call(p, event);
+				}
+				el = el.parentNode;
+			}
+		}
+	}
+
+	function mouseDownHandler(event)
+	{
+		event.target.addEventListener('mouseup', mouseUpMoveHandler);
+		event.target.addEventListener('mousemove', mouseUpMoveHandler);
+	}
+
+	function mouseUpMoveHandler(event)
+	{
+		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		{
+			handler(event);
+		}
+		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
+		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
+	}
+}
+
+function bindClickIgnoreDrag(elements, callback, isBind)
+{
+	var eventListenerName = isBind !== false ? 'on' : 'off';
+
+	[].forEach.call(elements, function (element) {
+		extendOnOff(element)[eventListenerName]('mousedown', mouseDownHandler);
+	});
+
+	function mouseDownHandler(event)
+	{
+		event.target.addEventListener('mouseup', mouseUpMoveHandler);
+		event.target.addEventListener('mousemove', mouseUpMoveHandler);
+	}
+
+	function mouseUpMoveHandler(event)
+	{
+		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		{
+			callback(event);
+		}
+		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
+		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
+	}
+}
+
 //Extend on/off methods
 function extendOnOff(el)
 {
@@ -747,55 +842,4 @@ function extendOnOff(el)
 		el.isExtendOnOff = true;
 	}
 	return el;
-}
-
-function delegate(element, eventName, selector, handler)
-{
-	var possibleTargets = element.querySelectorAll(selector);
-	element.addEventListener(eventName, listenerHandler);
-
-	function listenerHandler(event)
-	{
-		var target = event.target;
-
-		for (var i = 0, l = possibleTargets.length; i < l; i++)
-		{
-			var el = target,
-					p = possibleTargets[i];
-
-			while (el && el !== element)
-			{
-				if (el === p)
-				{
-					return handler.call(p, event);
-				}
-				el = el.parentNode;
-			}
-		}
-	}
-}
-
-function bindClickIgnoreDrag(elements, callback, isBind)
-{
-	var eventListenerName = isBind !== false ? 'on' : 'off';
-
-	[].forEach.call(elements, function (element) {
-		extendOnOff(element)[eventListenerName]('mousedown', mouseDownHandler);
-	});
-
-	function mouseDownHandler(event)
-	{
-		event.target.addEventListener('mouseup', mouseUpMoveHandler);
-		event.target.addEventListener('mousemove', mouseUpMoveHandler);
-	}
-
-	function mouseUpMoveHandler(event)
-	{
-		if (event.type === 'mouseup' && event.which <= 1) //only for left key
-		{
-			callback(event);
-		}
-		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
-		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
-	}
 }
