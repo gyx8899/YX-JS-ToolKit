@@ -16,7 +16,7 @@
 	<!-- Style custom *** CSS -->
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
 	<link rel="stylesheet" href="styles/owl-navOnSide.css">
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
 		/* Demo's CSS here */
 		.btn
 		{
@@ -56,7 +56,7 @@
 	<section id="demos">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<!--Demo's html here-->
 					<div style="width: 100%; position: relative;">
 						<div style="width: 80%;">
@@ -120,45 +120,45 @@
 
 <!-- Script Demo *** JS -->
 <script id="owlCarouselJS" type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
-<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
 	window.addEventListener("load", function () {
 		var owlOption1 = {
-//stagePadding: 50,
+//			stagePadding: 50,
 			margin: 10,
 			navText: ['', ''],
-//	autoWidth: true,
-//	loop: true,
-//	center: true,
-//	nestedItemSelector: 'item',
+//			autoWidth: true,
+//			loop: true,
+//			center: true,
+//			nestedItemSelector: 'item',
 			nav: true,
 			slideBy: 'page',
-			//		responsiveClass: true,
-			//		responsive: {
-			//			0: {
-			//				items: 1,
-			//				nav: true
-			//			},
-			//			600: {
-			//				items: 3,
-			//				nav: false
-			//			},
-			//			800: {
-			//				items: 4,
-			//				nav: false
-			//			},
-			//			1000: {
-			//				items: 5,
-			//				nav: false
-			//			},
-			//			1400: {
-			//				items: 6,
-			//				nav: true,
-			//				loop: false,
-			//				margin: 20
-			//			}
-			//		},
+//			responsiveClass: true,
+//			responsive: {
+//				0: {
+//					items: 1,
+//					nav: true
+//				},
+//				600: {
+//					items: 3,
+//					nav: false
+//				},
+//				800: {
+//					items: 4,
+//					nav: false
+//				},
+//				1000: {
+//					items: 5,
+//					nav: false
+//				},
+//				1400: {
+//					items: 6,
+//					nav: true,
+//					loop: false,
+//					margin: 20
+//				}
+//			},
 			items: 4
 		};
 		var owlOption2 = {
@@ -173,15 +173,15 @@
 			items: 1
 		};
 
-		var owl1 = $('#owl1').owlCarousel(owlOption1);
-		var owl2 = $('#owl2').owlCarousel(owlOption2);
+		$('#owl1').owlCarousel(owlOption1);
+		$('#owl2').owlCarousel(owlOption2);
 		$('#prev').on('click', function () {
-			owl1.trigger('prev.owl.carousel', [500]);
-			owl2.trigger('prev.owl.carousel', [500]);
+			$('#owl1').trigger('prev.owl');
+			$('#owl2').trigger('prev.owl');
 		});
 		$('#next').on('click', function () {
-			owl1.trigger('next.owl.carousel', [500]);
-			owl2.trigger('next.owl.carousel', [500]);
+			$('#owl1').trigger('next.owl');
+			$('#owl2').trigger('next.owl');
 		});
 
 		$('#add-left').on('click', function () {
@@ -191,24 +191,24 @@
 			var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
 			var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
 
-			owl1.trigger('add.owl.carousel', [$(content1), 0])
+			$('#owl1').trigger('add.owl.carousel', [$(content1), 0])
 					.trigger('refresh.owl.carousel')
 					.trigger('to.owl.carousel', [0, 500]);
-			owl2.trigger('add.owl.carousel', [$(content2), 0])
+			$('#owl2').trigger('add.owl.carousel', [$(content2), 0])
 					.trigger('refresh.owl.carousel')
 					.trigger('to.owl.carousel', [0, 500]);
 		});
 		$('#add-right').on('click', function () {
-			var count1 = owl1.find('.owl-item').length + 1;
-			var count2 = owl2.find('.owl-item').length + 1;
+			var count1 = $('#owl1').find('.owl-item').length + 1;
+			var count2 = $('#owl2').find('.owl-item').length + 1;
 			var randomWidth = Math.floor(Math.random() * 1000 + 1);
 			var content1 = '<div class="item"><h4>' + count1 + '</h4></div>';
 			var content2 = '<div class="item" style="width:' + randomWidth + 'px"><h4>' + count2 + '</h4></div>';
 
-			owl1.trigger('add.owl.carousel', [$(content1)])
+			$('#owl1').trigger('add.owl.carousel', [$(content1)])
 					.trigger('refresh.owl.carousel')
 					.trigger('to.owl.carousel', [-1, 500]);
-			owl2.trigger('add.owl.carousel', [$(content2)])
+			$('#owl2').trigger('add.owl.carousel', [$(content2)])
 					.trigger('refresh.owl.carousel')
 					.trigger('to.owl.carousel', [-1, 500]);
 		});
@@ -223,49 +223,49 @@
 				content2 += '<div class="item" style="width:' + randomWidth + 'px"><h4>' + i * 20 + '</h4></div>';
 			}
 
-			owl1.trigger('replace.owl.carousel', content1)
+			$('#owl1').trigger('replace.owl.carousel', content1)
 					.trigger('refresh.owl.carousel');
-			owl2.trigger('replace.owl.carousel', content2)
+			$('#owl2').trigger('replace.owl.carousel', content2)
 					.trigger('refresh.owl.carousel');
 		});
 
 		$('#remove-left').on('click', function () {
-			owl1.trigger('remove.owl.carousel', 0)
+			$('#owl1').trigger('remove.owl.carousel', 0)
 					.trigger('refresh.owl.carousel');
-			owl2.trigger('remove.owl.carousel', 0)
+			$('#owl2').trigger('remove.owl.carousel', 0)
 					.trigger('refresh.owl.carousel');
 		});
 
 		$('#remove-right').on('click', function () {
-			var count1 = owl1.find('.owl-item').length;
-			var count2 = owl2.find('.owl-item').length;
-			owl1.trigger('remove.owl.carousel', count1 - 1)
+			var count1 = $('#owl1').find('.owl-item').length;
+			var count2 = $('#owl2').find('.owl-item').length;
+			$('#owl1').trigger('remove.owl.carousel', count1 - 1)
 					.trigger('refresh.owl.carousel');
-			owl2.trigger('remove.owl.carousel', count2 - 1)
+			$('#owl2').trigger('remove.owl.carousel', count2 - 1)
 					.trigger('refresh.owl.carousel');
 		});
 
 		$('#destroy').on('click', function () {
-			owl1.trigger('destroy.owl.carousel');
+			$('#owl1').trigger('destroy.owl.carousel');
 
-			owl2.trigger('destroy.owl.carousel');
+			$('#owl2').trigger('destroy.owl.carousel');
 		});
 
 		$('#re-init-owl').on('click', function () {
-			owl1 = $('#owl1').owlCarousel(owlOption1);
-			owl2 = $('#owl2').owlCarousel(owlOption2);
+			$('#owl1').owlCarousel(owlOption1);
+			$('#owl2').owlCarousel(owlOption2);
 		});
 
 		$('#destroy-reinit').on('click', function () {
 			//		Destroy
-			owl1.trigger('destroy.owl.carousel');
+			$('#owl1').trigger('destroy.owl.carousel');
 			//		Init
-			owl1 = $('#owl1').owlCarousel(owlOption1);
+			$('#owl1').owlCarousel(owlOption1);
 
 			//		Destroy
-			owl2.trigger('destroy.owl.carousel');
+			$('#owl2').trigger('destroy.owl.carousel');
 			//		Init
-			owl2 = $('#owl2').owlCarousel(owlOption2);
+			$('#owl2').owlCarousel(owlOption2);
 		});
 
 	}, false);

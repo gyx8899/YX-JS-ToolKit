@@ -17,7 +17,7 @@
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
 	<!--<link rel="stylesheet" href="styles/owl.theme.css">-->
 	<link rel="stylesheet" href="styles/owl-navOnSide.css">
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
 		/* Demo's CSS here */
 		.owl-carousel .item
 		{
@@ -47,7 +47,7 @@
 	<section id="demos">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<!--Demo's html here-->
 					<div id="owlAutoWidth" class="owl-carousel owl-theme">
 						<div class="item" style="width:250px">
@@ -115,29 +115,34 @@
 
 <!-- Script Demo *** JS -->
 <script id="owlCarouselJS" type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
-<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
-	var owlAutoWidth = null;
 	window.addEventListener("load", function () {
-		owlAutoWidth = initOwlCarousel($('#owlAutoWidth'), {
+		initOwl();
+	}, false);
+
+	function initOwl()
+	{
+		$('#owlAutoWidth').owlCarousel({
+			margin: 10,
+			nav: true,
+			navText: ['', ''],
+			dots: false,
+			loop: false,
 			autoWidth: true,
 			items: 4
 		});
-		owlItemClickedMonitor($('#owlAutoWidth'));
-	}, false);
+	}
 
-		function switchOwlJS()
-		{
-			$('#owlCarouselJS').remove();
-			loadScript("scripts/owl.carousel.custom.js", function () {
-				owlAutoWidth.trigger('destroy.owl.carousel');
-				initOwlCarousel($('#owlAutoWidth'), {
-					autoWidth: true,
-					items: 4
-				})
-			})
-		}
+	function switchOwlJS()
+	{
+		$('#owlCarouselJS').remove();
+		loadScript("scripts/owl.carousel.custom.js", function () {
+			$('#owlAutoWidth').trigger('destroy.owl.carousel');
+			initOwl();
+		})
+	}
 </script>
 </body>
 </html>

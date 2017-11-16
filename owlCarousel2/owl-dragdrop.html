@@ -16,7 +16,7 @@
 	<!-- Style custom *** CSS -->
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
 	<link rel="stylesheet" href="styles/owl-navOnSide.css">
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
 		/* Demo's CSS here */
 		.player
 		{
@@ -62,10 +62,10 @@
 <main>
 
 	<!-- Demos -->
-	<section id="demo">
+	<section id="demos">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<p>Basic demo with nav bar on side</p>
 					<!--Demo's html here-->
 					<div id="owlBasicBar" class="owl-carousel">
@@ -128,7 +128,7 @@
 <script id="owlCarouselJS" type="text/javascript" src="scripts/owl.carousel.custom.dragdrop.js"></script>
 <!--<script type="text/javascript" src="scripts/owl.carousel.custom.js"></script>-->
 <!--<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>-->
-<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
 	var dragSupport = false;
@@ -137,7 +137,12 @@
 		dragSupport = true;
 	}
 
-	var responsiveOption = {
+	var owlOptions = {
+		margin: 10,
+		nav: true,
+		navText: ['', ''],
+		dots: false,
+		loop: false,
 //		mouseDrag: false,
 // 		touchDrag: false,
 		responsive: {
@@ -158,20 +163,19 @@
 			}
 		}
 	};
-	var owlCarousel = null;
 	window.addEventListener("load", function () {
 		initOwl();
 	}, false);
 
 	function initOwl()
 	{
-		owlCarousel = initOwlCarousel($('#owlBasicBar'), responsiveOption);
+		$('#owlBasicBar').owlCarousel(owlOptions);
 	}
 
 	function switchOwl()
 	{
-		responsiveOption.mouseDrag = false;
-		owlCarousel.trigger('destroy.owl.carousel');
+		owlOptions.mouseDrag = false;
+		$('#owlBasicBar').trigger('destroy.owl.carousel');
 		$('#owlCarouselJS').remove();
 
 		loadScript("scripts/owl.carousel.custom.js", initOwl);
