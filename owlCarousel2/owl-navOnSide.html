@@ -15,8 +15,9 @@
 
 	<!-- Style custom *** CSS -->
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
+	<link rel="stylesheet" href="styles/owl.theme.css">
 	<link rel="stylesheet" href="styles/owl-navOnSide.css">
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
 		/* Demo's CSS here */
 		.owl-carousel .item
 		{
@@ -46,10 +47,10 @@
 	<section id="demo">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<p>Basic demo with nav bar on side</p>
 					<!--Demo's html here-->
-					<div id="owlBasicBar" class="owl-carousel nav-disappear">
+					<div id="owlBasicBar" class="owl-carousel owl-theme owl-nav-disappear">
 						<div class="item">
 							<h4>1</h4>
 						</div>
@@ -76,7 +77,7 @@
 						</div>
 					</div>
 					<p>Basic demo with nav btn on side</p>
-					<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn nav-disappear">
+					<div id="owlBasicBtn" class="owl-carousel owl-theme nav-btn owl-nav-disappear">
 						<div class="item">
 							<h4>1</h4>
 						</div>
@@ -126,16 +127,18 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js" defer></script>
 
 <!-- Script Demo *** JS -->
-<!--<script type="text/javascript" src="scripts/owl.carousel.custom.js"></script>-->
-<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
-<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+<script type="text/javascript" src="scripts/owl.carousel.custom.js"></script>
+<!--<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>-->
+
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
 	window.addEventListener("load", function () {
-		var responsiveOption = {
+		var owlOptions = {
 			loop: false,
 			margin: 10,
 			nav: true,
+			navText: ['', ''],
+			dots: false,
 			responsive: {
 				0: {
 					items: 1
@@ -144,17 +147,18 @@
 					items: 3
 				},
 				1000: {
-					items: 3
+					items: 4
 				}
 			}
 		};
-		initOwlCarousel($('#owlBasicBar'), responsiveOption);
-//		owlItemClickedMonitor($('#owlBasicBar'));
+		$('#owlBasicBar').owlCarousel(owlOptions);
 
-		initOwlCarousel($('#owlBasicBtn'), responsiveOption);
-//		owlItemClickedMonitor($('#owlBasicBtn'));
-		$('.item').on('click', function () {
-			alert('Clicked');
+		$('#owlBasicBtn').owlCarousel(owlOptions);
+
+		// Bind click: use owlOnClick to ignore drag's click trigger
+		owlOnClick($('.owl-carousel'), '.item', function (e) {
+			var $currentItem = $(e.target).closest('.item');
+			alert($currentItem[0].classList);
 		});
 	}, false);
 </script>

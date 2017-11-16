@@ -30,6 +30,16 @@
 	opacity: .5;
 	cursor: default;
 }
+.owl-theme.owl-nav-disappear .owl-nav [class*=owl-]
+{
+	transition: visibility 2s linear;
+}
+.owl-theme.owl-nav-disappear .owl-nav [class*=owl-].disabled
+{
+	opacity: 0;
+	visibility: hidden;
+	display: inherit;
+}
 .owl-theme .owl-nav.disabled + .owl-dots
 {
 	margin-top: 10px;

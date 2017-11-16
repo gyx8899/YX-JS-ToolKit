@@ -15,8 +15,9 @@
 
 	<!-- Style custom *** CSS -->
 	<link rel="stylesheet" href="styles/owl.carousel.min.css">
-	<link rel="stylesheet" href="styles/owl-navOnSide.css">
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<link rel="stylesheet" href="styles/owl.theme.css">
+	<link rel="stylesheet" href="styles/owl-oneSlide.css">
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
 		/* Demo's CSS here */
 		.owl-carousel .item
 		{
@@ -50,7 +51,7 @@
 	<section id="demo">
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<!--Demo's html here-->
 					<div id="owlOne" class="owl-carousel owl-theme">
 						<div class="item"><img src="images/fullimage1.jpg" alt=""></div>
@@ -85,20 +86,26 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/fn-preview-code/previewCode-auto.js" defer></script>
 
 <!-- Script Demo *** JS -->
-<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>
-<script id="commonJS" type="text/javascript" src="scripts/common.js"></script>
+<script type="text/javascript" src="scripts/owl.carousel.custom.js"></script>
+<!--<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>-->
+
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
 	window.addEventListener("load", function () {
-		var $owlOne = $('#owlOne');
-		$owlOne = initOwlCarousel($owlOne, {
+		$('#owlOne').owlCarousel({
 			margin: 0,
 			nav: true,
 			navText: ['', ''],
 			items: 1,
-			loop: true
+			loop: true,
+			dots: true
 		});
-		owlItemClickedMonitor($owlOne);
+
+		// Bind click: use owlOnClick to ignore drag's click trigger
+		owlOnClick($('.owl-carousel'), '.item', function (e) {
+			var $currentItem = $(e.target).closest('.item');
+			alert($currentItem[0].classList);
+		});
 	}, false);
 </script>
 </body>

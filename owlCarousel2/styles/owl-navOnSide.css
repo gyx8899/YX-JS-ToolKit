@@ -1,10 +1,3 @@
-.owl-carousel .owl-stage
-{
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-box;
-	display: box;
-}
 /* Owl-custom nav*/
 .owl-carousel .owl-prev
 {
@@ -47,18 +40,4 @@
 	opacity: 0.8;
 	color: #FFF;
 	text-decoration: none;
-}
-.owl-carousel .owl-nav [class*=owl-].disabled
-{
-	display: none;
-}
-.owl-carousel.nav-disappear .owl-nav [class*=owl-]
-{
-	transition: visibility 2s linear;
-}
-.owl-carousel.nav-disappear .owl-nav [class*=owl-].disabled
-{
-	opacity: 0;
-	visibility: hidden;
-	display: inherit;
 }

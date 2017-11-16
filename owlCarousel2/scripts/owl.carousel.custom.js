@@ -3379,3 +3379,25 @@
 	}
 
 })(window.Zepto || window.jQuery, window, document);
+
+// Custom for item click which can ignore drag trigger click
+function owlOnClick(element, selector, handler)
+{
+	element.on('mousedown', selector, mouseDownHandler);
+
+	function mouseDownHandler(event)
+	{
+		$(event.target).on('mouseup', mouseUpMoveHandler)
+				.on('mousemove', mouseUpMoveHandler);
+	}
+
+	function mouseUpMoveHandler(event)
+	{
+		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		{
+			handler(event);
+		}
+		$(event.target).off('mouseup', mouseUpMoveHandler)
+				.off('mousemove', mouseUpMoveHandler);
+	}
+}
