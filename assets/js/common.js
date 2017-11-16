@@ -422,15 +422,52 @@ function throttle(method, context)
 * */
 function consoleLog(fnArguments)
 {
+	var typeStyle = [
+			'font-size: 14px; color: #8665D5',
+			'font-size: 14px; color: #406AD5',
+			'font-size: 14px; color: #E9AC32',
+			'font-size: 14px; color: #3AC1D9',
+			'font-size: 14px; color: #FF7979',
+			'font-size: 14px; color: #39D084',
+			'font-size: 14px; color: #FF8E66',
+			'font-size: 14px; color: #44B1E6',
+			'font-size: 14px; color: #9e5648',
+			'font-size: 14px; color: #406ad5',
+			'font-size: 14px; color: #purple',
+			'font-size: 14px; color: #red',
+			'font-size: 14px; color: #teal',
+			'font-size: 14px; color: #yellow'
+			];
+	if (!window.consoleLogTypes)
+	{
+		window.consoleLogTypes = {};
+	}
 	if (window.console && window.debug !== false)
 	{
-		var localTime = (new Date()).toLocaleTimeString(),
-				fnName = fnArguments.callee ? fnArguments.callee.name : '',
+		var fnName = fnArguments.callee ? fnArguments.callee.name : '',
 				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
 				fnArgumentsString = getArrayString(fnArgumentsArray),
 				argumentsArray = Array.prototype.slice.call(arguments, 0),
 				surplusArgumentString = argumentsArray.length > 1 && argumentsArray.shift() && getArrayString(argumentsArray);
-		window.console.log(localTime + ' : ' + fnName + '(' + fnArgumentsString + ') ' + surplusArgumentString);
+		if (!window.consoleLogTypes[fnName])
+		{
+			window.consoleLogTypes[fnName] = {
+				typeCount: 0,
+				typeInfo: {}
+			};
+		}
+		if (!window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]])
+		{
+			window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]] = typeStyle[window.consoleLogTypes[fnName].typeCount];
+			window.consoleLogTypes[fnName].typeCount++;
+		}
+		if (window.consoleLogTypes.lastType !== fnName)
+		{
+			window.console.groupEnd();
+			window.console.group(fnName);
+			window.consoleLogTypes.lastType = fnName;
+		}
+		window.console.log('%c%s', window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]] , fnName + ': (' + fnArgumentsString + ') ' + surplusArgumentString);
 	}
 }
 
@@ -843,3 +880,36 @@ function extendOnOff(el)
 	}
 	return el;
 }
+
+function mouseTouchTrack(element, infoCallback)
+	{
+		var touchStartBeginTime = 0,
+				lastEventType = '';
+
+		element.onclick = trackEvent;
+		element.ontouchstart = trackEvent;
+		element.ontouchend = trackEvent;
+		element.ontouchmove = trackEvent;
+		element.onmousedown = trackEvent;
+		element.onmouseenter = trackEvent;
+		element.onmouseleave = trackEvent;
+		element.onmousemove = trackEvent;
+		element.onmouseout = trackEvent;
+		element.onmouseover = trackEvent;
+		element.onmouseup = trackEvent;
+
+		function trackEvent(event)
+		{
+			if (event.type === "touchstart")
+			{
+				touchStartBeginTime = Date.now();
+			}
+			if (event.type !== lastEventType)
+			{
+				infoCallback = infoCallback ? infoCallback : console.log;
+				infoCallback(arguments, event.type, Date.now() - touchStartBeginTime);
+
+				lastEventType = event.type;
+			}
+		}
+	}
