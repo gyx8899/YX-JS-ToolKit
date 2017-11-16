@@ -20,6 +20,7 @@
  * 2. Fixed the pagination nav could not scroll to next page when set autoWidth with true and slideBy with 'page';
  * 3. Fixed with the case of iterator(this._items.length) == 0;
  * 4. Fixed items scrolled left even when items width small than container width;
+ * 5. Add owlOnClick function(file bottom): fix drag end trigger click on item;
  */
 ;(function($, window, document, undefined) {
 
@@ -3383,21 +3384,21 @@
 // Custom for item click which can ignore drag trigger click
 function owlOnClick(element, selector, handler)
 {
-	element.on('mousedown', selector, mouseDownHandler);
+	element.on('mousedown touchstart', selector, mouseTouchDownHandler);
 
-	function mouseDownHandler(event)
+	function mouseTouchDownHandler(event)
 	{
-		$(event.target).on('mouseup', mouseUpMoveHandler)
-				.on('mousemove', mouseUpMoveHandler);
+		$(event.target).on('mouseup touchend', mouseTouchUpMoveHandler)
+				.on('mousemove touchmove', mouseTouchUpMoveHandler);
 	}
 
-	function mouseUpMoveHandler(event)
+	function mouseTouchUpMoveHandler(event)
 	{
 		if (event.type === 'mouseup' && event.which <= 1) //only for left key
 		{
 			handler(event);
 		}
-		$(event.target).off('mouseup', mouseUpMoveHandler)
-				.off('mousemove', mouseUpMoveHandler);
+		$(event.target).off('mouseup touchend', mouseTouchUpMoveHandler)
+				.off('mousemove touchmove', mouseTouchUpMoveHandler);
 	}
 }
