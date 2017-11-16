@@ -3394,7 +3394,7 @@ function owlOnClick(element, selector, handler)
 
 	function mouseTouchUpMoveHandler(event)
 	{
-		if (event.type === 'mouseup' && event.which <= 1) //only for left key
+		if ((event.type === 'mouseup' && event.which <= 1) || (event.type === 'touchend')) //only for left key
 		{
 			handler(event);
 		}
