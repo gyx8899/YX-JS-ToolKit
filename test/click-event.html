@@ -14,7 +14,7 @@
 	<link rel="icon" href="../assets/img/favicon.png">
 
 	<!-- Style custom *** CSS -->
-	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+	<style type="text/css">
 		/* Demo's CSS here */
 
 	</style>
@@ -32,7 +32,8 @@
 </head>
 <body>
 <!-- Script Preload code *** JS -->
-<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+<script
+		src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
 <main>
 
 	<!-- Demos -->
@@ -40,7 +41,7 @@
 		<div class="row">
 			<div id="demoWrap" class="large-12 columns">
 				<h3 id="overview">Overview</h3>
-				<div data-toggle="previewCode" data-target="#demoWrap">
+				<div>
 					<!--Demo's html here-->
 					<div id="target" style="margin-top:20px;width:200px;height:200px;background-color:#ccc">hello, world</div>
 				</div>
@@ -69,31 +70,8 @@
 <!-- Script Demo *** JS -->
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
-	var debug = true;
-	!function () {
-		var target = document.getElementById("target");
-		var body = document.querySelector("body");
-		var touchstartBeginTime = 0;
+	mouseTouchTrack(document.getElementById('target'), consoleLog);
 
-		function log(event)
-		{
-			if (event.type === "touchstart")
-				touchstartBeginTime = Date.now();
-			consoleLog(arguments, event.type, Date.now() - touchstartBeginTime);
-		}
-
-		target.onclick = log;
-		target.ontouchstart = log;
-		target.ontouchend = log;
-		target.ontouchmove = log;
-		target.onmousedown = log;
-		target.onmouseenter = log;
-		target.onmouseleave = log;
-		target.onmousemove = log;
-		target.onmouseout = log;
-		target.onmouseover = log;
-		target.onmouseup = log;
-	}();
 </script>
 </body>
 </html>
