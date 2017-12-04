@@ -825,7 +825,9 @@ function delegateClickIgnoreDrag(element, selector, handler)
 
 function bindClickIgnoreDrag(elements, callback, isBind)
 {
-	var eventListenerName = isBind !== false ? 'on' : 'off';
+	var eventListenerName = isBind !== false ? 'on' : 'off',
+			mouseDownX = 0,
+			mouseDownY = 0;
 
 	[].forEach.call(elements, function (element) {
 		extendOnOff(element)[eventListenerName]('mousedown', mouseDownHandler);
@@ -833,6 +835,8 @@ function bindClickIgnoreDrag(elements, callback, isBind)
 
 	function mouseDownHandler(event)
 	{
+		mouseDownX = event.pageX;
+		mouseDownY = event.pageY;
 		event.target.addEventListener('mouseup', mouseUpMoveHandler);
 		event.target.addEventListener('mousemove', mouseUpMoveHandler);
 	}
@@ -842,6 +846,10 @@ function bindClickIgnoreDrag(elements, callback, isBind)
 		if (event.type === 'mouseup' && event.which <= 1) //only for left key
 		{
 			callback(event);
+		}
+		else if (event.type === 'mousemove' && event.pageX === mouseDownX && event.pageY === mouseDownY)
+		{
+			return;
 		}
 		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
 		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
