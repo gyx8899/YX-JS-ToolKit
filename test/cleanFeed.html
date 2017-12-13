@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Clean Feed Server feed</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+	<link rel="icon" href="assets/img/favicon.png">
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+	<!-- Script Google Analytics *** JS -->
+	<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-google-analytics/googleAnalytics.js"></script>
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script
+		src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+
+<main>
+	<section id="demos">
+		<div class="row">
+			<div class="large-12 columns">
+				<h4 id="basic-demos-">Tool: Clean Feed Server's Record Feeds</h4>
+				<hr>
+
+				<fieldset>
+					<legend>Record:</legend>
+					<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
+				</fieldset>
+				<label >Remove: <input id="removed" type="checkbox" title="remove source"></label>
+
+				<button onclick="cleanConfigFeed()">Click to clean Feeds</button>
+				<div id="feedFrame">
+					<div class="loading-info">Cleaning -- <span id="cleanEventId"></span> ...</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Fun Debug *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-fun-debug/funDebug.js"></script>
+
+<!-- Script Theme *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/theme-header-footer/headerFooter-auto.js"></script>
+
+<script>
+	var CLEAN_FEED_URL = "https://feed.neulion.com.cn/fs/recorder/clean.do?siteId={{siteId}}&eventId={{eventId}}&remove={{remove}}";
+
+	var schedulesInfo = [];
+	var isRemove = false;
+
+	getSchedule();
+
+	function cleanConfigFeed()
+	{
+		schedulesInfo = $('#input-content').val().split('\n');
+		isRemove = $('#removed').is(":checked");
+		cleanFeedEventIds(schedulesInfo, isRemove);
+	}
+
+	function cleanFeedEventIds(scheduleInfos, isRemove)
+	{
+		if (scheduleInfos.length)
+		{
+			cleanFeed(scheduleInfos, isRemove);
+		}
+		else
+		{
+			$('#cleanEventId').text('Over!');
+		}
+	}
+
+	function cleanFeed(schedulesInfo, remove)
+	{
+		var schedule = schedulesInfo.shift().trim().split(','),
+				siteId = schedule[0],
+				eventId = schedule[1],
+				cleanFeedUrl = CLEAN_FEED_URL.replace('{{siteId}}', siteId)
+				.replace('{{eventId}}', eventId)
+				.replace('{{remove}}', !!remove ? 'true' : 'false');
+
+		$('#cleanEventId').text(siteId + " : " + eventId);
+		$('#feedFrame').addClass('load-iframe')
+				.append('<iframe id="cleanFeed" name="cleanFeedIFrame" allowfullscreen onload="cleanFeedIFrameReady()" src="' + cleanFeedUrl + '" frameborder="0" width="100%" height="100%">Loading + " : " + eventId + </iframe>');
+	}
+
+	function cleanFeedIFrameReady()
+	{
+		$('#feedFrame').removeClass('load-iframe');
+		$('#cleanFeed').remove();
+		cleanFeedEventIds(schedulesInfo, isRemove);
+	}
+
+	function getSchedule()
+	{
+		var scheduleURL = "https://feed.neulion.com.cn/fs/schedule_task.html";
+
+		$('body').append('<iframe id="scheduleFeed" name="scheduleFeedIFrame" allowfullscreen onload="scheduleFeedIFrameReady()" src="' + scheduleURL + '" frameborder="0" width="100%" height="100%"></iframe>');
+	}
+
+	function scheduleFeedIFrameReady()
+	{
+		var scheduleFeed = window['scheduleFeedIFrame'].getElementById('tasks').innerText;
+		if (scheduleFeed === '')
+		{
+			setTimeout(scheduleFeedIFrameReady, 100);
+		}
+		else
+		{
+			$('#input-content').val(scheduleFeed);
+		}
+	}
+</script>
+
+</body>
+</html>
