@@ -1000,7 +1000,5 @@ function mouseTouchTrack(element, infoCallback)
 			console.log(key + "->" + this.datastore[key]);
 		}
 	};
-
-	module.exports = Dictionary;
 })();
 //</editor-fold>
