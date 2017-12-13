@@ -161,6 +161,8 @@ function loadCSS(url, callback, context)
 		link.onerror = function () {
 			console.log("Error load css:" + url);
 		};
+
+		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url) + " *** CSS "));
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 }
@@ -200,6 +202,8 @@ function loadScript(url, callback, context)
 		}
 
 		script.src = url;
+
+		document.body.appendChild(document.createComment(" Script " + getFileNameFromURL(url) + " *** JS "));
 		document.body.appendChild(script);
 	}
 }
@@ -223,6 +227,8 @@ function loadCSSWithPromise(url)
 		link.onerror = function (error) {
 			reject(new Error(error));
 		};
+
+		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url) + " *** CSS "));
 		document.getElementsByTagName('head')[0].appendChild(link);
 	});
 }
@@ -257,6 +263,8 @@ function loadScriptWithPromise(url)
 		}
 
 		script.src = url;
+
+		document.body.appendChild(document.createComment(" Script " + getFileNameFromURL(url) + " *** JS "));
 		document.body.appendChild(script);
 	});
 }
