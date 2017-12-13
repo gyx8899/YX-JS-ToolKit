@@ -890,34 +890,34 @@ function extendOnOff(el)
 }
 
 function mouseTouchTrack(element, infoCallback)
+{
+	var touchStartBeginTime = 0,
+			lastEventType = '';
+
+	element.onclick = trackEvent;
+	element.ontouchstart = trackEvent;
+	element.ontouchend = trackEvent;
+	element.ontouchmove = trackEvent;
+	element.onmousedown = trackEvent;
+	element.onmouseenter = trackEvent;
+	element.onmouseleave = trackEvent;
+	element.onmousemove = trackEvent;
+	element.onmouseout = trackEvent;
+	element.onmouseover = trackEvent;
+	element.onmouseup = trackEvent;
+
+	function trackEvent(event)
 	{
-		var touchStartBeginTime = 0,
-				lastEventType = '';
-
-		element.onclick = trackEvent;
-		element.ontouchstart = trackEvent;
-		element.ontouchend = trackEvent;
-		element.ontouchmove = trackEvent;
-		element.onmousedown = trackEvent;
-		element.onmouseenter = trackEvent;
-		element.onmouseleave = trackEvent;
-		element.onmousemove = trackEvent;
-		element.onmouseout = trackEvent;
-		element.onmouseover = trackEvent;
-		element.onmouseup = trackEvent;
-
-		function trackEvent(event)
+		if (event.type === "touchstart")
 		{
-			if (event.type === "touchstart")
-			{
-				touchStartBeginTime = Date.now();
-			}
-			if (event.type !== lastEventType)
-			{
-				infoCallback = infoCallback ? infoCallback : console.log;
-				infoCallback(arguments, event.type, Date.now() - touchStartBeginTime);
+			touchStartBeginTime = Date.now();
+		}
+		if (event.type !== lastEventType)
+		{
+			infoCallback = infoCallback ? infoCallback : console.log;
+			infoCallback(arguments, event.type, Date.now() - touchStartBeginTime);
 
-				lastEventType = event.type;
-			}
+			lastEventType = event.type;
 		}
 	}
+}
