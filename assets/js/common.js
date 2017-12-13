@@ -1,5 +1,6 @@
+//<editor-fold desc="Functions: Process">
 /*
-* Function: Process
+* Functions: Process
 * */
 function uniqueArray(sourceArray)
 {
@@ -14,9 +15,11 @@ function uniqueArray(sourceArray)
 	}
 	return resultArray;
 }
+//</editor-fold>
 
+//<editor-fold desc="Functions: Operation html">
 /*
- * Functions: Operation html;
+ * Functions: Operation html
  * */
 function escapeHTML(text)
 {
@@ -50,9 +53,11 @@ function initTemplate(template, data, functionData)
 	}
 	return result;
 }
+//</editor-fold>
 
+//<editor-fold desc="Functions: Load resource">
 /*
- * Functions: Dynamic load resource in page;
+ * Functions: Load resource
  * */
 function loadResource(url, callback)
 {
@@ -290,7 +295,9 @@ function getFileContentJS(url, callback, context)
 
 	request.send();
 }
+//</editor-fold>
 
+//<editor-fold desc="Functions: Regular expression">
 /*
  * Functions: Regular expression
  * */
@@ -304,9 +311,11 @@ function isURL(url)
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
 	return (new RegExp(expression)).test(url);
 }
+//</editor-fold>
 
+//<editor-fold desc="Functions: Process URL">
 /*
-* Functions: URL
+* Functions: Process URL
 * */
 
 function getFileNameFromURL(url)
@@ -383,6 +392,7 @@ function getQueryParamValue(param)
 	}
 	return false;
 }
+//</editor-fold>
 
 /*
  * Functions: Tools for processing function who has parameter array;
@@ -537,6 +547,7 @@ function getCallbackName(typeName)
 	return typeName + "Callback";
 }
 
+//<editor-fold desc="Functions: Elements operation">
 /*
 * Functions: Elements operation
 *
@@ -644,10 +655,13 @@ function convertNodeListToArray(nodeList)
 	}
 	return resultArray;
 }
+//</editor-fold>
 
+//<editor-fold desc="Tools: Page operation">
 /*
 * Tools: Page operation
 * */
+
 function scrollListToIndex(listFolder, index, toTopIndex, duration)
 {
 	if (index === 0)
@@ -713,7 +727,9 @@ function addChildElement(parentElement, childElement, position)
 			parentElement.appendChild(childElement);
 	}
 }
+//</editor-fold>
 
+//<editor-fold desc="Functions: Classes without jQuery">
 // Functions: Classes without jQuery
 function hasClass(element, className)
 {
@@ -750,8 +766,11 @@ function toggleClass(element, className)
 		addClass(element, className);
 	}
 }
+//</editor-fold>
+
+//<editor-fold desc="Functions: Event operation">
 /*
-* Function: Event operation
+* Functions: Event operation
 * */
 
 function delegate(element, eventName, selector, handler)
@@ -779,6 +798,7 @@ function delegate(element, eventName, selector, handler)
 		}
 	}
 }
+//</editor-fold>
 
 // Custom for click which can ignore drag trigger click
 function delegateClickIgnoreDrag(element, selector, handler)
