@@ -108,11 +108,15 @@
 			addClickEvent('clear', removeClickEvent);
 			function addClickEvent(id, event)
 			{
-				document.getElementById(id).addEventListener('click', event ? event : clickEvent);
+//				document.getElementById(id).addEventListener('click', event ? event : clickEvent);
+				bindClickIgnoreDrag(document.getElementById(id), null, true);
+				bindClickIgnoreDrag(document.getElementById(id), null, true);
+				bindClickIgnoreDrag(document.getElementById(id), null, true);
 			}
 			function removeClickEvent()
 			{
-				document.getElementById('innerFn').removeEventListener('click', clickEvent);
+//				document.getElementById('innerFn').removeEventListener('click', clickEvent);
+				bindClickIgnoreDrag(document.getElementById(id), null, false);
 			}
 			function clickEvent()
 			{
@@ -122,6 +126,31 @@
 
 		innerFunctionClick();
 	})();
+
+	function bindClickIgnoreDrag(elements, callback, isBind)
+	{
+		var eventListenerName = isBind !== false ? 'on' : 'off';
+
+		[].forEach.call(elements, function (element) {
+			element[eventListenerName]('mousedown', mouseDownHandler);
+		});
+
+		function mouseDownHandler(event)
+		{
+			event.target.addEventListener('mouseup', mouseUpMoveHandler);
+			event.target.addEventListener('mousemove', mouseUpMoveHandler);
+		}
+
+		function mouseUpMoveHandler(event)
+		{
+			if (event.type === 'mouseup' && event.which <= 1) //only for left key
+			{
+				callback(event);
+			}
+			event.target.removeEventListener('mouseup', mouseUpMoveHandler);
+			event.target.removeEventListener('mousemove', mouseUpMoveHandler);
+		}
+	}
 
 </script>
 </body>
