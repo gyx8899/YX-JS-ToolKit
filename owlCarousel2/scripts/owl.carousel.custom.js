@@ -3402,3 +3402,20 @@ function owlOnClick(element, selector, handler)
 				.off('mousemove touchmove', mouseTouchUpMoveHandler);
 	}
 }
+
+/**
+* Fixed: Warnings in console
+* Warning: [Violation] Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive.
+*/
+jQuery.event.special.touchstart = {
+	setup: function (_, ns, handle) {
+		if (ns.includes("noPreventDefault"))
+		{
+			this.addEventListener("touchstart", handle, {passive: false});
+		}
+		else
+		{
+			this.addEventListener("touchstart", handle, {passive: true});
+		}
+	}
+};
