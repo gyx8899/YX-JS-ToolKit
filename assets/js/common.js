@@ -400,6 +400,15 @@ function getQueryParamValue(param)
 	}
 	return false;
 }
+
+function getRootPath()
+{
+	var href = window.document.location.href,
+			pathName = window.document.location.pathname,
+			localhostPath = href.substring(0, href.indexOf(pathName)),
+			projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+	return (localhostPath + projectName);
+}
 //</editor-fold>
 
 /*
