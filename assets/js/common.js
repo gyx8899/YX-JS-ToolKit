@@ -893,6 +893,22 @@ function bindClickIgnoreDrag(elements, callback, isBind)
 	}
 }
 
+function triggerEvent(element, eventName, data)
+{
+	var event = null;
+	if (window.CustomEvent)
+	{
+		event = new CustomEvent(eventName, {detail: data});
+	}
+	else
+	{
+		event = document.createEvent('CustomEvent');
+		event.initCustomEvent(eventName, true, true, data);
+	}
+
+	element.dispatchEvent(event);
+}
+
 //Extend on/off methods
 function extendOnOff(el)
 {
