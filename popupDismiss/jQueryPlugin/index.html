@@ -214,13 +214,15 @@
 
 	function popupList($target)
 	{
-		$target && $target.fadeIn();
-		$target.addClass('open');
+//		$target && $target.fadeIn();
+//		$target.addClass('open');
+		$($target) && $($target).css('display', 'block');
 	}
 	function dismissList($target)
 	{
-		$target && $target.fadeOut();
-		$target.removeClass('open');
+//		$target && $target.fadeOut();
+//		$target.removeClass('open');
+		$($target) && $($target).css('display', 'none');
 	}
 
   function initColor()

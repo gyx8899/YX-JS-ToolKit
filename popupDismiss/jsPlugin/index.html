@@ -220,12 +220,14 @@
 
 	function popupList($target)
 	{
-		$($target) && $($target).fadeIn();
+//		$($target) && $($target).fadeIn();
+		$($target) && $($target).css('display', 'block');
 	}
 
 	function dismissList($target)
 	{
-		$($target) && $($target).fadeOut();
+//		$($target) && $($target).fadeOut();
+		$($target) && $($target).css('display', 'none');
 	}
 
 	function initColor()
