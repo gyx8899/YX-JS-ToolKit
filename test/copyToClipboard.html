@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>CopyPaste</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+	<link rel="icon" href="../assets/img/favicon.png">
+
+	<!-- Style custom *** CSS -->
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script
+		src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<div id="selectText">
+						prev
+						<a href="http://www.baidu.com">www.baidu.com</a>
+						next
+					</div>
+					<p>
+						<button class="js-emailcopybtn" onclick="copyElementToClipboard('selectText')">Copy</button>
+					</p>
+
+					<p id="js-emaillinkp">Email me at <a class="js-emaillink"
+																							 href="mailto:matt@example.co.uk">matt@example.co.uk</a>
+					</p>
+					<p>
+						<button class="js-emailcopybtn" onclick="copyElementToClipboard('js-emaillinkp')">Copy</button>
+					</p>
+					<p>
+						<button class="js-emailcopybtn" onclick="copyURLTitle()">Copy URL and Title</button>
+					</p>
+
+				</div>
+				<!--Introduction here-->
+				<p>
+				<div id="demoWrap"></div>
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
+
+<!-- Script Demo *** JS -->
+<script id="demoJS" data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
+	// Demo's JS here
+	function copyElementToClipboard(elementId)
+	{
+		var copyContentElement = document.querySelector('#' + elementId);
+		var range = document.createRange();
+		range.selectNode(copyContentElement);
+		window.getSelection().addRange(range);
+
+		try
+		{
+			// Now that we've selected the anchor text, execute the copy command
+			var successful = document.execCommand('copy'),
+					msg = successful ? 'successful' : 'unsuccessful';
+			console.log('Copy email command was ' + msg);
+		}
+		catch (err)
+		{
+			console.log('Oops, unable to copy');
+		}
+
+		// Remove the selections - NOTE: Should use removeRange(range) when it is supported
+		window.getSelection().removeAllRanges();
+	}
+
+	function copyURLTitle()
+	{
+		var pageUrl = window.location.href,
+				jiraTitle = document.getElementById('summary-val'),
+				titleContent = jiraTitle ? jiraTitle.innerText : (document.querySelector('title') && document.querySelector('title').innerText),
+				elementId = 'copyElementId',
+				bodyBackground = document.body.style.background;
+
+		// Append copy content element
+		addCopyElement(elementId, pageUrl, titleContent);
+
+		// Copy content element
+		copyElementToClipboard(elementId);
+
+		// Remove copied element
+		removeCopyElement(elementId, bodyBackground);
+	}
+
+	function addCopyElement(elementId, pageUrl, titleContent)
+	{
+		var copyElement = document.createElement('div');
+		copyElement.setAttribute('id', elementId);
+		copyElement.setAttribute('style', 'width:1px;border:0;opacity:0;');
+		copyElement.innerHTML = '<a href="' + pageUrl + '">' + pageUrl + '</a>' + '&nbsp;' + titleContent;
+		document.body.appendChild(copyElement);
+
+		document.body.style.background = 'transparent';
+	}
+
+	function removeCopyElement(elementId, bodyBackground)
+	{
+		document.body.removeChild(document.getElementById(elementId));
+		document.body.style.background = bodyBackground;
+	}
+
+</script>
+
+</body>
+</html>
