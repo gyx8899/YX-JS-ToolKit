@@ -679,7 +679,26 @@ function copyElementToClipboard(element)
 	range.selectNode(element);
 	window.getSelection().addRange(range);
 
-	return document.execCommand('copy');
+	document.execCommand('copy');
+	window.getSelection().removeAllRanges();
+}
+
+function addStyleToHead(css)
+{
+	var head = document.head || document.getElementsByTagName('head')[0],
+			style = document.createElement('style');
+
+	style.type = 'text/css';
+	if (style.styleSheet)
+	{
+		style.styleSheet.cssText = css;
+	}
+	else
+	{
+		style.appendChild(document.createTextNode(css));
+	}
+
+	head.appendChild(style);
 }
 //</editor-fold>
 
