@@ -672,6 +672,15 @@ function convertNodeListToArray(nodeList)
 	}
 	return resultArray;
 }
+
+function copyElementToClipboard(element)
+{
+	var range = document.createRange();
+	range.selectNode(element);
+	window.getSelection().addRange(range);
+
+	return document.execCommand('copy');
+}
 //</editor-fold>
 
 //<editor-fold desc="Tools: Page operation">
