@@ -167,7 +167,7 @@ function loadCSS(url, callback, context)
 	}
 }
 
-function loadScript(url, callback, context)
+function loadScript(url, callback, context, isAsync)
 {
 	if (!url)
 		return;
@@ -176,13 +176,14 @@ function loadScript(url, callback, context)
 	{
 		// Process the url and callback if they are array;
 		parameterArrayToItem(function (urlParam, callbackParam) {
-			loadScript(urlParam, callbackParam);
+			loadScript(urlParam, callbackParam, context, isAsync);
 		}, url, callback);
 	}
 	else
 	{
 		var script = document.createElement("script");
 		script.type = "text/javascript";
+		isAsync && script.setAttribute('async', '');
 
 		if (script.readyState)
 		{  //IE
