@@ -684,7 +684,11 @@ function copyElementToClipboard(element)
 	window.getSelection().removeAllRanges();
 }
 
-function addStyleToHead(css)
+/**
+ * Insert style to head
+ * @param {cssText} style string
+ */
+function insertStyleToHead(cssText)
 {
 	var head = document.head || document.getElementsByTagName('head')[0],
 			style = document.createElement('style');
@@ -692,14 +696,35 @@ function addStyleToHead(css)
 	style.type = 'text/css';
 	if (style.styleSheet)
 	{
-		style.styleSheet.cssText = css;
+		style.styleSheet.cssText = cssText;
 	}
 	else
 	{
-		style.appendChild(document.createTextNode(css));
+		style.appendChild(document.createTextNode(cssText));
 	}
 
 	head.appendChild(style);
+}
+
+/**
+ * Create one html tag element with tagInfo
+ * @param {tagName} html tag name
+ * @param {tagInfo} tag's attributes and style object, such as { attr: {}, style: {} }
+ * @return {element} html tag element.
+ */
+function createTagElement(tagName, tagInfo)
+{
+	var tagElement = document.createElement(tagName);
+
+	Object.keys(tagInfo.attr).forEach(function (key) {
+		tagElement.setAttribute(key, tagInfo.attr[key]);
+	});
+
+	Object.keys(tagInfo.style).forEach(function (key) {
+		tagElement.style[key] = tagInfo.style[key];
+	});
+
+	return tagElement;
 }
 //</editor-fold>
 
