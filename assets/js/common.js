@@ -629,6 +629,12 @@ function matches(el, selector)
 	return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
 }
 
+/***
+ * Get element's closet class parent element
+ * @param {element} element
+ * @param {string} className
+ * @returns {element}
+ */
 function closet(element, className)
 {
 	var closetElement = null;
@@ -643,6 +649,12 @@ function closet(element, className)
 	return closetElement;
 }
 
+/***
+ * Check element has parentElement
+ * @param el
+ * @param parentElement
+ * @returns {boolean}
+ */
 function hasCloset(el, parentElement)
 {
 	if (el === parentElement)
@@ -664,6 +676,11 @@ function hasCloset(el, parentElement)
 	return p === parentElement;
 }
 
+/***
+ * Convert JS selector elements to array
+ * @param {node} nodeList
+ * @returns {Array}
+ */
 function convertNodeListToArray(nodeList)
 {
 	var resultArray = [];
@@ -674,6 +691,11 @@ function convertNodeListToArray(nodeList)
 	return resultArray;
 }
 
+/***
+ *
+ * Copy html element to clipboard
+ * @param {element} html element
+ */
 function copyElementToClipboard(element)
 {
 	var range = document.createRange();
