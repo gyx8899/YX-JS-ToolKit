@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Test CRTV FriendBuy</title>
+
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+
+	<!-- FriendBuy Smart Pixel -->
+	<script>
+	   window['friendbuy'] = window['friendbuy'] || [];
+	   window['friendbuy'].push(['site', 'site-26123cf4-www.crtv.com']);
+	   window['friendbuy'].push(['track', 'customer',
+	       {
+	           id: '', //INSERT CUSTOMER ID PARAMETER
+	           email: '', //INSERT CUSTOMER EMAIL PARAMETER
+	           first_name: '', //INSERT CUSTOMER FIRST NAME PARAMETER
+	           last_name: '' //INSERT CUSTOMER LAST NAME PARAMETER
+	       }
+	   ]);
+	   (function (f, r, n, d, b, y) {
+	       b = f.createElement(r), y = f.getElementsByTagName(r)[0];b.async = 1;b.src = n;y.parentNode.insertBefore(b, y);
+	   })(document, 'script', '//djnf6e5yyirys.cloudfront.net/js/friendbuy.min.js');
+	 </script>
+	<!-- End FriendBuy Smart Pixel -->
+
+	<!-- Conversion ​ ​Tracker -->
+	<script data-toggle="previewCode" data-target="#conversionTracker" data-tag="show">
+		window['friendbuy'] = window['friendbuy'] || [];
+		window['friendbuy'].push(['track', 'order',
+			{
+				id: '', //INPUT ORDER ID
+				amount: '0.00', //INPUT ORDER AMOUNT
+				// coupon_code: '', //OPTIONAL, coupon code if used for order
+				// new_customer: false, //OPTIONAL, true if this is the customer's first purchase
+				email: '' //INPUT EMAIL
+			}
+		]);
+	</script>
+	<!-- End Conversion ​ ​Tracker -->
+
+</head>
+<body>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<h4>Conversion ​ ​Tracker:​ </h4>
+					<h5>​​Include ​ ​the ​ ​conversion ​ ​tracking ​ ​script ​ ​on ​ ​your​ ​order
+						confirmation ​ ​page. ​ ​Copy​ ​this​ ​code ​ ​and ​ ​paste ​ ​it ​ ​immediately​ ​after​ ​your
+						opening ​ ​​head ​ ​tag. ​</h5>
+					<h5>步骤1：将以下JS代码 拷贝到reg下的subscription.jsp中, 条件是confirm step页面，并在header的位置</h5>
+					<h5>步骤2：填写对应的字段值</h5>
+					<h5>步骤3：Verify：页面打开有track.js 请求发送</h5>
+					<p>仅此而已(IDEA中打开，或放在项目中打开)</p>
+				</div>
+				<!--Introduction here-->
+				<div id="conversionTracker"></div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
+
+<!-- Script Demo *** JS -->
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+
+</script>
+
+</body>
+</html>

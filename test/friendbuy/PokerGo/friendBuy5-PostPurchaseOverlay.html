@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Test PokerGo FriendBuy</title>
+
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+
+	<!-- FriendBuy Smart Pixel -->
+	<script>
+		window['friendbuy'] = window['friendbuy'] || [];
+		window['friendbuy'].push(['site', 'site-4d84294b-www.pokergo.com']);
+		window['friendbuy'].push(['track', 'customer',
+				{
+						id: '', //INSERT CUSTOMER ID PARAMETER
+						email: '', //INSERT CUSTOMER EMAIL PARAMETER
+						first_name: '', //INSERT CUSTOMER FIRST NAME PARAMETER
+						last_name: '' //INSERT CUSTOMER LAST NAME PARAMETER
+				}
+		]);
+		(function (f, r, n, d, b, y) {
+				b = f.createElement(r), y = f.getElementsByTagName(r)[0];b.async = 1;b.src = n;y.parentNode.insertBefore(b, y);
+		})(document, 'script', '//djnf6e5yyirys.cloudfront.net/js/friendbuy.min.js');
+ </script>
+	<!-- End FriendBuy Smart Pixel -->
+
+	<!--  -->
+	<script data-toggle="previewCode" data-target="#postPurchaseOverlayScript" data-tag="show">
+		window['friendbuy'] = window['friendbuy'] || [];
+		window['friendbuy'].push(['widget', "dyv-mnL"]);
+	</script>
+	<!--  -->
+
+</head>
+<body>
+
+<main>
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<h4>Post​ ​Purchase ​ ​Overlay</h4>
+					<h5 style="font-weight: bold">
+						<div>Widget Setting:</div>
+						<div>Display Settings -> style: Overlay -> Call To Action: Link or Image -> DISPLAY BEHAVIOR: Autopop-off</div>
+					</h5>
+					<h5>Paste ​ ​this​ ​code ​ ​on ​ ​the ​ ​order​ ​confirmation ​ ​page.
+					This​ ​widget ​ ​should ​ ​autopop ​ ​immediately​ ​once ​ ​a ​ ​customer​ ​completes​ ​a
+					purchase ​ ​and ​ ​lands​ ​on ​ ​this​ ​page.</h5>
+					<h5>步骤1：将以下JS代码放到购买成功的reg subscription jsp 中;</h5>
+					<h5>步骤2：通过脚本trigger friendbuy-dyv-mnL 的click 事件；<br>
+						<a href="javascript: void(0);" onclick="triggerClick('friendbuy-dyv-mnL');">
+							<br>
+							document.querySelector('friendbuy-dyv-mnL').onclick();
+						</a><br>
+						<a href="javascript: void(0);" onclick="jQueryClick('friendbuy-dyv-mnL');">
+							<br>
+							$('.friendbuy-dyv-mnL').trigger('click');
+						</a>
+					</h5>
+					<h5>步骤3：注意添加功能是否开启的config 配置项；</h5>
+					<p>仅此而已(IDEA中打开，或放在项目中打开)</p>
+				</div>
+				<!--Introduction here-->
+				<div id="postPurchaseOverlayScript"></div>
+				<div id="postPurchaseOverlayTag"></div>
+				<p>效果如下：(点击步骤2-链接, js 方法触发)</p>
+				<div data-toggle="previewCode" data-target="#postPurchaseOverlayTag">
+					<div class="friendbuy-dyv-mnL"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
+
+<!-- Script Demo *** JS -->
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+	function triggerClick(elementClass)
+	{
+		document.querySelector('.' + elementClass).onclick();
+	}
+	function jQueryClick(elementClass)
+	{
+		$('.' + elementClass).trigger('click');
+	}
+</script>
+
+</body>
+</html>
