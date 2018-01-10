@@ -1,7 +1,9 @@
-//<editor-fold desc="Functions: Process">
-/*
-* Functions: Process
-* */
+//<editor-fold desc="Functions: Data Process: basic data types">
+/***
+ * uniqueArray
+ * @param {Array} sourceArray
+ * @returns {Array}
+ */
 function uniqueArray(sourceArray)
 {
 	var resultArray = [], hash = {};
@@ -17,11 +19,13 @@ function uniqueArray(sourceArray)
 }
 //</editor-fold>
 
-//<editor-fold desc="Functions: Operation html">
-/*
- * Functions: Operation html
- * */
-function escapeHTML(text)
+//<editor-fold desc="Functions: HTML Process">
+/***
+ * escapeHTML
+ * @param {string} str
+ * @returns {void|string}
+ */
+function escapeHTML(str)
 {
 	var map = {
 		'&': '&amp;',
@@ -31,11 +35,18 @@ function escapeHTML(text)
 		"'": '&#039;'
 	};
 
-	return text.replace(/[&<>"']/g, function (m) {
+	return str.replace(/[&<>"']/g, function (m) {
 		return map[m];
 	});
 }
 
+/***
+ * initTemplate
+ * @param {string} template
+ * @param {object} data
+ * @param {function} functionData
+ * @returns {string} template instance
+ */
 function initTemplate(template, data, functionData)
 {
 	var result = template;
@@ -56,9 +67,11 @@ function initTemplate(template, data, functionData)
 //</editor-fold>
 
 //<editor-fold desc="Functions: Load resource">
-/*
- * Functions: Load resource
- * */
+/***
+ * Load resource: support url types - js, css
+ * @param {string} url
+ * @param {function} [callback] - callback() after url loaded
+ */
 function loadResource(url, callback)
 {
 	if (!checkResourceLoaded(url))
@@ -67,6 +80,11 @@ function loadResource(url, callback)
 	}
 }
 
+/***
+ * loadResources: support url, js, css
+ * @param {string[]} urls - an array of urls
+ * @param {function} [callback] - callback() after url loaded
+ */
 function loadResources(urls, callback)
 {
 	if (urls !== null && urls !== '')
@@ -109,6 +127,11 @@ function loadResources(urls, callback)
 	}
 }
 
+/***
+ * loadUrls with Promise if it is supported
+ * @param {string[]} urls - an array of urls
+ * @param {function} [callback] - callback() after url loaded
+ */
 function loadUrls(urls, callback)
 {
 	var unLoadedResourcesInfo = urls.map(function (resource) {
@@ -137,6 +160,12 @@ function loadUrls(urls, callback)
 	}
 }
 
+/***
+ * loadCSS
+ * @param {(string|string[])} url string or an array of urls
+ * @param {function} [callback] - callback() after script loaded
+ * @param {object} [context] - callback's context
+ */
 function loadCSS(url, callback, context)
 {
 	if (!url)
@@ -167,6 +196,13 @@ function loadCSS(url, callback, context)
 	}
 }
 
+/***
+ * loadScript
+ * @param {(string|string[])} url string or an array of urls
+ * @param {function} [callback] - callback() after script loaded
+ * @param {object} [context] - callback's context
+ * @param {boolean} [isAsync=false] - whether set <script async> attribute or not
+ */
 function loadScript(url, callback, context, isAsync)
 {
 	if (!url)
@@ -209,7 +245,11 @@ function loadScript(url, callback, context, isAsync)
 	}
 }
 
-// loadCSS with Promise
+/***
+ * loadCSS with Promise
+ * @param url
+ * @returns {Promise}
+ */
 function loadCSSWithPromise(url)
 {
 	return new Promise(function (resolve, reject) {
@@ -234,7 +274,11 @@ function loadCSSWithPromise(url)
 	});
 }
 
-// loadScript with Promise
+/***
+ * loadScript with Promise
+ * @param url
+ * @returns {Promise}
+ */
 function loadScriptWithPromise(url)
 {
 	return new Promise(function (resolve, reject) {
@@ -270,8 +314,13 @@ function loadScriptWithPromise(url)
 	});
 }
 
-// Dependency: jQuery ajax
-function getFileContent(url, callback, context)
+/***
+ * Ajax request: dependency jQuery
+ * @param {string} url
+ * @param {function} callback
+ * @param {object} callback's context
+ */
+function getFileContentWithAjax(url, callback, context)
 {
 	$.ajax({
 		url: url,
@@ -281,11 +330,59 @@ function getFileContent(url, callback, context)
 	});
 }
 
-function getFileContentJS(url, callback, context)
+/***
+ * Use XDomainRequest when browser <= IE9, otherwise use XMLHttpRequest(not support < IE9);
+ * @param {string} url
+ * @param {function} callback
+ * @param {object} callback's context
+ */
+function getFileContent(url, callback, context)
+{
+	if (document.documentMode <= 9 && window.XDomainRequest)
+	{
+		xdrGetRequest(url, callback, context)
+	}
+	else
+	{
+		xmlHTTPGetRequest(url, callback, context);
+	}
+}
+/***
+ * xdrGetRequest: send get request in IE <= 9
+ * @param {string} url
+ * @param {function} callback
+ * @param {object} callback's context
+ *
+ * XDomainRequest is an implementation of HTTP access control (CORS) that worked in Internet Explorer 8 and 9.
+ * It was removed in Internet Explorer 10 in favor of using XMLHttpRequest with proper CORS;
+ * https://developer.mozilla.org/zh-CN/docs/Web/API/XDomainRequest
+ */
+function xdrGetRequest(url, callback, context)
+{
+	var xdr = new XDomainRequest();
+	if (xdr)
+	{
+		xdr.onload = function () {
+			callback && (context ? context[callback](xdr.responseText) : callback(xdr.responseText));
+		};
+		xdr.onerror = function () {
+			/* error handling here */
+		};
+		xdr.open('GET', url);
+		xdr.send();
+	}
+}
+
+/***
+ * XMLHttpRequest: send get request in IE >= 10, or other browsers
+ * @param {string} url
+ * @param {function} callback
+ * @param {object} callback's context
+ */
+function xmlHTTPGetRequest(url, callback, context)
 {
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
-
 	request.onload = function () {
 		if (request.status >= 200 && request.status < 400)
 		{
@@ -297,24 +394,29 @@ function getFileContentJS(url, callback, context)
 			// We reached our target server, but it returned an error
 		}
 	};
-
 	request.onerror = function () {
 		// There was a connection error of some sort
 	};
-
 	request.send();
 }
 //</editor-fold>
 
 //<editor-fold desc="Functions: Regular expression">
-/*
- * Functions: Regular expression
- * */
+/***
+ * regExpG
+ * @param expStr
+ * @returns {RegExp}
+ */
 function regExpG(expStr)
 {
 	return new RegExp(expStr, "g");
 }
 
+/***
+ * isURL
+ * @param url
+ * @returns {boolean}
+ */
 function isURL(url)
 {
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
@@ -323,15 +425,21 @@ function isURL(url)
 //</editor-fold>
 
 //<editor-fold desc="Functions: Process URL">
-/*
-* Functions: Process URL
-* */
-
+/***
+ * getFileNameFromURL
+ * @param {string} url
+ * @returns {string}
+ */
 function getFileNameFromURL(url)
 {
 	return url.split('/').pop().split('#')[0].split('?')[0];
 }
 
+/***
+ * checkResourceLoaded
+ * @param {string} url
+ * @returns {boolean}
+ */
 function checkResourceLoaded(url)
 {
 	var type = getUrlTypeInfo(url),
@@ -343,6 +451,11 @@ function checkResourceLoaded(url)
 	return allUrls.indexOf(url) !== -1;
 }
 
+/***
+ * getUrlTypeInfo
+ * @param {string} url
+ * @returns {object}
+ */
 function getUrlTypeInfo(url)
 {
 	// Current only support js and css resources;
@@ -371,6 +484,11 @@ function getUrlTypeInfo(url)
 	return null;
 }
 
+/***
+ * getCurrentScriptPath in Page
+ * @param {string} scriptName
+ * @returns {null|string}
+ */
 function getCurrentScriptPath(scriptName)
 {
 	var scripts = document.getElementsByTagName("script");
@@ -387,6 +505,11 @@ function getCurrentScriptPath(scriptName)
 	return null;
 }
 
+/***
+ * getQueryParamValue
+ * @param param
+ * @returns {*}
+ */
 function getQueryParamValue(param)
 {
 	var query = window.location.search.substring(1);
@@ -402,6 +525,10 @@ function getQueryParamValue(param)
 	return false;
 }
 
+/***
+ * getRootPath
+ * @returns {string}
+ */
 function getRootPath()
 {
 	var href = window.document.location.href,
