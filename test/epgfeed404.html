@@ -45,12 +45,13 @@
 					<button onclick="ajaxCall(feed200Url, feedCallback)">$.ajax(url200)</button>
 					<button onclick="ajaxCall(feed404Url, feedCallback)">$.ajax(url404)</button>
 					<br>
-					<button onclick="getScript(feed200Url, feedScriptCallback)">script.onload(url200)</button>
-					<button onclick="getScript(feed404Url, feedScriptCallback)">script.onload(url404)</button>
+					<button onclick="getScript(feed200Url, feedScriptCallback, errorCallback)">script.onload(url200)</button>
+					<button onclick="getScript(feed404Url, feedScriptCallback, errorCallback)">script.onload(url404)</button>
 				</div>
 				<!--Introduction here-->
 				<p>
-					<h5 id="callResult"></h5>
+					<h5 id="callResultSuccess"></h5>
+					<h5 id="callResultFailed"></h5>
 				</p>
 			</div>
 		</div>
@@ -94,7 +95,7 @@
  				callback && callback(true);
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				if (jqXHR.status === 404 || errorThrown === 'Not Found')
+				if (jqXHR.status === 404 || errorThrown === 'Not Found' || textStatus === 'error')
 				{
 					callback && callback(false);
 				}
@@ -115,22 +116,22 @@
 		script.async = 1;
 		prior.parentNode.insertBefore(script, prior);
 
-		script.onload = script.onreadystatechange = function (_, isAbort) {
-			if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState))
+		script.onload = script.onreadystatechange = script.onerror = function (_, isAbort) {
+			if (_.type === 'error')
+			{
+				script.onload = script.onreadystatechange = script.onerror = null;
+				script = undefined;
+				callback && callback(true);
+			}
+			else if (isAbort || (script && !script.readyState) || (script && /loaded|complete/.test(script.readyState)))
 			{
 				script.onload = script.onreadystatechange = null;
-				script = undefined;
-
-				if (!isAbort)
+				if (!document.documentMode || document.documentMode >= 10)
 				{
-					callback && callback(true);
+					script = undefined;
 				}
+				!isAbort && callback && callback(true);
 			}
-		};
-
-		script.onerror = function (error)
-		{
-			callback && callback(false);
 		};
 
 		script.src = url;
