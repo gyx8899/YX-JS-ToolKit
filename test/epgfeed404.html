@@ -45,8 +45,8 @@
 					<button onclick="ajaxCall(feed200Url, feedCallback)">$.ajax(url200)</button>
 					<button onclick="ajaxCall(feed404Url, feedCallback)">$.ajax(url404)</button>
 					<br>
-					<button onclick="getScript(feed200Url, feedScriptCallback, errorCallback)">script.onload(url200)</button>
-					<button onclick="getScript(feed404Url, feedScriptCallback, errorCallback)">script.onload(url404)</button>
+					<button onclick="getScript(feed200Url, feedScriptCallback)">script.onload(url200)</button>
+					<button onclick="getScript(feed404Url, feedScriptCallback)">script.onload(url404)</button>
 				</div>
 				<!--Introduction here-->
 				<p>
@@ -120,7 +120,7 @@
 			{
 				script.onload = script.onreadystatechange = script.onerror = null;
 				script = undefined;
-				callback && callback(true);
+				callback && callback(false);
 			}
 			else if (isAbort || (script && !script.readyState) || (script && /loaded|complete/.test(script.readyState)))
 			{
