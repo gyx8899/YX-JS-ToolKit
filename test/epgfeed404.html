@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Feed 404</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+	<link rel="icon" href="../assets/img/favicon.png">
+
+	<!-- Style custom *** CSS -->
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script
+		src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/square-split-combination/preLoader-auto.js"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Test cases:</h3>
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<button onclick="ajaxCall(feed200Url, feedCallback)">$.ajax(url200)</button>
+					<button onclick="ajaxCall(feed404Url, feedCallback)">$.ajax(url404)</button>
+					<br>
+					<button onclick="getScript(feed200Url, feedScriptCallback)">script.onload(url200)</button>
+					<button onclick="getScript(feed404Url, feedScriptCallback)">script.onload(url404)</button>
+				</div>
+				<!--Introduction here-->
+				<p>
+					<h5 id="callResult"></h5>
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
+
+<!-- Script Demo *** JS -->
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+
+	var feed200Url = 'https://neulionsmbnyc-a.akamaihd.net/u/nfl/nfl/epg/nflnetwork/2018/01/18.js?callback=handleEPGCallback&_=1516337792851';
+	var feed404Url = 'https://neulionsmbnyc-a.akamaihd.net/u/nfl/nfl/epg/nflnetwork/2016/01/18.js?callback=handleEPGCallback&_=1516337792851';
+
+	function feedCallback(isSuccess)
+	{
+		var result = isSuccess ? "Success: $.ajax()" : "Failed: $.ajax()";
+		$('#callResult').html(result);
+	}
+
+	function feedScriptCallback(isSuccess)
+	{
+		var result = isSuccess ? "Success: script.onload()" : "Fail: script.error()";
+		$('#callResult').html(result);
+	}
+
+	function ajaxCall(url, callback)
+	{
+		$('#callResult').html('');
+
+		$.ajax({
+			cache: false,
+			url: url,
+			dataType: "json",
+			success: function (data) {
+ 				callback && callback(true);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				if (jqXHR.status === 404 || errorThrown === 'Not Found')
+				{
+					callback && callback(false);
+				}
+				else if(jqXHR.status === 200)
+				{
+					callback && callback(true);
+				}
+			}
+		});
+	}
+
+	function getScript(url, callback)
+	{
+		$('#callResult').html('');
+
+		var script = document.createElement('script');
+		var prior = document.getElementsByTagName('script')[0];
+		script.async = 1;
+		prior.parentNode.insertBefore(script, prior);
+
+		script.onload = script.onreadystatechange = function (_, isAbort) {
+			if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState))
+			{
+				script.onload = script.onreadystatechange = null;
+				script = undefined;
+
+				if (!isAbort)
+				{
+					callback && callback(true);
+				}
+			}
+		};
+
+		script.onerror = function (error)
+		{
+			callback && callback(false);
+		};
+
+		script.src = url;
+	}
+
+	function handleEPGCallback(data)
+	{
+		console.log("handleEPGCallback: " + data);
+	}
+</script>
+
+</body>
+</html>
