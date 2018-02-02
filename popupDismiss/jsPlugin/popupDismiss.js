@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.4
+ * Javascript plugin: popupDismiss v4.4.20180202
  *
  */
 (function () {
@@ -291,27 +291,21 @@
 
 	function delegate(element, eventName, selector, handler)
 	{
-		var possibleTargets = element.querySelectorAll(selector);
 		element.addEventListener(eventName, listenerHandler);
 
 		function listenerHandler(event)
 		{
-			var target = event.target;
-
-			for (var i = 0, l = possibleTargets.length; i < l; i++)
+			var target = event.target,
+					popupDismissElement = null;
+			if (target.getAttribute('data-toggle') === pluginName)
 			{
-				var el = target,
-						p = possibleTargets[i];
-
-				while (el && el !== element)
-				{
-					if (el === p)
-					{
-						return handler.call(p, event);
-					}
-					el = el.parentNode;
-				}
+				popupDismissElement = target;
 			}
+			else
+			{
+				popupDismissElement = findParent(target, selector);
+			}
+			popupDismissElement && handler.call(popupDismissElement, event);
 		}
 	}
 
