@@ -17,6 +17,7 @@ function uniqueArray(sourceArray)
 	}
 	return resultArray;
 }
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: HTML Process">
@@ -40,37 +41,64 @@ function escapeHTML(str)
 	});
 }
 
-/***
- * initTemplate
+/**
+ * Initialize template with template/templateData and source data
  * @param {string} template
- * @param {object} data
- * @param {function} functionData
- * @returns {string} template instance
+ * @param {object} templateData
+ * @param {object} [sourceData], for external data process from templateData function
+ * @returns {string}
  */
-function initTemplate(template, data, functionData)
+function initTemplate(template, templateData, sourceData)
 {
 	var result = template;
-	for (var key in data)
+	for (var key in templateData)
 	{
-		if (data.hasOwnProperty(key))
+		if (templateData.hasOwnProperty(key))
 		{
-			var dataValue = data[key];
-			if (typeof data[key] === 'function')
+			var dataValue = templateData[key];
+			// Process source data to required data if the templateData key's value is function
+			if (typeof templateData[key] === 'function')
 			{
-				dataValue = data[key](functionData);
+				dataValue = templateData[key](sourceData);
 			}
 			result = result.replace(new RegExp('{{' + key + '}}', "g"), dataValue);
 		}
 	}
 	return result;
 }
+
+/**
+ * Render template with data and put it to target element
+ * @param targetElement
+ * @param template
+ * @param sourceData
+ * @param templateDataFn
+ * @param [position], values=[update,beforebegin,afterbegin,beforeend,afterend], default update
+ */
+function renderTemplate(targetElement, template, sourceData, templateDataFn, position)
+{
+	var resultHtml = '';
+	for (var i = 0; i < sourceData.length; i++)
+	{
+		resultHtml += initTemplate(template, templateDataFn(sourceData[i]), sourceData[i]);
+	}
+	if (!position || position === 'update')
+	{
+		targetElement.innerHTML = resultHtml;
+	}
+	else
+	{
+		targetElement.insertAdjacentHTML(position, resultHtml);
+	}
+}
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: Load resource">
 /***
  * Load resource: support url types - js, css
  * @param {string} url
- * @param {function} [callback] - callback() after url loaded
+ * @param {function} [callback] - callback() after resource loaded
  */
 function loadResource(url, callback)
 {
@@ -135,10 +163,10 @@ function loadResources(urls, callback)
 function loadUrls(urls, callback)
 {
 	var unLoadedResourcesInfo = urls.map(function (resource) {
-				var resourceInfo = getUrlTypeInfo(resource);
-				resourceInfo.url = resource;
-				return resourceInfo;
-			});
+		var resourceInfo = getUrlTypeInfo(resource);
+		resourceInfo.url = resource;
+		return resourceInfo;
+	});
 	// If support Promise, use Promise
 	if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1)
 	{
@@ -318,7 +346,7 @@ function loadScriptWithPromise(url)
  * Ajax request: dependency jQuery
  * @param {string} url
  * @param {function} callback
- * @param {object} callback's context
+ * @param {object} context: callback's context
  */
 function getFileContentWithAjax(url, callback, context)
 {
@@ -334,7 +362,7 @@ function getFileContentWithAjax(url, callback, context)
  * Use XDomainRequest when browser <= IE9, otherwise use XMLHttpRequest(not support < IE9);
  * @param {string} url
  * @param {function} callback
- * @param {object} callback's context
+ * @param {object} context: callback's context
  */
 function getFileContent(url, callback, context)
 {
@@ -347,11 +375,12 @@ function getFileContent(url, callback, context)
 		xmlHTTPGetRequest(url, callback, context);
 	}
 }
+
 /***
  * xdrGetRequest: send get request in IE <= 9
  * @param {string} url
  * @param {function} callback
- * @param {object} callback's context
+ * @param {object} context: callback's context
  *
  * XDomainRequest is an implementation of HTTP access control (CORS) that worked in Internet Explorer 8 and 9.
  * It was removed in Internet Explorer 10 in favor of using XMLHttpRequest with proper CORS;
@@ -377,7 +406,7 @@ function xdrGetRequest(url, callback, context)
  * XMLHttpRequest: send get request in IE >= 10, or other browsers
  * @param {string} url
  * @param {function} callback
- * @param {object} callback's context
+ * @param {object} context: callback's context
  */
 function xmlHTTPGetRequest(url, callback, context)
 {
@@ -399,6 +428,7 @@ function xmlHTTPGetRequest(url, callback, context)
 	};
 	request.send();
 }
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: Regular expression">
@@ -422,6 +452,7 @@ function isURL(url)
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
 	return (new RegExp(expression)).test(url);
 }
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: Process URL">
@@ -537,11 +568,16 @@ function getRootPath()
 			projectName = pathName.substring(0, pathName.substr(1).lastIndexOf('/') + 1);
 	return (localhostPath + projectName);
 }
+
 //</editor-fold>
 
-/*
- * Functions: Tools for processing function who has parameter array;
- * */
+//<editor-fold desc="Functions: Tools">
+/**
+ * Tools for processing function who has parameter array
+ * @param fn
+ * @param param1
+ * @param param2
+ */
 function parameterArrayToItem(fn, param1, param2)
 {
 	var param2IsArray = Array.isArray(param2),
@@ -553,46 +589,46 @@ function parameterArrayToItem(fn, param1, param2)
 	}
 }
 
-/*
-* Functions: Throttle, specially in onResize event function;
-* */
-function throttle(method, context)
+/**
+ * Throttle, specially in onResize event function;
+ * @param method
+ * @param context
+ * @param {number} [timeout]
+ */
+function throttle(method, context, timeout)
 {
+	timeout = (timeout || timeout === 0) ? timeout : 100;
 	if (method.tId)
 	{
 		clearTimeout(method.tId);
 	}
 	method.tId = setTimeout(function () {
 		method.call(context);
-	}, 100);
+	}, timeout);
 }
 
-/*
-* Functions: Debug
-* Demo:
-* function doSomething(param1, param2)
-* {
-	consoleLog(arguments, 'anything...');
-* }
-* */
+/**
+ * Custom console log modal in function
+ * @param fnArguments
+ */
 function consoleLog(fnArguments)
 {
 	var typeStyle = [
-			'font-size: 14px; color: #8665D5',
-			'font-size: 14px; color: #406AD5',
-			'font-size: 14px; color: #E9AC32',
-			'font-size: 14px; color: #3AC1D9',
-			'font-size: 14px; color: #FF7979',
-			'font-size: 14px; color: #39D084',
-			'font-size: 14px; color: #FF8E66',
-			'font-size: 14px; color: #44B1E6',
-			'font-size: 14px; color: #9e5648',
-			'font-size: 14px; color: #406ad5',
-			'font-size: 14px; color: #purple',
-			'font-size: 14px; color: #red',
-			'font-size: 14px; color: #teal',
-			'font-size: 14px; color: #yellow'
-			];
+		'font-size: 14px; color: #8665D5',
+		'font-size: 14px; color: #406AD5',
+		'font-size: 14px; color: #E9AC32',
+		'font-size: 14px; color: #3AC1D9',
+		'font-size: 14px; color: #FF7979',
+		'font-size: 14px; color: #39D084',
+		'font-size: 14px; color: #FF8E66',
+		'font-size: 14px; color: #44B1E6',
+		'font-size: 14px; color: #9e5648',
+		'font-size: 14px; color: #406ad5',
+		'font-size: 14px; color: #purple',
+		'font-size: 14px; color: #red',
+		'font-size: 14px; color: #teal',
+		'font-size: 14px; color: #yellow'
+	];
 	if (!window.consoleLogTypes)
 	{
 		window.consoleLogTypes = {};
@@ -622,10 +658,15 @@ function consoleLog(fnArguments)
 			window.console.group(fnName);
 			window.consoleLogTypes.lastType = fnName;
 		}
-		window.console.log('%c%s', window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]] , fnName + ': (' + fnArgumentsString + ') ' + surplusArgumentString);
+		window.console.log('%c%s', window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]], fnName + ': (' + fnArgumentsString + ') ' + surplusArgumentString);
 	}
 }
 
+/**
+ * Get array item string which spilt with ',';
+ * @param array
+ * @returns {string}
+ */
 function getArrayString(array)
 {
 	return array.map(function (arrayItem) {
@@ -641,7 +682,39 @@ function getArrayString(array)
 	}).join(',');
 }
 
-// Functions: Copy - deep copy and shadow copy with out jQuery
+/**
+ * Dynamic set callback function in window
+ * @param typeName
+ * @returns {*}
+ */
+function setCallback(typeName)
+{
+	var typeCallback = getCallbackName(typeName);
+	if (!window[typeCallback])
+	{
+		window[typeCallback] = function (data) {
+			window[typeName] = data;
+		};
+		return typeCallback;
+	}
+	return null;
+}
+
+/**
+ * getCallbackName
+ * @param typeName
+ * @returns {string}
+ */
+function getCallbackName(typeName)
+{
+	return typeName + "Callback";
+}
+
+/**
+ * deepExtend - deep copy with out jQuery
+ * @param out
+ * @returns {*|{}}
+ */
 function deepExtend(out) // arguments: (source, source1, source2, ...)
 {
 	out = out || {};
@@ -673,30 +746,14 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 	return out;
 }
 
-// Functions: Dynamic set callback function in window
-function setCallback(typeName)
-{
-	var typeCallback = typeName + "Callback";
-	if (!window[typeCallback])
-	{
-		window[typeCallback] = function (data)
-		{
-			window[typeName] = data;
-		};
-		return typeCallback;
-	}
-	return null;
-}
-function getCallbackName(typeName)
-{
-	return typeName + "Callback";
-}
+//</editor-fold>
 
 //<editor-fold desc="Functions: Elements operation">
-/*
-* Functions: Elements operation
-*
-* */
+/**
+ * getElements
+ * @param elements
+ * @returns {Array}
+ */
 function getElements(elements)
 {
 	var resultElement = [];
@@ -719,6 +776,11 @@ function getElements(elements)
 	return resultElement;
 }
 
+/**
+ * getSelectorsElements
+ * @param selectorString
+ * @returns {*}
+ */
 function getSelectorsElements(selectorString)
 {
 	if (!selectorString || (selectorString && selectorString.trim() === ''))
@@ -745,12 +807,24 @@ function getSelectorsElements(selectorString)
 	return selectorsElements;
 }
 
+/**
+ * findParent
+ * @param element
+ * @param selector
+ * @returns {*}
+ */
 function findParent(element, selector)
 {
 	while ((element = element.parentElement) && !matches(element, selector)) {}
 	return element;
 }
 
+/**
+ * matches
+ * @param el
+ * @param selector
+ * @returns {boolean | *}
+ */
 function matches(el, selector)
 {
 	return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
@@ -805,7 +879,7 @@ function hasCloset(el, parentElement)
 
 /***
  * Convert JS selector elements to array
- * @param {node} nodeList
+ * @param {elements} nodeList
  * @returns {Array}
  */
 function convertNodeListToArray(nodeList)
@@ -821,7 +895,7 @@ function convertNodeListToArray(nodeList)
 /***
  *
  * Copy html element to clipboard
- * @param {element} html element
+ * @param {element} element - html element
  */
 function copyElementToClipboard(element)
 {
@@ -835,7 +909,7 @@ function copyElementToClipboard(element)
 
 /**
  * Insert style to head
- * @param {cssText} style string
+ * @param {string} cssText - style string
  */
 function insertStyleToHead(cssText)
 {
@@ -857,8 +931,8 @@ function insertStyleToHead(cssText)
 
 /**
  * Create one html tag element with tagInfo
- * @param {tagName} html tag name
- * @param {tagInfo} tag's attributes and style object, such as { attr: {}, style: {} }
+ * @param {string} tagName - html tag name
+ * @param {object} tagInfo - tag's attributes and style object, such as { attr: {}, style: {} }
  * @return {element} html tag element.
  */
 function createTagElement(tagName, tagInfo)
@@ -875,13 +949,17 @@ function createTagElement(tagName, tagInfo)
 
 	return tagElement;
 }
+
 //</editor-fold>
 
-//<editor-fold desc="Tools: Page operation">
-/*
-* Tools: Page operation
-* */
-
+//<editor-fold desc="Functions: Page operation">
+/**
+ * scrollListToIndex
+ * @param listFolder
+ * @param index
+ * @param toTopIndex
+ * @param duration
+ */
 function scrollListToIndex(listFolder, index, toTopIndex, duration)
 {
 	if (index === 0)
@@ -917,6 +995,12 @@ function scrollListToIndex(listFolder, index, toTopIndex, duration)
 	}
 }
 
+/**
+ * scrollTo
+ * @param element
+ * @param to
+ * @param duration
+ */
 function scrollTo(element, to, duration)
 {
 	if (duration <= 0) return;
@@ -930,27 +1014,39 @@ function scrollTo(element, to, duration)
 	}, 10);
 }
 
-function addChildElement(parentElement, childElement, position)
+/**
+ * addChildElement
+ * @param targetElement
+ * @param addedElement
+ * @param position
+ */
+function addElement(targetElement, addedElement, position)
 {
 	switch (position && position.toLowerCase())
 	{
 		case 'prepend':
-			parentElement.insertBefore(childElement, parentElement.firstChild);
+			targetElement.insertBefore(addedElement, targetElement.firstChild);
 			break;
 		case 'insertbefore':
-			parentElement.insertAdjacentHTML('beforebegin', childElement.outerHTML);
+			targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
 			break;
 		case 'insertafter':
-			parentElement.insertAdjacentHTML('afterend', childElement.outerHTML);
+			targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
 			break;
 		default: //'append'
-			parentElement.appendChild(childElement);
+			targetElement.appendChild(addedElement);
 	}
 }
+
 //</editor-fold>
 
-//<editor-fold desc="Functions: Classes without jQuery">
-// Functions: Classes without jQuery
+//<editor-fold desc="Functions: Operator Class without jQuery">
+/**
+ * hasClass
+ * @param element
+ * @param className
+ * @returns {boolean}
+ */
 function hasClass(element, className)
 {
 	if (element.classList)
@@ -959,22 +1055,43 @@ function hasClass(element, className)
 		return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
 }
 
+/**
+ * addClass
+ * @param element
+ * @param className
+ */
 function addClass(element, className)
 {
-	if (element.classList)
-		element.classList.add(className);
-	else
-		element.className += ' ' + className;
+	if (!hasClass(element, className))
+	{
+		if (element.classList)
+			element.classList.add(className);
+		else
+			element.className += ' ' + className;
+	}
 }
 
+/**
+ * removeClass
+ * @param element
+ * @param className
+ */
 function removeClass(element, className)
 {
-	if (element.classList)
-		element.classList.remove(className);
-	else
-		element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	if (hasClass(element, className))
+	{
+		if (element.classList)
+			element.classList.remove(className);
+		else
+			element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+	}
 }
 
+/**
+ * toggleClass
+ * @param element
+ * @param className
+ */
 function toggleClass(element, className)
 {
 	if (hasClass(element, className))
@@ -986,13 +1103,18 @@ function toggleClass(element, className)
 		addClass(element, className);
 	}
 }
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: Event operation">
-/*
-* Functions: Event operation
-* */
 
+/**
+ * delegate element event
+ * @param element
+ * @param eventName
+ * @param selector
+ * @param handler
+ */
 function delegate(element, eventName, selector, handler)
 {
 	var possibleTargets = element.querySelectorAll(selector);
@@ -1018,51 +1140,13 @@ function delegate(element, eventName, selector, handler)
 		}
 	}
 }
-//</editor-fold>
 
-// Custom for click which can ignore drag trigger click
-function delegateClickIgnoreDrag(element, selector, handler)
-{
-	var possibleTargets = element.querySelectorAll(selector);
-	element.addEventListener('mousedown', listenerHandler);
-
-	function listenerHandler(event)
-	{
-		var target = event.target;
-
-		for (var i = 0, l = possibleTargets.length; i < l; i++)
-		{
-			var el = target,
-					p = possibleTargets[i];
-
-			while (el && el !== element)
-			{
-				if (el === p)
-				{
-					return mouseDownHandler.call(p, event);
-				}
-				el = el.parentNode;
-			}
-		}
-	}
-
-	function mouseDownHandler(event)
-	{
-		event.target.addEventListener('mouseup', mouseUpMoveHandler);
-		event.target.addEventListener('mousemove', mouseUpMoveHandler);
-	}
-
-	function mouseUpMoveHandler(event)
-	{
-		if (event.type === 'mouseup' && event.which <= 1) //only for left key
-		{
-			handler(event);
-		}
-		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
-		event.target.removeEventListener('mousemove', mouseUpMoveHandler);
-	}
-}
-
+/**
+ * bindClickIgnoreDrag
+ * @param elements
+ * @param callback
+ * @param isBind
+ */
 function bindClickIgnoreDrag(elements, callback, isBind)
 {
 	var eventListenerName = isBind !== false ? 'on' : 'off',
@@ -1096,6 +1180,12 @@ function bindClickIgnoreDrag(elements, callback, isBind)
 	}
 }
 
+/**
+ * triggerEvent
+ * @param element
+ * @param eventName
+ * @param data
+ */
 function triggerEvent(element, eventName, data)
 {
 	var event = null;
@@ -1112,7 +1202,11 @@ function triggerEvent(element, eventName, data)
 	element.dispatchEvent(event);
 }
 
-//Extend on/off methods
+/**
+ * Extend on/off methods
+ * @param el: element
+ * @returns {*}
+ */
 function extendOnOff(el)
 {
 	if (el.length === 0)
@@ -1145,6 +1239,11 @@ function extendOnOff(el)
 	return el;
 }
 
+/**
+ * mouseTouchTrack
+ * @param element
+ * @param infoCallback
+ */
 function mouseTouchTrack(element, infoCallback)
 {
 	var touchStartBeginTime = 0,
@@ -1178,17 +1277,19 @@ function mouseTouchTrack(element, infoCallback)
 	}
 }
 
+//</editor-fold>
+
 //<editor-fold desc="Plugins: Common">
-/*
-* Plugins: Dictionary
-* */
+/**
+ * Plugins: Dictionary
+ */
 (function () {
 	"use strict";
 
 	function Dictionary()
 	{
 		this._size = 0;
-		this.datastore = Object.create(null);
+		this.dataStore = Object.create(null);
 	}
 
 	Dictionary.prototype.isEmpty = function () {
@@ -1200,41 +1301,51 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.clear = function () {
-		for (var key in this.datastore)
+		for (var key in this.dataStore)
 		{
-			delete this.datastore[key];
+			if (this.dataStore.hasOwnProperty(key))
+			{
+				delete this.dataStore[key];
+			}
 		}
 		this._size = 0;
 	};
 
 	Dictionary.prototype.add = function (key, value) {
-		this.datastore[key] = value;
+		this.dataStore[key] = value;
 		this._size++;
 	};
 
 	Dictionary.prototype.find = function (key) {
-		return this.datastore[key];
+		return this.dataStore[key];
 	};
 
 	Dictionary.prototype.count = function () {
 		var n = 0;
-		for (var key in this.datastore)
+		for (var key in this.dataStore)
 		{
-			n++;
+			if (this.dataStore.hasOwnProperty(key))
+			{
+				n++;
+			}
 		}
 		return n;
 	};
 
 	Dictionary.prototype.remove = function (key) {
-		delete this.datastore[key];
+		delete this.dataStore[key];
 		this._size--;
 	};
 
 	Dictionary.prototype.showAll = function () {
-		for (var key in this.datastore)
+		for (var key in this.dataStore)
 		{
-			console.log(key + "->" + this.datastore[key]);
+			if (this.dataStore.hasOwnProperty(key))
+			{
+				console.log(key + "->" + this.dataStore[key]);
+			}
 		}
 	};
 })();
+
 //</editor-fold>
