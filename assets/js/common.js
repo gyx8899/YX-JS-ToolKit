@@ -1026,23 +1026,28 @@ function scrollTo(element, to, duration)
  * @param targetElement
  * @param addedElement
  * @param position
+ * @return resultAddedElement
  */
 function addElement(targetElement, addedElement, position)
 {
+	var resultAddedElement = null;
 	switch (position && position.toLowerCase())
 	{
 		case 'prepend':
-			targetElement.insertBefore(addedElement, targetElement.firstChild);
+			resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
 			break;
 		case 'insertbefore':
 			targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
+			resultAddedElement = targetElement.previousSibling;
 			break;
 		case 'insertafter':
 			targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
+			resultAddedElement = targetElement.nextSibling;
 			break;
 		default: //'append'
-			targetElement.appendChild(addedElement);
+			resultAddedElement = targetElement.appendChild(addedElement);
 	}
+	return resultAddedElement;
 }
 
 //</editor-fold>
