@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>LoadScript</title>
+
+	<!-- Link *** CSS  -->
+	<link href="" rel="stylesheet">
+
+</head>
+<body>
+
+
+<!-- Script *** JS -->
+<script src="../assets/js/common.js"></script>
+<script>
+	var jsFeedUrl = "https://neulionmdnyc-a.akamaihd.net/fs/nba/feeds_s2012/schedule/2017/7_17.js";
+	var jsFeed404Url = "https://neulionmdnyc-a.akamaihd.net/fs/nba/feeds_s2012/schedule/2010/7_17.js";
+	loadScript(jsFeedUrl, function (isSuccess) {
+		console.log("Normal Script load: " + (isSuccess ? 'success' : 'failed'));
+	});
+	loadScript(jsFeed404Url, function (isSuccess) {
+		console.log("404 Script load: " + (isSuccess ? 'success' : 'failed'));
+	});
+</script>
+</body>
+</html>

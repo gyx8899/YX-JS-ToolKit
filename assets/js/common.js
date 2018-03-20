@@ -245,24 +245,31 @@ function loadScript(url, callback, context, isAsync)
 	}
 	else
 	{
-		var script = document.createElement("script");
+		var script = document.createElement("script"),
+				isSuccess = true;
 		script.type = "text/javascript";
 		isAsync && script.setAttribute('async', '');
 
+		script.onerror = function () {
+			isSuccess = false;
+			callback && (context ? context[callback]() : callback(isSuccess));
+		};
 		if (script.readyState)
 		{  //IE
 			script.onreadystatechange = function () {
 				if (script.readyState === "loaded" || script.readyState === "complete")
 				{
 					script.onreadystatechange = null;
-					callback && (context ? context[callback]() : callback());
+					setTimeout(function () {
+						isSuccess && callback && (context ? context[callback]() : callback(isSuccess));
+					}, 0);
 				}
 			};
 		}
 		else
 		{  //Others
 			script.onload = function () {
-				callback && (context ? context[callback]() : callback());
+				callback && (context ? context[callback]() : callback(isSuccess));
 			};
 		}
 
