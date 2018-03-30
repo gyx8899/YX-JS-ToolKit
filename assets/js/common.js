@@ -564,6 +564,22 @@ function getQueryParamValue(param)
 }
 
 /***
+ * getUrlQueryParams
+ * @returns {object}
+ */
+function getUrlQueryParams()
+{
+	var query = {},
+			queryParams = window.location.search.substring(1).split("&");
+	for (var i = 0; i < queryParams.length; i++)
+	{
+		var queryParam = queryParams[i].split("=");
+		query[queryParam[0]] = queryParam[1];
+	}
+	return query;
+}
+
+/***
  * getRootPath
  * @returns {string}
  */
