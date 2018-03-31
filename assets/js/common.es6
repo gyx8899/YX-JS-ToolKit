@@ -229,7 +229,7 @@ function loadCSS(url, callback, context)
 			console.log("Error load css:" + url);
 		};
 
-		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url) + " *** CSS "));
+		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url).name + " *** CSS "));
 		document.getElementsByTagName('head')[0].appendChild(link);
 	}
 }
@@ -257,7 +257,7 @@ function loadScript(url, callback, context, info)
 	{
 		let script = document.createElement("script"),
 				isSuccess = true,
-				libName = info && info['libName'] ? info['libName'] : getFileNameFromURL(url);
+				libName = info && info['libName'] ? info['libName'] : getFileNameFromURL(url).name;
 		script.type = "text/javascript";
 		info && info['isAsync'] && script.setAttribute('async', '');
 
@@ -330,7 +330,7 @@ function loadCSSWithPromise(url)
 			reject(new Error(error));
 		};
 
-		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url) + " *** CSS "));
+		document.getElementsByTagName('head')[0].appendChild(document.createComment(" Style " + getFileNameFromURL(url).name + " *** CSS "));
 		document.getElementsByTagName('head')[0].appendChild(link);
 	});
 }
@@ -370,7 +370,7 @@ function loadScriptWithPromise(url)
 
 		script.src = url;
 
-		document.body.appendChild(document.createComment(" Script " + getFileNameFromURL(url) + " *** JS "));
+		document.body.appendChild(document.createComment(" Script " + getFileNameFromURL(url).name + " *** JS "));
 		document.body.appendChild(script);
 	});
 }
@@ -492,21 +492,17 @@ function isURL(url)
 /***
  * getFileNameFromURL
  * @param {string} url
- * @returns {string}
+ * @returns {object} {name: '', simpleBaseName: '', extensionName: '', baseName: ''}
  */
 function getFileNameFromURL(url)
 {
-	return url.split('/').pop().split('#')[0].split('?')[0];
-}
-
-/***
- * getTitleCaseFileNameFromURL
- * @param {string} url
- * @returns {string}
- */
-function getTitleCaseFileNameFromURL(url)
-{
-	return titleCase(getFileNameFromURL(url));
+	let fileNameSplit = url.split('/').pop().split('#')[0].split('?')[0].split('.');
+	return {
+		name: fileNameSplit.join('.'),
+		simpleBaseName: fileNameSplit[0],
+		extensionName: fileNameSplit.length > 1 ? fileNameSplit[fileNameSplit.length - 1] : '',
+		baseName: fileNameSplit.length > 1 ? fileNameSplit.splice(0, fileNameSplit.length - 1).join('.') : fileNameSplit[0],
+	};
 }
 
 /***
@@ -533,9 +529,8 @@ function checkResourceLoaded(url)
 function getUrlTypeInfo(url)
 {
 	// Current only support js and css resources;
-	let resourceName = getFileNameFromURL(url),
-			resourceNameSplitArray = resourceName.split('.');
-	if (resourceNameSplitArray.length > 1)
+	let fileExtensionName = getFileNameFromURL(url).extensionName;
+	if (fileExtensionName)
 	{
 		let urlType = {
 			'js': {
@@ -553,7 +548,7 @@ function getUrlTypeInfo(url)
 				loadFnPromise: 'loadCSSWithPromise'
 			}
 		};
-		return urlType[resourceNameSplitArray.pop()];
+		return urlType[fileExtensionName];
 	}
 	return null;
 }
