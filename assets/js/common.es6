@@ -239,9 +239,9 @@ function loadCSS(url, callback, context)
  * @param {(string|string[])} url string or an array of urls
  * @param {function} [callback] - callback() after script loaded
  * @param {object} [context] - callback's context
- * @param {boolean} [isAsync=false] - whether set <script async> attribute or not
+ * @param {object} info - {isAsync: [true/false], attributes: {}, libName: ""}
  */
-function loadScript(url, callback, context, isAsync)
+function loadScript(url, callback, context, info)
 {
 	if (!url)
 		return;
@@ -250,15 +250,31 @@ function loadScript(url, callback, context, isAsync)
 	{
 		// Process the url and callback if they are array;
 		parameterArrayToItem(function (urlParam, callbackParam) {
-			loadScript(urlParam, callbackParam, context, isAsync);
+			loadScript(urlParam, callbackParam, context, info);
 		}, url, callback);
 	}
 	else
 	{
 		let script = document.createElement("script"),
-				isSuccess = true;
+				isSuccess = true,
+				libName = info && info['libName'] ? info['libName'] : getFileNameFromURL(url);
 		script.type = "text/javascript";
-		isAsync && script.setAttribute('async', '');
+		info && info['isAsync'] && script.setAttribute('async', '');
+
+		if (info && info.attributes)
+		{
+			for (let attr in info.attributes)
+			{
+				if (info.attributes.hasOwnProperty(attr))
+				{
+					script.setAttribute(attr, info.attributes[attr]);
+					if (attr === 'class')
+					{
+						script.setAttribute('className', info.attributes[attr]);
+					}
+				}
+			}
+		}
 
 		script.onerror = function () {
 			isSuccess = false;
@@ -285,7 +301,7 @@ function loadScript(url, callback, context, isAsync)
 
 		script.src = url;
 
-		document.body.appendChild(document.createComment(" Script " + getFileNameFromURL(url) + " *** JS "));
+		document.body.appendChild(document.createComment(" Script " + libName + " *** JS "));
 		document.body.appendChild(script);
 	}
 }
