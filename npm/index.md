@@ -2,7 +2,7 @@
 
 ---
 
-### IDEA auto babel setting in project
+### IDEA auto babel setting ES6 to ES5 in project
 ```cmd
 npm install --save-dev babel-cli
 
