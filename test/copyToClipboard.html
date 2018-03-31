@@ -48,17 +48,29 @@
 						next
 					</div>
 					<p>
-						<button class="js-emailcopybtn" onclick="copyElementToClipboard('selectText')">Copy</button>
+						<button class="js-emailcopybtn" onclick="copyElementToClipboard(document.getElementById('selectText'))">
+							Copy
+						</button>
 					</p>
 
-					<p id="js-emaillinkp">Email me at <a class="js-emaillink"
-																							 href="mailto:matt@example.co.uk">matt@example.co.uk</a>
+					<p id="js-emaillinkp">
+						Email me at
+						<a class="js-emaillink" href="mailto:matt@example.co.uk">matt@example.co.uk</a>
 					</p>
 					<p>
-						<button class="js-emailcopybtn" onclick="copyElementToClipboard('js-emaillinkp')">Copy</button>
+						<button class="js-emailcopybtn"
+										onclick="copyElementToClipboard(document.getElementById('js-emaillinkp'))">
+							Copy
+						</button>
 					</p>
 					<p>
 						<button class="js-emailcopybtn" onclick="copyURLTitle()">Copy URL and Title</button>
+					</p>
+					<p>
+						<button class="pasteCopied"
+										onclick="pasteValue();">Paste
+						</button>
+						<textarea id="copiedValue"></textarea>
 					</p>
 
 				</div>
@@ -72,36 +84,16 @@
 </main>
 
 <!-- Script Common *** JS -->
-<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+<!--<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>-->
+<script src="../../YX-JS-ToolKit/assets/js/common.js"></script>
 
 <!-- Script Config *** JS -->
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
 
 <!-- Script Demo *** JS -->
-<script id="demoJS" data-toggle="previewCode" data-target="#demoCode" type="text/javascript">
+<!--<script id="demoJS" data-toggle="previewCode" data-target="#demoCode" type="text/javascript">-->
+<script id="demoJS" type="text/javascript">
 	// Demo's JS here
-	function copyElementToClipboard(elementId)
-	{
-		var copyContentElement = document.querySelector('#' + elementId);
-		var range = document.createRange();
-		range.selectNode(copyContentElement);
-		window.getSelection().addRange(range);
-
-		try
-		{
-			// Now that we've selected the anchor text, execute the copy command
-			var successful = document.execCommand('copy'),
-					msg = successful ? 'successful' : 'unsuccessful';
-			console.log('Copy email command was ' + msg);
-		}
-		catch (err)
-		{
-			console.log('Oops, unable to copy');
-		}
-
-		// Remove the selections - NOTE: Should use removeRange(range) when it is supported
-		window.getSelection().removeAllRanges();
-	}
 
 	function copyURLTitle()
 	{
@@ -115,7 +107,7 @@
 		addCopyElement(elementId, pageUrl, titleContent);
 
 		// Copy content element
-		copyElementToClipboard(elementId);
+		copyElementToClipboard(document.getElementById(elementId));
 
 		// Remove copied element
 		removeCopyElement(elementId, bodyBackground);
@@ -138,6 +130,19 @@
 		document.body.style.background = bodyBackground;
 	}
 
+	// TODO: paste failed
+	function pasteValue()
+	{
+		// var copied = getContentFromClipboard();
+		var textArea = document.getElementById('copiedValue');
+
+		textArea.focus();
+		textArea.select();
+		if (document.execCommand('paste'))
+		{
+			console.log('paste success!');
+		}
+	}
 </script>
 
 </body>
