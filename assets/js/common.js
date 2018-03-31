@@ -1,16 +1,18 @@
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 //<editor-fold desc="Functions: Data Process: basic data types">
 /***
  * uniqueArray
  * @param {Array} sourceArray
  * @returns {Array}
  */
-function uniqueArray(sourceArray)
-{
-	var resultArray = [], hash = {};
-	for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
-	{
-		if (!hash[elem])
-		{
+function uniqueArray(sourceArray) {
+	var resultArray = [],
+	    hash = {};
+	for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++) {
+		if (!hash[elem]) {
 			resultArray.push(elem);
 			hash[elem] = true;
 		}
@@ -26,8 +28,7 @@ function uniqueArray(sourceArray)
  * @param {string} str
  * @returns {void|string}
  */
-function escapeHTML(str)
-{
+function escapeHTML(str) {
 	var map = {
 		'&': '&amp;',
 		'<': '&lt;',
@@ -48,17 +49,13 @@ function escapeHTML(str)
  * @param {object} [sourceData], for external data process from templateData function
  * @returns {string}
  */
-function initTemplate(template, templateData, sourceData)
-{
+function initTemplate(template, templateData, sourceData) {
 	var result = template;
-	for (var key in templateData)
-	{
-		if (templateData.hasOwnProperty(key))
-		{
+	for (var key in templateData) {
+		if (templateData.hasOwnProperty(key)) {
 			var dataValue = templateData[key];
 			// Process source data to required data if the templateData key's value is function
-			if (typeof templateData[key] === 'function')
-			{
+			if (typeof templateData[key] === 'function') {
 				dataValue = templateData[key](sourceData);
 			}
 			result = result.replace(new RegExp('{{' + key + '}}', "g"), dataValue);
@@ -75,19 +72,14 @@ function initTemplate(template, templateData, sourceData)
  * @param templateDataFn
  * @param [position], values=[update,beforebegin,afterbegin,beforeend,afterend], default update
  */
-function renderTemplate(targetElement, template, sourceData, templateDataFn, position)
-{
+function renderTemplate(targetElement, template, sourceData, templateDataFn, position) {
 	var resultHtml = '';
-	for (var i = 0; i < sourceData.length; i++)
-	{
+	for (var i = 0; i < sourceData.length; i++) {
 		resultHtml += initTemplate(template, templateDataFn(sourceData[i]), sourceData[i]);
 	}
-	if (!position || position === 'update')
-	{
+	if (!position || position === 'update') {
 		targetElement.innerHTML = resultHtml;
-	}
-	else
-	{
+	} else {
 		targetElement.insertAdjacentHTML(position, resultHtml);
 	}
 }
@@ -100,10 +92,8 @@ function renderTemplate(targetElement, template, sourceData, templateDataFn, pos
  * @param {string} url
  * @param {function} [callback] - callback() after resource loaded
  */
-function loadResource(url, callback)
-{
-	if (!checkResourceLoaded(url))
-	{
+function loadResource(url, callback) {
+	if (!checkResourceLoaded(url)) {
 		window[getUrlTypeInfo(url).loadFn](url, callback);
 	}
 }
@@ -113,44 +103,29 @@ function loadResource(url, callback)
  * @param {string[]} urls - an array of urls
  * @param {function} [callback] - callback() after url loaded
  */
-function loadResources(urls, callback)
-{
-	if (urls !== null && urls !== '')
-	{
-		if (Array.isArray(urls))
-		{
+function loadResources(urls, callback) {
+	if (urls !== null && urls !== '') {
+		if (Array.isArray(urls)) {
 			urls = urls.filter(function (url) {
-				return (String(url) === url && url !== '');
+				return String(url) === url && url !== '';
 			});
-			if (urls.length === 0)
-			{
+			if (urls.length === 0) {
 				callback && callback();
-			}
-			else if (urls.length === 1)
-			{
+			} else if (urls.length === 1) {
 				loadResource(urls[0], callback);
-			}
-			else
-			{
-				if (callback)
-				{
+			} else {
+				if (callback) {
 					loadUrls(urls, callback);
-				}
-				else
-				{
+				} else {
 					urls.map(function (url) {
 						loadResource(url);
-					})
+					});
 				}
 			}
-		}
-		else if (String(urls) === urls)
-		{
+		} else if (String(urls) === urls) {
 			loadResource(urls, callback);
 		}
-	}
-	else
-	{
+	} else {
 		callback && callback();
 	}
 }
@@ -160,16 +135,14 @@ function loadResources(urls, callback)
  * @param {string[]} urls - an array of urls
  * @param {function} [callback] - callback() after url loaded
  */
-function loadUrls(urls, callback)
-{
+function loadUrls(urls, callback) {
 	var unLoadedResourcesInfo = urls.map(function (resource) {
 		var resourceInfo = getUrlTypeInfo(resource);
 		resourceInfo.url = resource;
 		return resourceInfo;
 	});
 	// If support Promise, use Promise
-	if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1)
-	{
+	if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1) {
 		var resourcePromise = unLoadedResourcesInfo.map(function (resourceInfo) {
 			return window[resourceInfo.loadFnPromise](resourceInfo.url);
 		});
@@ -178,9 +151,7 @@ function loadUrls(urls, callback)
 		}).catch(function (error) {
 			console.log("Error: in load resources! " + error);
 		});
-	}
-	else
-	{
+	} else {
 		unLoadedResourcesInfo.forEach(function (resourceInfo) {
 			window[resourceInfo.loadFn](resourceInfo.url);
 		});
@@ -194,20 +165,15 @@ function loadUrls(urls, callback)
  * @param {function} [callback] - callback() after script loaded
  * @param {object} [context] - callback's context
  */
-function loadCSS(url, callback, context)
-{
-	if (!url)
-		return;
+function loadCSS(url, callback, context) {
+	if (!url) return;
 
-	if (Array.isArray(url))
-	{
+	if (Array.isArray(url)) {
 		// Process the url and callback if they are array;
 		parameterArrayToItem(function (urlParam, callbackParam) {
 			loadCSS(urlParam, callbackParam);
 		}, url, callback);
-	}
-	else
-	{
+	} else {
 		var link = document.createElement('link');
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
@@ -231,22 +197,17 @@ function loadCSS(url, callback, context)
  * @param {object} [context] - callback's context
  * @param {boolean} [isAsync=false] - whether set <script async> attribute or not
  */
-function loadScript(url, callback, context, isAsync)
-{
-	if (!url)
-		return;
+function loadScript(url, callback, context, isAsync) {
+	if (!url) return;
 
-	if (Array.isArray(url))
-	{
+	if (Array.isArray(url)) {
 		// Process the url and callback if they are array;
 		parameterArrayToItem(function (urlParam, callbackParam) {
 			loadScript(urlParam, callbackParam, context, isAsync);
 		}, url, callback);
-	}
-	else
-	{
+	} else {
 		var script = document.createElement("script"),
-				isSuccess = true;
+		    isSuccess = true;
 		script.type = "text/javascript";
 		isAsync && script.setAttribute('async', '');
 
@@ -254,20 +215,18 @@ function loadScript(url, callback, context, isAsync)
 			isSuccess = false;
 			callback && (context ? context[callback]() : callback(isSuccess));
 		};
-		if (script.readyState)
-		{  //IE
+		if (script.readyState) {
+			//IE
 			script.onreadystatechange = function () {
-				if (script.readyState === "loaded" || script.readyState === "complete")
-				{
+				if (script.readyState === "loaded" || script.readyState === "complete") {
 					script.onreadystatechange = null;
 					setTimeout(function () {
 						isSuccess && callback && (context ? context[callback]() : callback(isSuccess));
 					}, 0);
 				}
 			};
-		}
-		else
-		{  //Others
+		} else {
+			//Others
 			script.onload = function () {
 				callback && (context ? context[callback]() : callback(isSuccess));
 			};
@@ -285,11 +244,9 @@ function loadScript(url, callback, context, isAsync)
  * @param url
  * @returns {Promise}
  */
-function loadCSSWithPromise(url)
-{
+function loadCSSWithPromise(url) {
 	return new Promise(function (resolve, reject) {
-		if (!url)
-		{
+		if (!url) {
 			reject(new Error("url is null!"));
 		}
 
@@ -314,29 +271,25 @@ function loadCSSWithPromise(url)
  * @param url
  * @returns {Promise}
  */
-function loadScriptWithPromise(url)
-{
+function loadScriptWithPromise(url) {
 	return new Promise(function (resolve, reject) {
-		if (!url)
-		{
+		if (!url) {
 			reject(new Error("url is null!"));
 		}
 
 		var script = document.createElement("script");
 		script.type = "text/javascript";
 
-		if (script.readyState)
-		{  //IE
+		if (script.readyState) {
+			//IE
 			script.onreadystatechange = function () {
-				if (script.readyState === "loaded" || script.readyState === "complete")
-				{
+				if (script.readyState === "loaded" || script.readyState === "complete") {
 					script.onreadystatechange = null;
 					resolve();
 				}
 			};
-		}
-		else
-		{  //Others
+		} else {
+			//Others
 			script.onload = function () {
 				resolve();
 			};
@@ -355,11 +308,10 @@ function loadScriptWithPromise(url)
  * @param {function} callback
  * @param {object} context: callback's context
  */
-function getFileContentWithAjax(url, callback, context)
-{
+function getFileContentWithAjax(url, callback, context) {
 	$.ajax({
 		url: url,
-		success: function (data) {
+		success: function success(data) {
 			callback && (context ? context[callback](data) : callback(data));
 		}
 	});
@@ -371,14 +323,10 @@ function getFileContentWithAjax(url, callback, context)
  * @param {function} callback
  * @param {object} context: callback's context
  */
-function getFileContent(url, callback, context)
-{
-	if (document.documentMode <= 9 && window.XDomainRequest)
-	{
-		xdrGetRequest(url, callback, context)
-	}
-	else
-	{
+function getFileContent(url, callback, context) {
+	if (document.documentMode <= 9 && window.XDomainRequest) {
+		xdrGetRequest(url, callback, context);
+	} else {
 		xmlHTTPGetRequest(url, callback, context);
 	}
 }
@@ -393,11 +341,9 @@ function getFileContent(url, callback, context)
  * It was removed in Internet Explorer 10 in favor of using XMLHttpRequest with proper CORS;
  * https://developer.mozilla.org/zh-CN/docs/Web/API/XDomainRequest
  */
-function xdrGetRequest(url, callback, context)
-{
+function xdrGetRequest(url, callback, context) {
 	var xdr = new XDomainRequest();
-	if (xdr)
-	{
+	if (xdr) {
 		xdr.onload = function () {
 			callback && (context ? context[callback](xdr.responseText) : callback(xdr.responseText));
 		};
@@ -415,18 +361,14 @@ function xdrGetRequest(url, callback, context)
  * @param {function} callback
  * @param {object} context: callback's context
  */
-function xmlHTTPGetRequest(url, callback, context)
-{
+function xmlHTTPGetRequest(url, callback, context) {
 	var request = new XMLHttpRequest();
 	request.open('GET', url, true);
 	request.onload = function () {
-		if (request.status >= 200 && request.status < 400)
-		{
+		if (request.status >= 200 && request.status < 400) {
 			// Success
 			callback && (context ? context[callback](request.responseText) : callback(request.responseText));
-		}
-		else
-		{
+		} else {
 			// We reached our target server, but it returned an error
 		}
 	};
@@ -444,8 +386,7 @@ function xmlHTTPGetRequest(url, callback, context)
  * @param expStr
  * @returns {RegExp}
  */
-function regExpG(expStr)
-{
+function regExpG(expStr) {
 	return new RegExp(expStr, "g");
 }
 
@@ -454,10 +395,9 @@ function regExpG(expStr)
  * @param url
  * @returns {boolean}
  */
-function isURL(url)
-{
+function isURL(url) {
 	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
-	return (new RegExp(expression)).test(url);
+	return new RegExp(expression).test(url);
 }
 
 //</editor-fold>
@@ -468,8 +408,7 @@ function isURL(url)
  * @param {string} url
  * @returns {string}
  */
-function getFileNameFromURL(url)
-{
+function getFileNameFromURL(url) {
 	return url.split('/').pop().split('#')[0].split('?')[0];
 }
 
@@ -478,14 +417,12 @@ function getFileNameFromURL(url)
  * @param {string} url
  * @returns {boolean}
  */
-function checkResourceLoaded(url)
-{
+function checkResourceLoaded(url) {
 	var type = getUrlTypeInfo(url),
-			typeSelector = type['tagName'] || '[src]',
-			allUrls = Array.prototype.slice.call(document.querySelectorAll(typeSelector))
-					.map(function (scriptElement) {
-						return scriptElement[type['urlAttrName']];
-					});
+	    typeSelector = type['tagName'] || '[src]',
+	    allUrls = Array.prototype.slice.call(document.querySelectorAll(typeSelector)).map(function (scriptElement) {
+		return scriptElement[type['urlAttrName']];
+	});
 	return allUrls.indexOf(url) !== -1;
 }
 
@@ -494,13 +431,11 @@ function checkResourceLoaded(url)
  * @param {string} url
  * @returns {object}
  */
-function getUrlTypeInfo(url)
-{
+function getUrlTypeInfo(url) {
 	// Current only support js and css resources;
 	var resourceName = getFileNameFromURL(url),
-			resourceNameSplitArray = resourceName.split('.');
-	if (resourceNameSplitArray.length > 1)
-	{
+	    resourceNameSplitArray = resourceName.split('.');
+	if (resourceNameSplitArray.length > 1) {
 		var urlType = {
 			'js': {
 				name: 'js',
@@ -527,16 +462,13 @@ function getUrlTypeInfo(url)
  * @param {string} scriptName
  * @returns {null|string}
  */
-function getCurrentScriptPath(scriptName)
-{
+function getCurrentScriptPath(scriptName) {
 	var scripts = document.getElementsByTagName("script");
 
-	for (var i = 0; i < scripts.length; i++)
-	{
+	for (var i = 0; i < scripts.length; i++) {
 		var script = scripts.item(i);
 
-		if (script.src && script.src.match(scriptName))
-		{
+		if (script.src && script.src.match(scriptName)) {
 			return script.src;
 		}
 	}
@@ -548,15 +480,12 @@ function getCurrentScriptPath(scriptName)
  * @param param
  * @returns {*}
  */
-function getQueryParamValue(param)
-{
+function getQueryParamValue(param) {
 	var query = window.location.search.substring(1);
 	var queryParams = query.split("&");
-	for (var i = 0; i < queryParams.length; i++)
-	{
+	for (var i = 0; i < queryParams.length; i++) {
 		var queryParam = queryParams[i].split("=");
-		if (queryParam[0] === param)
-		{
+		if (queryParam[0] === param) {
 			return queryParam[1];
 		}
 	}
@@ -567,12 +496,10 @@ function getQueryParamValue(param)
  * getUrlQueryParams
  * @returns {object}
  */
-function getUrlQueryParams()
-{
+function getUrlQueryParams() {
 	var query = {},
-			queryParams = window.location.search.substring(1).split("&");
-	for (var i = 0; i < queryParams.length; i++)
-	{
+	    queryParams = window.location.search.substring(1).split("&");
+	for (var i = 0; i < queryParams.length; i++) {
 		var queryParam = queryParams[i].split("=");
 		query[queryParam[0]] = queryParam[1];
 	}
@@ -583,13 +510,12 @@ function getUrlQueryParams()
  * getRootPath
  * @returns {string}
  */
-function getRootPath()
-{
+function getRootPath() {
 	var href = window.document.location.href,
-			pathName = window.document.location.pathname,
-			localhostPath = href.substring(0, href.indexOf(pathName)),
-			projectName = pathName.substring(0, pathName.substr(1).lastIndexOf('/') + 1);
-	return (localhostPath + projectName);
+	    pathName = window.document.location.pathname,
+	    localhostPath = href.substring(0, href.indexOf(pathName)),
+	    projectName = pathName.substring(0, pathName.substr(1).lastIndexOf('/') + 1);
+	return localhostPath + projectName;
 }
 
 //</editor-fold>
@@ -601,13 +527,11 @@ function getRootPath()
  * @param param1
  * @param param2
  */
-function parameterArrayToItem(fn, param1, param2)
-{
+function parameterArrayToItem(fn, param1, param2) {
 	var param2IsArray = Array.isArray(param2),
-			param2ArrayLength = param2IsArray && param2.length || 0;
-	for (var i = 0, length = param1.length; i < length; i++)
-	{
-		var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
+	    param2ArrayLength = param2IsArray && param2.length || 0;
+	for (var i = 0, length = param1.length; i < length; i++) {
+		var param2Item = param2IsArray && i < param2ArrayLength ? param2[i] : null;
 		fn && fn(param1[i], param2Item);
 	}
 }
@@ -618,11 +542,9 @@ function parameterArrayToItem(fn, param1, param2)
  * @param context
  * @param {number} [timeout]
  */
-function throttle(method, context, timeout)
-{
-	timeout = (timeout || timeout === 0) ? timeout : 100;
-	if (method.tId)
-	{
+function throttle(method, context, timeout) {
+	timeout = timeout || timeout === 0 ? timeout : 100;
+	if (method.tId) {
 		clearTimeout(method.tId);
 	}
 	method.tId = setTimeout(function () {
@@ -634,49 +556,28 @@ function throttle(method, context, timeout)
  * Custom console log modal in function
  * @param fnArguments
  */
-function consoleLog(fnArguments)
-{
-	var typeStyle = [
-		'font-size: 14px; color: #8665D5',
-		'font-size: 14px; color: #406AD5',
-		'font-size: 14px; color: #E9AC32',
-		'font-size: 14px; color: #3AC1D9',
-		'font-size: 14px; color: #FF7979',
-		'font-size: 14px; color: #39D084',
-		'font-size: 14px; color: #FF8E66',
-		'font-size: 14px; color: #44B1E6',
-		'font-size: 14px; color: #9e5648',
-		'font-size: 14px; color: #406ad5',
-		'font-size: 14px; color: #purple',
-		'font-size: 14px; color: #red',
-		'font-size: 14px; color: #teal',
-		'font-size: 14px; color: #yellow'
-	];
-	if (!window.consoleLogTypes)
-	{
+function consoleLog(fnArguments) {
+	var typeStyle = ['font-size: 14px; color: #8665D5', 'font-size: 14px; color: #406AD5', 'font-size: 14px; color: #E9AC32', 'font-size: 14px; color: #3AC1D9', 'font-size: 14px; color: #FF7979', 'font-size: 14px; color: #39D084', 'font-size: 14px; color: #FF8E66', 'font-size: 14px; color: #44B1E6', 'font-size: 14px; color: #9e5648', 'font-size: 14px; color: #406ad5', 'font-size: 14px; color: #purple', 'font-size: 14px; color: #red', 'font-size: 14px; color: #teal', 'font-size: 14px; color: #yellow'];
+	if (!window.consoleLogTypes) {
 		window.consoleLogTypes = {};
 	}
-	if (window.console && window.debug !== false)
-	{
+	if (window.console && window.debug !== false) {
 		var fnName = fnArguments.callee ? fnArguments.callee.name : '',
-				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
-				fnArgumentsString = getArrayString(fnArgumentsArray),
-				argumentsArray = Array.prototype.slice.call(arguments, 0),
-				surplusArgumentString = argumentsArray.length > 1 && argumentsArray.shift() && getArrayString(argumentsArray);
-		if (!window.consoleLogTypes[fnName])
-		{
+		    fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
+		    fnArgumentsString = getArrayString(fnArgumentsArray),
+		    argumentsArray = Array.prototype.slice.call(arguments, 0),
+		    surplusArgumentString = argumentsArray.length > 1 && argumentsArray.shift() && getArrayString(argumentsArray);
+		if (!window.consoleLogTypes[fnName]) {
 			window.consoleLogTypes[fnName] = {
 				typeCount: 0,
 				typeInfo: {}
 			};
 		}
-		if (!window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]])
-		{
+		if (!window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]]) {
 			window.consoleLogTypes[fnName].typeInfo[argumentsArray[0]] = typeStyle[window.consoleLogTypes[fnName].typeCount];
 			window.consoleLogTypes[fnName].typeCount++;
 		}
-		if (window.consoleLogTypes.lastType !== fnName)
-		{
+		if (window.consoleLogTypes.lastType !== fnName) {
 			window.console.groupEnd();
 			window.console.group(fnName);
 			window.consoleLogTypes.lastType = fnName;
@@ -690,15 +591,11 @@ function consoleLog(fnArguments)
  * @param array
  * @returns {string}
  */
-function getArrayString(array)
-{
+function getArrayString(array) {
 	return array.map(function (arrayItem) {
-		if (Array.isArray(arrayItem))
-		{
+		if (Array.isArray(arrayItem)) {
 			arrayItem = '[' + arguments.callee(arrayItem) + ']';
-		}
-		else if (typeof arrayItem === 'object')
-		{
+		} else if ((typeof arrayItem === 'undefined' ? 'undefined' : _typeof(arrayItem)) === 'object') {
 			arrayItem = JSON.stringify(arrayItem);
 		}
 		return arrayItem.toString();
@@ -710,11 +607,9 @@ function getArrayString(array)
  * @param typeName
  * @returns {*}
  */
-function setCallback(typeName)
-{
+function setCallback(typeName) {
 	var typeCallback = getCallbackName(typeName);
-	if (!window[typeCallback])
-	{
+	if (!window[typeCallback]) {
 		window[typeCallback] = function (data) {
 			window[typeName] = data;
 		};
@@ -728,8 +623,7 @@ function setCallback(typeName)
  * @param typeName
  * @returns {string}
  */
-function getCallbackName(typeName)
-{
+function getCallbackName(typeName) {
 	return typeName + "Callback";
 }
 
@@ -742,27 +636,16 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 {
 	out = out || {};
 
-	for (var i = 1; i < arguments.length; i++)
-	{
+	for (var i = 1; i < arguments.length; i++) {
 		var obj = arguments[i];
 
-		if (!obj)
-			continue;
+		if (!obj) continue;
 
-		for (var key in obj)
-		{
-			if (obj.hasOwnProperty(key))
-			{
-				if (typeof obj[key] === 'object'
-						&& obj[key] !== null
-						&& !Array.isArray(obj[key])
-						&& !(obj[key] instanceof Date)
-						&& !(obj[key] === 'function'))
-				{
+		for (var key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				if (_typeof(obj[key]) === 'object' && obj[key] !== null && !Array.isArray(obj[key]) && !(obj[key] instanceof Date) && !(obj[key] === 'function')) {
 					out[key] = arguments.callee(out[key], obj[key]);
-				}
-				else
-					out[key] = obj[key];
+				} else out[key] = obj[key];
 			}
 		}
 	}
@@ -777,23 +660,15 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
  * @param elements
  * @returns {Array}
  */
-function getElements(elements)
-{
+function getElements(elements) {
 	var resultElement = [];
-	if (elements.jquery)
-	{
+	if (elements.jquery) {
 		resultElement = elements.length > 1 ? elements.get() : [elements[0]];
-	}
-	else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection)
-	{
+	} else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection) {
 		resultElement = Array.prototype.slice.call(elements);
-	}
-	else if (Array.isArray(elements))
-	{
+	} else if (Array.isArray(elements)) {
 		resultElement = elements;
-	}
-	else if (elements.nodeType)
-	{
+	} else if (elements.nodeType) {
 		resultElement = [elements];
 	}
 	return resultElement;
@@ -804,25 +679,19 @@ function getElements(elements)
  * @param selectorString
  * @returns {*}
  */
-function getSelectorsElements(selectorString)
-{
-	if (!selectorString || (selectorString && selectorString.trim() === ''))
-	{
+function getSelectorsElements(selectorString) {
+	if (!selectorString || selectorString && selectorString.trim() === '') {
 		return [document];
 	}
 	var selectorsElements = [],
-			selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
-				return selectorStringItem.trim();
-			});
+	    selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
+		return selectorStringItem.trim();
+	});
 	selectorsArray = uniqueArray(selectorsArray);
-	for (var i = 0, l = selectorsArray.length; i < l; i++)
-	{
-		if (selectorsArray[i] === 'document')
-		{
+	for (var i = 0, l = selectorsArray.length; i < l; i++) {
+		if (selectorsArray[i] === 'document') {
 			selectorsElements.push(document);
-		}
-		else
-		{
+		} else {
 			var scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
 			selectorsElements = selectorsElements.concat(scopeNodeList);
 		}
@@ -836,8 +705,7 @@ function getSelectorsElements(selectorString)
  * @param selector
  * @returns {*}
  */
-function findParent(element, selector)
-{
+function findParent(element, selector) {
 	while ((element = element.parentElement) && !matches(element, selector)) {}
 	return element;
 }
@@ -848,8 +716,7 @@ function findParent(element, selector)
  * @param selector
  * @returns {boolean | *}
  */
-function matches(el, selector)
-{
+function matches(el, selector) {
 	return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
 }
 
@@ -859,15 +726,11 @@ function matches(el, selector)
  * @param {string} className
  * @returns {element}
  */
-function closet(element, className)
-{
+function closet(element, className) {
 	var closetElement = null;
-	if (hasClass(element, className))
-	{
+	if (hasClass(element, className)) {
 		closetElement = element;
-	}
-	else
-	{
+	} else {
 		closetElement = findParent(element, '.' + className);
 	}
 	return closetElement;
@@ -879,20 +742,17 @@ function closet(element, className)
  * @param parentElement
  * @returns {boolean}
  */
-function hasCloset(el, parentElement)
-{
-	if (el === parentElement)
-	{
+function hasCloset(el, parentElement) {
+	if (el === parentElement) {
 		return true;
 	}
-	if (parentElement === undefined)
-	{
+	if (parentElement === undefined) {
 		return false;
 	}
 
-	var parents = [], p = el.parentNode;
-	while (p !== parentElement && p.parentNode)
-	{
+	var parents = [],
+	    p = el.parentNode;
+	while (p !== parentElement && p.parentNode) {
 		var o = p;
 		parents.push(o);
 		p = o.parentNode;
@@ -905,11 +765,9 @@ function hasCloset(el, parentElement)
  * @param {elements} nodeList
  * @returns {Array}
  */
-function convertNodeListToArray(nodeList)
-{
+function convertNodeListToArray(nodeList) {
 	var resultArray = [];
-	for (var i = 0, l = nodeList.length; i < l; i++)
-	{
+	for (var i = 0, l = nodeList.length; i < l; i++) {
 		resultArray[i] = nodeList[i];
 	}
 	return resultArray;
@@ -920,14 +778,14 @@ function convertNodeListToArray(nodeList)
  * Copy html element to clipboard
  * @param {element} element - html element
  */
-function copyElementToClipboard(element)
-{
-	var selection = window.getSelection(),    // Save the selection.
-			range = document.createRange(),
-			isSuccess = false;
+function copyElementToClipboard(element) {
+	var selection = window.getSelection(),
+	    // Save the selection.
+	range = document.createRange(),
+	    isSuccess = false;
 	range.selectNodeContents(element);
-	selection.removeAllRanges();          // Remove all ranges from the selection.
-	selection.addRange(range);            // Add the new range.
+	selection.removeAllRanges(); // Remove all ranges from the selection.
+	selection.addRange(range); // Add the new range.
 
 	isSuccess = document.execCommand('copy');
 	window.getSelection().removeAllRanges();
@@ -938,18 +796,14 @@ function copyElementToClipboard(element)
  * Insert style to head
  * @param {string} cssText - style string
  */
-function insertStyleToHead(cssText)
-{
+function insertStyleToHead(cssText) {
 	var head = document.head || document.getElementsByTagName('head')[0],
-			style = document.createElement('style');
+	    style = document.createElement('style');
 
 	style.type = 'text/css';
-	if (style.styleSheet)
-	{
+	if (style.styleSheet) {
 		style.styleSheet.cssText = cssText;
-	}
-	else
-	{
+	} else {
 		style.appendChild(document.createTextNode(cssText));
 	}
 
@@ -962,8 +816,7 @@ function insertStyleToHead(cssText)
  * @param {object} tagInfo - tag's attributes and style object, such as { attr: {}, style: {} }
  * @return {element} html tag element.
  */
-function createTagElement(tagName, tagInfo)
-{
+function createTagElement(tagName, tagInfo) {
 	var tagElement = document.createElement(tagName);
 
 	Object.keys(tagInfo.attr).forEach(function (key) {
@@ -987,35 +840,27 @@ function createTagElement(tagName, tagInfo)
  * @param toTopIndex
  * @param duration
  */
-function scrollListToIndex(listFolder, index, toTopIndex, duration)
-{
-	if (index === 0)
-	{
+function scrollListToIndex(listFolder, index, toTopIndex, duration) {
+	if (index === 0) {
 		scrollTo(listFolder, 0, duration);
-	}
-	else
-	{
+	} else {
 		var listItems = listFolder.childNodes,
-				scrollOffset = 0,
-				contentHeight = 0,
-				scrollToCenter = 0;
-		duration = (duration === undefined ? 500 : duration);
-		for (var i = 0, l = listItems.length; i < l; i++)
-		{
+		    scrollOffset = 0,
+		    contentHeight = 0,
+		    scrollToCenter = 0;
+		duration = duration === undefined ? 500 : duration;
+		for (var i = 0, l = listItems.length; i < l; i++) {
 			var listItemHeight = listItems[i].offsetHeight;
-			if (i < index)
-			{
+			if (i < index) {
 				scrollOffset += listItemHeight;
-				if (i > toTopIndex - 1)
-				{
+				if (i > toTopIndex - 1) {
 					scrollToCenter += listItems[i - toTopIndex].offsetHeight;
 				}
 			}
 			contentHeight += listItemHeight;
 		}
 		scrollOffset = scrollToCenter;
-		if (scrollOffset + listFolder.offsetHeight > contentHeight)
-		{
+		if (scrollOffset + listFolder.offsetHeight > contentHeight) {
 			scrollOffset = contentHeight - listFolder.offsetHeight;
 		}
 		scrollTo(listFolder, scrollOffset, duration);
@@ -1028,8 +873,7 @@ function scrollListToIndex(listFolder, index, toTopIndex, duration)
  * @param to
  * @param duration
  */
-function scrollTo(element, to, duration)
-{
+function scrollTo(element, to, duration) {
 	if (duration <= 0) return;
 	var difference = to - element.scrollTop;
 	var perTick = difference / duration * 10;
@@ -1048,11 +892,9 @@ function scrollTo(element, to, duration)
  * @param position
  * @return resultAddedElement
  */
-function addElement(targetElement, addedElement, position)
-{
+function addElement(targetElement, addedElement, position) {
 	var resultAddedElement = null;
-	switch (position && position.toLowerCase())
-	{
+	switch (position && position.toLowerCase()) {
 		case 'prepend':
 			resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
 			break;
@@ -1064,7 +906,8 @@ function addElement(targetElement, addedElement, position)
 			targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
 			resultAddedElement = targetElement.nextSibling;
 			break;
-		default: //'append'
+		default:
+			//'append'
 			resultAddedElement = targetElement.appendChild(addedElement);
 	}
 	return resultAddedElement;
@@ -1079,12 +922,8 @@ function addElement(targetElement, addedElement, position)
  * @param className
  * @returns {boolean}
  */
-function hasClass(element, className)
-{
-	if (element.classList)
-		return element.classList.contains(className);
-	else
-		return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
+function hasClass(element, className) {
+	if (element.classList) return element.classList.contains(className);else return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
 }
 
 /**
@@ -1092,14 +931,9 @@ function hasClass(element, className)
  * @param element
  * @param className
  */
-function addClass(element, className)
-{
-	if (!hasClass(element, className))
-	{
-		if (element.classList)
-			element.classList.add(className);
-		else
-			element.className += ' ' + className;
+function addClass(element, className) {
+	if (!hasClass(element, className)) {
+		if (element.classList) element.classList.add(className);else element.className += ' ' + className;
 	}
 }
 
@@ -1108,14 +942,9 @@ function addClass(element, className)
  * @param element
  * @param className
  */
-function removeClass(element, className)
-{
-	if (hasClass(element, className))
-	{
-		if (element.classList)
-			element.classList.remove(className);
-		else
-			element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+function removeClass(element, className) {
+	if (hasClass(element, className)) {
+		if (element.classList) element.classList.remove(className);else element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 }
 
@@ -1124,14 +953,10 @@ function removeClass(element, className)
  * @param element
  * @param className
  */
-function toggleClass(element, className)
-{
-	if (hasClass(element, className))
-	{
+function toggleClass(element, className) {
+	if (hasClass(element, className)) {
 		removeClass(element, className);
-	}
-	else
-	{
+	} else {
 		addClass(element, className);
 	}
 }
@@ -1147,24 +972,19 @@ function toggleClass(element, className)
  * @param selector
  * @param handler
  */
-function delegate(element, eventName, selector, handler)
-{
+function delegate(element, eventName, selector, handler) {
 	var possibleTargets = element.querySelectorAll(selector);
 	element.addEventListener(eventName, listenerHandler);
 
-	function listenerHandler(event)
-	{
+	function listenerHandler(event) {
 		var target = event.target;
 
-		for (var i = 0, l = possibleTargets.length; i < l; i++)
-		{
+		for (var i = 0, l = possibleTargets.length; i < l; i++) {
 			var el = target,
-					p = possibleTargets[i];
+			    p = possibleTargets[i];
 
-			while (el && el !== element)
-			{
-				if (el === p)
-				{
+			while (el && el !== element) {
+				if (el === p) {
 					return handler.call(p, event);
 				}
 				el = el.parentNode;
@@ -1179,32 +999,27 @@ function delegate(element, eventName, selector, handler)
  * @param callback
  * @param isBind
  */
-function bindClickIgnoreDrag(elements, callback, isBind)
-{
+function bindClickIgnoreDrag(elements, callback, isBind) {
 	var eventListenerName = isBind !== false ? 'on' : 'off',
-			mouseDownX = 0,
-			mouseDownY = 0;
+	    mouseDownX = 0,
+	    mouseDownY = 0;
 
 	[].forEach.call(elements, function (element) {
 		extendOnOff(element)[eventListenerName]('mousedown', mouseDownHandler);
 	});
 
-	function mouseDownHandler(event)
-	{
+	function mouseDownHandler(event) {
 		mouseDownX = event.pageX;
 		mouseDownY = event.pageY;
 		event.target.addEventListener('mouseup', mouseUpMoveHandler);
 		event.target.addEventListener('mousemove', mouseUpMoveHandler);
 	}
 
-	function mouseUpMoveHandler(event)
-	{
+	function mouseUpMoveHandler(event) {
 		if (event.type === 'mouseup' && event.which <= 1) //only for left key
-		{
-			callback(event);
-		}
-		else if (event.type === 'mousemove' && event.pageX === mouseDownX && event.pageY === mouseDownY)
-		{
+			{
+				callback(event);
+			} else if (event.type === 'mousemove' && event.pageX === mouseDownX && event.pageY === mouseDownY) {
 			return;
 		}
 		event.target.removeEventListener('mouseup', mouseUpMoveHandler);
@@ -1218,15 +1033,11 @@ function bindClickIgnoreDrag(elements, callback, isBind)
  * @param eventName
  * @param data
  */
-function triggerEvent(element, eventName, data)
-{
+function triggerEvent(element, eventName, data) {
 	var event = null;
-	if (window.CustomEvent)
-	{
-		event = new CustomEvent(eventName, {detail: data});
-	}
-	else
-	{
+	if (window.CustomEvent) {
+		event = new CustomEvent(eventName, { detail: data });
+	} else {
 		event = document.createEvent('CustomEvent');
 		event.initCustomEvent(eventName, true, true, data);
 	}
@@ -1239,12 +1050,10 @@ function triggerEvent(element, eventName, data)
  * @param el: element
  * @returns {*}
  */
-function extendOnOff(el)
-{
-	if (el.length === 0)
-		return null;
+function extendOnOff(el) {
+	if (el.length === 0) return null;
 	var events = {
-		on: function (event, callback, opts) {
+		on: function on(event, callback, opts) {
 			if (!this.namespaces) // save the namespaces on the DOM element itself
 				this.namespaces = {};
 
@@ -1254,7 +1063,7 @@ function extendOnOff(el)
 			this.addEventListener(event.split('.')[0], callback, options);
 			return this;
 		},
-		off: function (event) {
+		off: function off(event) {
 			this.removeEventListener(event.split('.')[0], this.namespaces[event]);
 			delete this.namespaces[event];
 			return this;
@@ -1262,8 +1071,7 @@ function extendOnOff(el)
 	};
 
 	// Extend the DOM with these above custom methods
-	if (!el.isExtendOnOff)
-	{
+	if (!el.isExtendOnOff) {
 		el.on = Element.prototype.on = events.on;
 		el.off = Element.prototype.off = events.off;
 		el.isExtendOnOff = true;
@@ -1276,10 +1084,9 @@ function extendOnOff(el)
  * @param element
  * @param infoCallback
  */
-function mouseTouchTrack(element, infoCallback)
-{
+function mouseTouchTrack(element, infoCallback) {
 	var touchStartBeginTime = 0,
-			lastEventType = '';
+	    lastEventType = '';
 
 	element.onclick = trackEvent;
 	element.ontouchstart = trackEvent;
@@ -1293,14 +1100,11 @@ function mouseTouchTrack(element, infoCallback)
 	element.onmouseover = trackEvent;
 	element.onmouseup = trackEvent;
 
-	function trackEvent(event)
-	{
-		if (event.type === "touchstart")
-		{
+	function trackEvent(event) {
+		if (event.type === "touchstart") {
 			touchStartBeginTime = Date.now();
 		}
-		if (event.type !== lastEventType)
-		{
+		if (event.type !== lastEventType) {
 			infoCallback = infoCallback ? infoCallback : console.log;
 			infoCallback(arguments, event.type, Date.now() - touchStartBeginTime);
 
@@ -1318,8 +1122,7 @@ function mouseTouchTrack(element, infoCallback)
 (function () {
 	"use strict";
 
-	function Dictionary()
-	{
+	function Dictionary() {
 		this._size = 0;
 		this.dataStore = Object.create(null);
 	}
@@ -1333,10 +1136,8 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.clear = function () {
-		for (var key in this.dataStore)
-		{
-			if (this.dataStore.hasOwnProperty(key))
-			{
+		for (var key in this.dataStore) {
+			if (this.dataStore.hasOwnProperty(key)) {
 				delete this.dataStore[key];
 			}
 		}
@@ -1354,10 +1155,8 @@ function mouseTouchTrack(element, infoCallback)
 
 	Dictionary.prototype.count = function () {
 		var n = 0;
-		for (var key in this.dataStore)
-		{
-			if (this.dataStore.hasOwnProperty(key))
-			{
+		for (var key in this.dataStore) {
+			if (this.dataStore.hasOwnProperty(key)) {
 				n++;
 			}
 		}
@@ -1370,10 +1169,8 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.showAll = function () {
-		for (var key in this.dataStore)
-		{
-			if (this.dataStore.hasOwnProperty(key))
-			{
+		for (var key in this.dataStore) {
+			if (this.dataStore.hasOwnProperty(key)) {
 				console.log(key + "->" + this.dataStore[key]);
 			}
 		}
@@ -1381,3 +1178,5 @@ function mouseTouchTrack(element, infoCallback)
 })();
 
 //</editor-fold>
+
+//# sourceMappingURL=common.js.map
