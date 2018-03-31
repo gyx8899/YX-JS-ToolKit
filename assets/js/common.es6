@@ -6,8 +6,8 @@
  */
 function uniqueArray(sourceArray)
 {
-	var resultArray = [], hash = {};
-	for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
+	let resultArray = [], hash = {};
+	for (let i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
 	{
 		if (!hash[elem])
 		{
@@ -28,7 +28,7 @@ function uniqueArray(sourceArray)
  */
 function escapeHTML(str)
 {
-	var map = {
+	let map = {
 		'&': '&amp;',
 		'<': '&lt;',
 		'>': '&gt;',
@@ -50,12 +50,12 @@ function escapeHTML(str)
  */
 function initTemplate(template, templateData, sourceData)
 {
-	var result = template;
-	for (var key in templateData)
+	let result = template;
+	for (let key in templateData)
 	{
 		if (templateData.hasOwnProperty(key))
 		{
-			var dataValue = templateData[key];
+			let dataValue = templateData[key];
 			// Process source data to required data if the templateData key's value is function
 			if (typeof templateData[key] === 'function')
 			{
@@ -77,8 +77,8 @@ function initTemplate(template, templateData, sourceData)
  */
 function renderTemplate(targetElement, template, sourceData, templateDataFn, position)
 {
-	var resultHtml = '';
-	for (var i = 0; i < sourceData.length; i++)
+	let resultHtml = '';
+	for (let i = 0; i < sourceData.length; i++)
 	{
 		resultHtml += initTemplate(template, templateDataFn(sourceData[i]), sourceData[i]);
 	}
@@ -162,15 +162,15 @@ function loadResources(urls, callback)
  */
 function loadUrls(urls, callback)
 {
-	var unLoadedResourcesInfo = urls.map(function (resource) {
-		var resourceInfo = getUrlTypeInfo(resource);
+	let unLoadedResourcesInfo = urls.map(function (resource) {
+		let resourceInfo = getUrlTypeInfo(resource);
 		resourceInfo.url = resource;
 		return resourceInfo;
 	});
 	// If support Promise, use Promise
 	if (typeof Promise !== "undefined" && Promise.toString().indexOf("[native code]") !== -1)
 	{
-		var resourcePromise = unLoadedResourcesInfo.map(function (resourceInfo) {
+		let resourcePromise = unLoadedResourcesInfo.map(function (resourceInfo) {
 			return window[resourceInfo.loadFnPromise](resourceInfo.url);
 		});
 		Promise.all(resourcePromise).then(function () {
@@ -208,7 +208,7 @@ function loadCSS(url, callback, context)
 	}
 	else
 	{
-		var link = document.createElement('link');
+		let link = document.createElement('link');
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
 		link.href = url;
@@ -245,7 +245,7 @@ function loadScript(url, callback, context, isAsync)
 	}
 	else
 	{
-		var script = document.createElement("script"),
+		let script = document.createElement("script"),
 				isSuccess = true;
 		script.type = "text/javascript";
 		isAsync && script.setAttribute('async', '');
@@ -293,7 +293,7 @@ function loadCSSWithPromise(url)
 			reject(new Error("url is null!"));
 		}
 
-		var link = document.createElement('link');
+		let link = document.createElement('link');
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
 		link.href = url;
@@ -322,7 +322,7 @@ function loadScriptWithPromise(url)
 			reject(new Error("url is null!"));
 		}
 
-		var script = document.createElement("script");
+		let script = document.createElement("script");
 		script.type = "text/javascript";
 
 		if (script.readyState)
@@ -395,7 +395,7 @@ function getFileContent(url, callback, context)
  */
 function xdrGetRequest(url, callback, context)
 {
-	var xdr = new XDomainRequest();
+	let xdr = new XDomainRequest();
 	if (xdr)
 	{
 		xdr.onload = function () {
@@ -417,7 +417,7 @@ function xdrGetRequest(url, callback, context)
  */
 function xmlHTTPGetRequest(url, callback, context)
 {
-	var request = new XMLHttpRequest();
+	let request = new XMLHttpRequest();
 	request.open('GET', url, true);
 	request.onload = function () {
 		if (request.status >= 200 && request.status < 400)
@@ -456,7 +456,7 @@ function regExpG(expStr)
  */
 function isURL(url)
 {
-	var expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
+	let expression = /(((http|ftp|https):\/\/)?([\w\-_]+(\.(?!(\d)+)[\w\-_]+))+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/g;
 	return (new RegExp(expression)).test(url);
 }
 
@@ -480,7 +480,7 @@ function getFileNameFromURL(url)
  */
 function checkResourceLoaded(url)
 {
-	var type = getUrlTypeInfo(url),
+	let type = getUrlTypeInfo(url),
 			typeSelector = type['tagName'] || '[src]',
 			allUrls = Array.prototype.slice.call(document.querySelectorAll(typeSelector))
 					.map(function (scriptElement) {
@@ -497,11 +497,11 @@ function checkResourceLoaded(url)
 function getUrlTypeInfo(url)
 {
 	// Current only support js and css resources;
-	var resourceName = getFileNameFromURL(url),
+	let resourceName = getFileNameFromURL(url),
 			resourceNameSplitArray = resourceName.split('.');
 	if (resourceNameSplitArray.length > 1)
 	{
-		var urlType = {
+		let urlType = {
 			'js': {
 				name: 'js',
 				tagName: 'script',
@@ -529,11 +529,11 @@ function getUrlTypeInfo(url)
  */
 function getCurrentScriptPath(scriptName)
 {
-	var scripts = document.getElementsByTagName("script");
+	let scripts = document.getElementsByTagName("script");
 
-	for (var i = 0; i < scripts.length; i++)
+	for (let i = 0; i < scripts.length; i++)
 	{
-		var script = scripts.item(i);
+		let script = scripts.item(i);
 
 		if (script.src && script.src.match(scriptName))
 		{
@@ -550,11 +550,11 @@ function getCurrentScriptPath(scriptName)
  */
 function getQueryParamValue(param)
 {
-	var query = window.location.search.substring(1);
-	var queryParams = query.split("&");
-	for (var i = 0; i < queryParams.length; i++)
+	let query = window.location.search.substring(1);
+	let queryParams = query.split("&");
+	for (let i = 0; i < queryParams.length; i++)
 	{
-		var queryParam = queryParams[i].split("=");
+		let queryParam = queryParams[i].split("=");
 		if (queryParam[0] === param)
 		{
 			return queryParam[1];
@@ -569,11 +569,11 @@ function getQueryParamValue(param)
  */
 function getUrlQueryParams()
 {
-	var query = {},
+	let query = {},
 			queryParams = window.location.search.substring(1).split("&");
-	for (var i = 0; i < queryParams.length; i++)
+	for (let i = 0; i < queryParams.length; i++)
 	{
-		var queryParam = queryParams[i].split("=");
+		let queryParam = queryParams[i].split("=");
 		query[queryParam[0]] = queryParam[1];
 	}
 	return query;
@@ -585,7 +585,7 @@ function getUrlQueryParams()
  */
 function getRootPath()
 {
-	var href = window.document.location.href,
+	let href = window.document.location.href,
 			pathName = window.document.location.pathname,
 			localhostPath = href.substring(0, href.indexOf(pathName)),
 			projectName = pathName.substring(0, pathName.substr(1).lastIndexOf('/') + 1);
@@ -603,11 +603,11 @@ function getRootPath()
  */
 function parameterArrayToItem(fn, param1, param2)
 {
-	var param2IsArray = Array.isArray(param2),
+	let param2IsArray = Array.isArray(param2),
 			param2ArrayLength = param2IsArray && param2.length || 0;
-	for (var i = 0, length = param1.length; i < length; i++)
+	for (let i = 0, length = param1.length; i < length; i++)
 	{
-		var param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
+		let param2Item = (param2IsArray && i < param2ArrayLength) ? param2[i] : null;
 		fn && fn(param1[i], param2Item);
 	}
 }
@@ -636,7 +636,7 @@ function throttle(method, context, timeout)
  */
 function consoleLog(fnArguments)
 {
-	var typeStyle = [
+	let typeStyle = [
 		'font-size: 14px; color: #8665D5',
 		'font-size: 14px; color: #406AD5',
 		'font-size: 14px; color: #E9AC32',
@@ -658,7 +658,7 @@ function consoleLog(fnArguments)
 	}
 	if (window.console && window.debug !== false)
 	{
-		var fnName = fnArguments.callee ? fnArguments.callee.name : '',
+		let fnName = fnArguments.callee ? fnArguments.callee.name : '',
 				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
 				fnArgumentsString = getArrayString(fnArgumentsArray),
 				argumentsArray = Array.prototype.slice.call(arguments, 0),
@@ -712,7 +712,7 @@ function getArrayString(array)
  */
 function setCallback(typeName)
 {
-	var typeCallback = getCallbackName(typeName);
+	let typeCallback = getCallbackName(typeName);
 	if (!window[typeCallback])
 	{
 		window[typeCallback] = function (data) {
@@ -742,14 +742,14 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 {
 	out = out || {};
 
-	for (var i = 1; i < arguments.length; i++)
+	for (let i = 1; i < arguments.length; i++)
 	{
-		var obj = arguments[i];
+		let obj = arguments[i];
 
 		if (!obj)
 			continue;
 
-		for (var key in obj)
+		for (let key in obj)
 		{
 			if (obj.hasOwnProperty(key))
 			{
@@ -779,7 +779,7 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
  */
 function getElements(elements)
 {
-	var resultElement = [];
+	let resultElement = [];
 	if (elements.jquery)
 	{
 		resultElement = elements.length > 1 ? elements.get() : [elements[0]];
@@ -810,12 +810,12 @@ function getSelectorsElements(selectorString)
 	{
 		return [document];
 	}
-	var selectorsElements = [],
+	let selectorsElements = [],
 			selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
 				return selectorStringItem.trim();
 			});
 	selectorsArray = uniqueArray(selectorsArray);
-	for (var i = 0, l = selectorsArray.length; i < l; i++)
+	for (let i = 0, l = selectorsArray.length; i < l; i++)
 	{
 		if (selectorsArray[i] === 'document')
 		{
@@ -823,7 +823,7 @@ function getSelectorsElements(selectorString)
 		}
 		else
 		{
-			var scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
+			let scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
 			selectorsElements = selectorsElements.concat(scopeNodeList);
 		}
 	}
@@ -861,7 +861,7 @@ function matches(el, selector)
  */
 function closet(element, className)
 {
-	var closetElement = null;
+	let closetElement = null;
 	if (hasClass(element, className))
 	{
 		closetElement = element;
@@ -890,10 +890,10 @@ function hasCloset(el, parentElement)
 		return false;
 	}
 
-	var parents = [], p = el.parentNode;
+	let parents = [], p = el.parentNode;
 	while (p !== parentElement && p.parentNode)
 	{
-		var o = p;
+		let o = p;
 		parents.push(o);
 		p = o.parentNode;
 	}
@@ -907,8 +907,8 @@ function hasCloset(el, parentElement)
  */
 function convertNodeListToArray(nodeList)
 {
-	var resultArray = [];
-	for (var i = 0, l = nodeList.length; i < l; i++)
+	let resultArray = [];
+	for (let i = 0, l = nodeList.length; i < l; i++)
 	{
 		resultArray[i] = nodeList[i];
 	}
@@ -940,7 +940,7 @@ function copyElementToClipboard(element)
  */
 function insertStyleToHead(cssText)
 {
-	var head = document.head || document.getElementsByTagName('head')[0],
+	let head = document.head || document.getElementsByTagName('head')[0],
 			style = document.createElement('style');
 
 	style.type = 'text/css';
@@ -964,7 +964,7 @@ function insertStyleToHead(cssText)
  */
 function createTagElement(tagName, tagInfo)
 {
-	var tagElement = document.createElement(tagName);
+	let tagElement = document.createElement(tagName);
 
 	Object.keys(tagInfo.attr).forEach(function (key) {
 		tagElement.setAttribute(key, tagInfo.attr[key]);
@@ -995,14 +995,14 @@ function scrollListToIndex(listFolder, index, toTopIndex, duration)
 	}
 	else
 	{
-		var listItems = listFolder.childNodes,
+		let listItems = listFolder.childNodes,
 				scrollOffset = 0,
 				contentHeight = 0,
 				scrollToCenter = 0;
 		duration = (duration === undefined ? 500 : duration);
-		for (var i = 0, l = listItems.length; i < l; i++)
+		for (let i = 0, l = listItems.length; i < l; i++)
 		{
-			var listItemHeight = listItems[i].offsetHeight;
+			let listItemHeight = listItems[i].offsetHeight;
 			if (i < index)
 			{
 				scrollOffset += listItemHeight;
@@ -1031,8 +1031,8 @@ function scrollListToIndex(listFolder, index, toTopIndex, duration)
 function scrollTo(element, to, duration)
 {
 	if (duration <= 0) return;
-	var difference = to - element.scrollTop;
-	var perTick = difference / duration * 10;
+	let difference = to - element.scrollTop;
+	let perTick = difference / duration * 10;
 
 	setTimeout(function () {
 		element.scrollTop = element.scrollTop + perTick;
@@ -1050,7 +1050,7 @@ function scrollTo(element, to, duration)
  */
 function addElement(targetElement, addedElement, position)
 {
-	var resultAddedElement = null;
+	let resultAddedElement = null;
 	switch (position && position.toLowerCase())
 	{
 		case 'prepend':
@@ -1149,16 +1149,16 @@ function toggleClass(element, className)
  */
 function delegate(element, eventName, selector, handler)
 {
-	var possibleTargets = element.querySelectorAll(selector);
+	let possibleTargets = element.querySelectorAll(selector);
 	element.addEventListener(eventName, listenerHandler);
 
 	function listenerHandler(event)
 	{
-		var target = event.target;
+		let target = event.target;
 
-		for (var i = 0, l = possibleTargets.length; i < l; i++)
+		for (let i = 0, l = possibleTargets.length; i < l; i++)
 		{
-			var el = target,
+			let el = target,
 					p = possibleTargets[i];
 
 			while (el && el !== element)
@@ -1181,7 +1181,7 @@ function delegate(element, eventName, selector, handler)
  */
 function bindClickIgnoreDrag(elements, callback, isBind)
 {
-	var eventListenerName = isBind !== false ? 'on' : 'off',
+	let eventListenerName = isBind !== false ? 'on' : 'off',
 			mouseDownX = 0,
 			mouseDownY = 0;
 
@@ -1220,7 +1220,7 @@ function bindClickIgnoreDrag(elements, callback, isBind)
  */
 function triggerEvent(element, eventName, data)
 {
-	var event = null;
+	let event = null;
 	if (window.CustomEvent)
 	{
 		event = new CustomEvent(eventName, {detail: data});
@@ -1243,13 +1243,13 @@ function extendOnOff(el)
 {
 	if (el.length === 0)
 		return null;
-	var events = {
+	let events = {
 		on: function (event, callback, opts) {
 			if (!this.namespaces) // save the namespaces on the DOM element itself
 				this.namespaces = {};
 
 			this.namespaces[event] = callback;
-			var options = opts || false;
+			let options = opts || false;
 
 			this.addEventListener(event.split('.')[0], callback, options);
 			return this;
@@ -1278,7 +1278,7 @@ function extendOnOff(el)
  */
 function mouseTouchTrack(element, infoCallback)
 {
-	var touchStartBeginTime = 0,
+	let touchStartBeginTime = 0,
 			lastEventType = '';
 
 	element.onclick = trackEvent;
@@ -1333,7 +1333,7 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.clear = function () {
-		for (var key in this.dataStore)
+		for (let key in this.dataStore)
 		{
 			if (this.dataStore.hasOwnProperty(key))
 			{
@@ -1353,8 +1353,8 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.count = function () {
-		var n = 0;
-		for (var key in this.dataStore)
+		let n = 0;
+		for (let key in this.dataStore)
 		{
 			if (this.dataStore.hasOwnProperty(key))
 			{
@@ -1370,7 +1370,7 @@ function mouseTouchTrack(element, infoCallback)
 	};
 
 	Dictionary.prototype.showAll = function () {
-		for (var key in this.dataStore)
+		for (let key in this.dataStore)
 		{
 			if (this.dataStore.hasOwnProperty(key))
 			{
