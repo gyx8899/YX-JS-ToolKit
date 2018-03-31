@@ -18,6 +18,16 @@ function uniqueArray(sourceArray)
 	return resultArray;
 }
 
+/**
+ * Capitalize the first word
+ * @param string
+ * @return {string}
+ */
+function titleCase(string)
+{
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: HTML Process">
@@ -470,7 +480,7 @@ function isURL(url)
  */
 function getFileNameFromURL(url)
 {
-	return url.split('/').pop().split('#')[0].split('?')[0];
+	return titleCase(url.split('/').pop().split('#')[0].split('?')[0]);
 }
 
 /***
