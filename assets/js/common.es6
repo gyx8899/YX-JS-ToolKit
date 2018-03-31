@@ -759,7 +759,7 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 						&& !(obj[key] instanceof Date)
 						&& !(obj[key] === 'function'))
 				{
-					out[key] = arguments.callee(out[key], obj[key]);
+					out[key] = deepExtend(out[key], obj[key]);
 				}
 				else
 					out[key] = obj[key];

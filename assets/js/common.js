@@ -644,7 +644,7 @@ function deepExtend(out) // arguments: (source, source1, source2, ...)
 		for (var key in obj) {
 			if (obj.hasOwnProperty(key)) {
 				if (_typeof(obj[key]) === 'object' && obj[key] !== null && !Array.isArray(obj[key]) && !(obj[key] instanceof Date) && !(obj[key] === 'function')) {
-					out[key] = arguments.callee(out[key], obj[key]);
+					out[key] = deepExtend(out[key], obj[key]);
 				} else out[key] = obj[key];
 			}
 		}
