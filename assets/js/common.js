@@ -922,12 +922,16 @@ function convertNodeListToArray(nodeList)
  */
 function copyElementToClipboard(element)
 {
-	var range = document.createRange();
-	range.selectNode(element);
-	window.getSelection().addRange(range);
+	var selection = window.getSelection(),    // Save the selection.
+			range = document.createRange(),
+			isSuccess = false;
+	range.selectNodeContents(element);
+	selection.removeAllRanges();          // Remove all ranges from the selection.
+	selection.addRange(range);            // Add the new range.
 
-	document.execCommand('copy');
+	isSuccess = document.execCommand('copy');
 	window.getSelection().removeAllRanges();
+	return isSuccess;
 }
 
 /**
