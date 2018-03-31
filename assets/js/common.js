@@ -430,7 +430,16 @@ function isURL(url) {
  * @returns {string}
  */
 function getFileNameFromURL(url) {
-	return titleCase(url.split('/').pop().split('#')[0].split('?')[0]);
+	return url.split('/').pop().split('#')[0].split('?')[0];
+}
+
+/***
+ * getTitleCaseFileNameFromURL
+ * @param {string} url
+ * @returns {string}
+ */
+function getTitleCaseFileNameFromURL(url) {
+	return titleCase(getFileNameFromURL(url));
 }
 
 /***
