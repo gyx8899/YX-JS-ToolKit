@@ -8,7 +8,7 @@ var RUNTIME = 'runtime';
 
 // A list of local resources we always want to be cached.
 var PRECACHE_URLS = ['index.html', './', // Alias for index.html
-'styles.css', '../../styles/main.css', 'demo.js'];
+'styles.css', '../../styles/main.css', 'index.js'];
 
 // The install handler takes care of precaching the resources we always need.
 self.addEventListener('install', function (event) {
