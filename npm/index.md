@@ -27,3 +27,13 @@ Out path: Custom
 $FileNameWithoutExtension$.js:$FileNameWithoutExtension$.js.map
 
 ```
+
+### IDEA auto setting uglify js
+```cmd
+npm install -g uglify-js
+
+npm install --save-dev uglify-js
+
+// Program path
+C:\Users\Steper\AppData\Roaming\npm\uglifyjs.cmd
+```
