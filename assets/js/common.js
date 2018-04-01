@@ -520,11 +520,13 @@ function getQueryParamValue(param) {
 
 /***
  * getUrlQueryParams
+ * @param {string} url
  * @returns {object}
  */
-function getUrlQueryParams() {
+function getUrlQueryParams(url) {
 	var query = {},
-	    queryParams = window.location.search.substring(1).split("&");
+	    searchStr = url ? url.indexOf('?') !== -1 ? url.split('?')[1] : '' : window.location.search.substring(1),
+	    queryParams = searchStr.split("&");
 	for (var i = 0; i < queryParams.length; i++) {
 		var queryParam = queryParams[i].split("=");
 		query[queryParam[0]] = queryParam[1];
