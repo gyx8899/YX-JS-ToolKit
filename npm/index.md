@@ -3,7 +3,27 @@
 ---
 
 ### IDEA auto babel setting ES6 to ES5 in project
+* Add package.json file;
+```json
+{
+  "name": "YX-JS-ToolKit",
+  "version": "0.0.1",
+  "dependencies": {}
+}
+```
+
+* Add .babelrc file;
+```json
+{
+  "presets": [
+    "es2015"
+  ]
+}
+```
+
+* NPM Install
 ```cmd
+
 npm install --save-dev babel-cli
 
 npm install --save-dev babel-preset-es2015
