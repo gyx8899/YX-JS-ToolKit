@@ -29,6 +29,16 @@ function titleCase(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+/**
+ * Check browser language setting which has zh[-CN/TW/HK]
+ * @return {boolean}
+ */
+function isZHLanguage() {
+	return window.navigator.languages.some(function (language) {
+		return language.indexOf('zh') === 0;
+	});
+}
+
 //</editor-fold>
 
 //<editor-fold desc="Functions: HTML Process">
