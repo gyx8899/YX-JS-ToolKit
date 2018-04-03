@@ -1,7 +1,8 @@
 'use strict';
 
 window.addEventListener("load", function () {
-	initOwl();
+	initOwl1();
+	initOwl2();
 }, false);
 
 var owlOption = {
@@ -24,11 +25,11 @@ var owlOption = {
 	}
 };
 
-function initOwl() {
-	var $owl = $('#owlBasicBtn'),
+function initOwl1() {
+	var $owl1 = $('#owl1'),
 	    loadDataTimes = 1,
 	    isLoading = false;
-	$owl.on('refreshed.owl.carousel', owlScrolled).on('translated.owl.carousel', owlScrolled).owlCarousel(owlOption);
+	$owl1.on('refreshed.owl.carousel', owlScrolled).on('translated.owl.carousel', owlScrolled).owlCarousel(owlOption);
 
 	function owlScrolled(event) {
 		var pages = event.page.count,
@@ -40,15 +41,15 @@ function initOwl() {
 	}
 	function renderItems(dataNo, dataItems) {
 		for (var i = 0; i < dataItems.length; i++) {
-			$owl.trigger('add.owl.carousel', ['<div class="item"><h4>' + dataNo + ': ' + (i + 1) + '</h4></div>']);
+			$owl1.trigger('add.owl.carousel', ['<div class="item"><h4>' + dataNo + ': ' + (i + 1) + '</h4></div>']);
 		}
 
 		// (Option) Remove old loading status item;
-		$owl.trigger('remove.owl.carousel', $owl.find('.item').length - dataItems.length - 1);
+		$owl1.trigger('remove.owl.carousel', $owl1.find('.item').length - dataItems.length - 1);
 		// (Option) Add loading status item;
-		$owl.trigger('add.owl.carousel', ['<div class="item"><h4>Loading...</h4></div>']);
+		$owl1.trigger('add.owl.carousel', ['<div class="item"><h4>Loading...</h4></div>']);
 
-		$owl.trigger('refresh.owl.carousel');
+		$owl1.trigger('refresh.owl.carousel');
 	}
 
 	function fetchData(dataNo) {
@@ -59,6 +60,41 @@ function initOwl() {
 			renderItems(dataNo, fakeData);
 
 			isLoading = false;
+		}, 1000);
+	}
+}
+
+function initOwl2() {
+	var $owl2 = $('#owl2'),
+	    loadDataTimes = 1,
+	    isLoading = false;
+	$owl2.on('refreshed.owl.carousel', owlScrolled).on('translated.owl.carousel', owlScrolled).owlCarousel(owlOption);
+
+	function owlScrolled(event) {
+		var pages = event.page.count,
+		    page = event.page.index;
+		if ((page === pages - 1 || page === pages - 2 && pages + event.item.index >= event.item.count) && !isLoading) {
+			fetchData(++loadDataTimes);
+		}
+	}
+	function renderItems(dataNo, dataItems) {
+		for (var i = 0; i < dataItems.length; i++) {
+			$owl2.trigger('add.owl.carousel', ['<div class="item"><h4>' + dataNo + ': ' + (i + 1) + '</h4></div>']);
+		}
+
+		$owl2.trigger('refresh.owl.carousel');
+	}
+
+	function fetchData(dataNo) {
+		isLoading = true;
+		$owl2.addClass('is-loading');
+
+		setTimeout(function () {
+			var fakeData = [1, 2, 3, 4];
+			renderItems(dataNo, fakeData);
+
+			isLoading = false;
+			$owl2.removeClass('is-loading');
 		}, 1000);
 	}
 }
