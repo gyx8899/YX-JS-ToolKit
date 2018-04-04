@@ -43,6 +43,7 @@ Field argument: custom
 
 Out path: default
 dist\$FileDirRelativeToProjectRoot$\$FileNameWithoutExtension$.js:dist\$FileDirRelativeToProjectRoot$\$FileNameWithoutExtension$.js.map
+
 Out path: Custom
 $FileNameWithoutExtension$.js:$FileNameWithoutExtension$.js.map
 
@@ -56,4 +57,9 @@ npm install --save-dev uglify-js
 
 // Program path
 C:\Users\Steper\AppData\Roaming\npm\uglifyjs.cmd
+```
+
+### Node JS deep iterator files
+```cmd
+npm install --save-dev rd
 ```
