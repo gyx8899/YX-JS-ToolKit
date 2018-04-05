@@ -19,7 +19,7 @@
 	width: 34px;
 	height: 100%;
 	cursor: pointer;
-	background: url(../images/nav_left.png) no-repeat calc(100% - 12px) center, url(../images/carousel_nav_shadow.png) repeat left center;
+	background: url(../images/nav_left.png) no-repeat calc(100% - 12px) center, url(../images/carousel_nav_shadow.png) no-repeat left center;
 	background-size: 15px 26px, 48px 100%;
 }
 .owl-carousel.nav-btn .owl-nav [class*=owl-]
