@@ -3,7 +3,7 @@
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /**
- * YX Common Library v1.0.0.180404_beta
+ * YX Common Library v1.0.1.180405_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -126,7 +126,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   * @return {boolean}
   */
 	function isZHLanguage() {
-		return window.navigator.languages.some(function (language) {
+		return window.navigator && window.navigator.languages && window.navigator.languages.some(function (language) {
 			return language.indexOf('zh') === 0;
 		});
 	}
