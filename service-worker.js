@@ -1,7 +1,7 @@
 'use strict';
 
 var CACHE_NAME = 'YX-JS-ToolKit-180407',
-    urlsToCache_static = ['./', './assets/img/apple-touch-icon.png', './assets/img/favicon.png'],
+    urlsToCache_static = ['./', './assets/img/apple-icon-152x152.png', './assets/img/favicon-16x16.png'],
     urlsToCache_data = ['./assets/js/common.min.js'],
     cacheWhiteList = ['urlsToCache_static', 'urlsToCache_data'];
 
