@@ -130,7 +130,7 @@
 	function switchOwlJS()
 	{
 		$('#owlCarouselJS').remove();
-		loadScript("scripts/owl.carousel.custom.js", function () {
+		YX.Util.load.loadScript("scripts/owl.carousel.custom.js", function () {
 			$('#owlAutoWidth').trigger('destroy.owl.carousel');
 			initOwl();
 		})
