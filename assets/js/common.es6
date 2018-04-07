@@ -182,7 +182,10 @@
 		for (let i = 0; i < queryParams.length; i++)
 		{
 			let queryParam = queryParams[i].split("=");
-			query[queryParam[0]] = queryParam[1];
+			if (queryParam.length > 1)
+			{
+				query[queryParam[0]] = queryParam[1];
+			}
 		}
 		return query;
 	}
@@ -201,7 +204,7 @@
 		for (let i = 0; i < queryParams.length; i++)
 		{
 			let queryParam = queryParams[i].split("=");
-			if (queryParam[0] === param)
+			if (queryParam.length > 1 && queryParam[0] === param)
 			{
 				return queryParam[1];
 			}
