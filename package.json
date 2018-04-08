@@ -1,6 +1,28 @@
 {
   "name": "YX-JS-ToolKit",
   "version": "0.0.1",
+  "discription": "YX-JS-ToolKit is a toolkit for js common functions.",
+  "main": "./index.html",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gyx8899/YX-JS-ToolKit.git"
+  },
+  "keywords": [
+    "Javascript",
+    "Web",
+    "Sample",
+    "Component",
+    "Util"
+  ],
+  "Author": "Steper Kuo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gyx8899/YX-JS-ToolKit/issues"
+  },
+  "homepage": "https://github.com/gyx8899/YX-JS-ToolKit#readme",
   "dependencies": {},
   "devDependencies": {
     "babel-cli": "^6.26.0",
