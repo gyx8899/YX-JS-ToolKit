@@ -309,6 +309,47 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	YX.Util.url.getScriptName = getScriptName;
 
+	/**
+  * Check url is exist or not, callback with success state
+  * @param url
+  * @param callback
+  * @param context
+  */
+	function isExist(url, callback, context) {
+		var link = document.createElement("link"),
+		    isSuccess = true;
+
+		link.onerror = function () {
+			isSuccess = false;
+			callback && (context ? context[callback]() : callback(isSuccess));
+		};
+		if (link.readyState) {
+			//IE
+			link.onreadystatechange = function () {
+				if (link.readyState === "loaded" || link.readyState === "complete") {
+					link.onreadystatechange = null;
+					setTimeout(function () {
+						isSuccess && callback && (context ? context[callback]() : callback(isSuccess));
+					}, 0);
+				}
+			};
+		} else {
+			//Others
+			link.onload = function () {
+				callback && (context ? context[callback]() : callback(isSuccess));
+			};
+		}
+
+		link.href = url;
+		// TODO: type and rel should be accord to with checked file
+		link.type = 'text/css';
+		link.rel = 'stylesheet';
+
+		document.querySelector('head').appendChild(link);
+	}
+
+	YX.Util.url.isExist = isExist;
+
 	/********************************************************************************************************************/
 	/**
   * Util.load
