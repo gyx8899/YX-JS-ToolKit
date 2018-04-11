@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.4.20180202
+ * Javascript plugin: popupDismiss v4.4.20180411
  *
  */
 (function () {
@@ -314,7 +314,7 @@
 		var resultElement = [];
 		if (elements.jquery)
 		{
-			resultElement = elements.length > 1 ? elements.get() : [elements[0]];
+			resultElement = elements.length > 1 ? elements.get() : (elements.length === 0 ? [] : [elements[0]]);
 		}
 		else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection)
 		{
@@ -336,7 +336,7 @@
 	};
 
 	this.popupDismiss = function (elements) {
-		if (elements)
+		if (elements !== undefined)
 		{
 			var allElements = getElements(elements);
 			allElements.map(function (element) {
