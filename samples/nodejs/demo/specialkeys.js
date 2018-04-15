@@ -1,12 +1,14 @@
 'use strict';
 
+var util = require('./common.js');
+
 var rd = require('rd'),
     fs = require('fs'),
     keyArrays = [],
     notFoundKeyData = '',
     commonPath = 'D:\\Workspace\\Projects-IPTV5(SH)\\iptv5\\app\\src\\resources\\',
     userKeys = getFileContentDirectory(fs, commonPath + "app\\", "user.properties"),
-    projects = getDirectoryList(commonPath).dirNames,
+    projects = util.getDirectoryFolderNames(commonPath),
     projectsKeyObject = {};
 
 var _iteratorNormalCompletion = true;
@@ -90,11 +92,10 @@ rd.read(__dirname + '/', function (err, files) {
 		}
 	});
 	// console.log(keyArrays);
-	writeDataToFile(fs, __dirname + '\\', 'notfoundkeydetail.txt', notFoundKeyData);
+	util.writeDataToFile(__dirname + '\\notfoundkeydetail.txt', notFoundKeyData);
 });
 
 function getFileContentDirectory(fs, dir, fileName) {
-
 	var sourceString = fs.readFileSync(dir + fileName).toString(),
 	    fileContentObject = {};
 	sourceString.split(/\n/).filter(function (item) {
@@ -104,28 +105,6 @@ function getFileContentDirectory(fs, dir, fileName) {
 		fileContentObject[line[0]] = line.length === 2 ? line[1] : value.trim().slice(line[0].length + 1);
 	});
 	return fileContentObject;
-}
-
-function writeDataToFile(fs, dir, fileName, data) {
-	fs.writeFile(dir + fileName, data, function (err) {
-		if (err) {
-			console.log('Write File failed!');
-		} else {
-			console.log(dir + fileName + " stored ok!");
-		}
-	});
-}
-
-function getDirectoryList(path) {
-	var dirContent = { dirNames: [], fileNames: [] };
-	fs.readdirSync(path).forEach(function (dirItem) {
-		if (fs.statSync(path + "/" + dirItem).isDirectory()) {
-			dirContent.dirNames[dirContent.dirNames.length] = dirItem;
-		} else {
-			dirContent.fileNames[dirContent.fileNames.length] = dirItem;
-		}
-	});
-	return dirContent;
 }
 
 //# sourceMappingURL=specialkeys.js.map
