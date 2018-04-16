@@ -1,6 +1,8 @@
 'use strict';
 
 //Gulp-uglify
+// npm install --save-dev gulp-uglify
+// npm install --save-dev gulp-util
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     gulputil = require('gulp-util');
