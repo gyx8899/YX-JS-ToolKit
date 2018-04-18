@@ -46,16 +46,7 @@
 	 */
 	function uniqueArray(sourceArray)
 	{
-		let resultArray = [], hash = {};
-		for (let i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
-		{
-			if (!hash[elem])
-			{
-				resultArray.push(elem);
-				hash[elem] = true;
-			}
-		}
-		return resultArray;
+		return [...new Set(sourceArray)];
 	}
 
 	YX.Util.array.uniqueArray = uniqueArray;

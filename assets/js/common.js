@@ -2,6 +2,8 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 /**
  * YX Common Library v1.0.1.180405_beta
  */
@@ -44,15 +46,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   * @returns {Array}
   */
 	function uniqueArray(sourceArray) {
-		var resultArray = [],
-		    hash = {};
-		for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++) {
-			if (!hash[elem]) {
-				resultArray.push(elem);
-				hash[elem] = true;
-			}
-		}
-		return resultArray;
+		return [].concat(_toConsumableArray(new Set(sourceArray)));
 	}
 
 	YX.Util.array.uniqueArray = uniqueArray;
