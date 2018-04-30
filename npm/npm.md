@@ -63,3 +63,51 @@ C:\Users\Steper\AppData\Roaming\npm\uglifyjs.cmd
 ```cmd
 npm install --save-dev rd
 ```
+
+### Gulp using
+```cmd
+dir
+cls
+npm list
+npm install -g gulp
+
+npm install --save-dev gulp
+----------------------------
+npm install --save-dev gulp-less
+
+```
+[Gulp guide in detail](http://www.ydcss.com/archives/18)
+
+### Service worker: sw-precache
+```cmd
+npm install --save-dev sw-precache
+npm install -g gulp
+```
+```javascript
+
+gulp.task('generate-service-worker', function(callback) {
+  var swPrecache = require('sw-precache');
+  var rootDir = 'app';
+ 
+  swPrecache.write(`${rootDir}/service-worker.js`, {
+    staticFileGlobs: [rootDir + '/**/*.{js,html,css,png,jpg,gif,svg,eot,ttf,woff}'],
+    stripPrefix: rootDir
+  }, callback);
+});
+```
+
+### Lavas
+```cmd
+// Init lavas global
+npm install -g lavas
+
+// Init temp lavas project
+lavas init
+...
+
+//
+cd [projectName]
+npm install
+lavas dev
+
+```
