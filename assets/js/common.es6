@@ -1286,6 +1286,10 @@
 		let resultAddedElement = null;
 		switch (position && position.toLowerCase())
 		{
+			case 'replace':
+				targetElement.innerHTML = '';
+				resultAddedElement = targetElement.appendChild(addedElement);
+				break;
 			case 'prepend':
 				resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
 				break;

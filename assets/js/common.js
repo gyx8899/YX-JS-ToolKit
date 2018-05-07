@@ -1110,6 +1110,10 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	function addElement(targetElement, addedElement, position) {
 		var resultAddedElement = null;
 		switch (position && position.toLowerCase()) {
+			case 'replace':
+				targetElement.innerHTML = '';
+				resultAddedElement = targetElement.appendChild(addedElement);
+				break;
 			case 'prepend':
 				resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
 				break;
