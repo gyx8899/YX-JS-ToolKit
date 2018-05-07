@@ -1,5 +1,5 @@
 /**
- * YX Common Library v1.0.1.180405_beta
+ * YX Common Library v1.0.1.180507_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd)

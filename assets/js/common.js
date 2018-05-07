@@ -5,7 +5,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
- * YX Common Library v1.0.1.180405_beta
+ * YX Common Library v1.0.1.180507_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
