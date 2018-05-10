@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.5.20180510
+ * Javascript plugin: popupDismiss v4.6.20180510
  *
  */
 (function () {
@@ -361,4 +361,56 @@
 			that.popupDismissDelegate(document.body);
 		}
 	};
+})();
+
+/**
+ * Auto init plugin if plugin.js?init=auto
+ */
+(function () {
+	/***
+	 * getUrlQueryParams
+	 * @param {string} url
+	 * @returns {object}
+	 */
+	function getUrlQueryParams(url)
+	{
+		var query = {},
+				searchStr = url ? (url.indexOf('?') !== -1 ? url.split('?')[1] : '') : window.location.search.substring(1),
+				queryParams = searchStr.split("&");
+		for (var i = 0; i < queryParams.length; i++)
+		{
+			var queryParam = queryParams[i].split("=");
+			if (queryParam.length > 1)
+			{
+				query[queryParam[0]] = queryParam[1];
+			}
+		}
+		return query;
+	}
+
+	/**
+	 * getScriptName
+	 * @return {*}
+	 */
+	function getScriptName()
+	{
+		var error = new Error()
+				, source
+				, lastStackFrameRegex = new RegExp(/.+\/(.*?):\d+(:\d+)*$/)
+				, currentStackFrameRegex = new RegExp(/getScriptName \(.+\/(.*):\d+:\d+\)/);
+
+		if (error.stack && (source = lastStackFrameRegex.exec(error.stack.trim())) && (source.length > 1 && source[1] !== ""))
+			return source[1];
+		else if (error.stack && (source = currentStackFrameRegex.exec(error.stack.trim())))
+			return source[1];
+		else if (error['fileName'] !== undefined)
+			return error['fileName'];
+	}
+
+	if (getUrlQueryParams(getScriptName())['init'] === 'auto')
+	{
+		setTimeout(function () {
+			new popupDismiss();
+		}, 0);
+	}
 })();
