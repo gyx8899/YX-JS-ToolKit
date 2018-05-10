@@ -537,7 +537,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   */
 	function loadResource(url, callback) {
 		if (!checkResourceLoaded(url)) {
-			window[getUrlTypeInfo(url).loadFn](url, callback);
+			YX.Util.load[getUrlTypeInfo(url).loadFn](url, callback);
 		} else {
 			callback && callback();
 		}
@@ -601,7 +601,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   * @param {function} [callback] - callback() after url loaded
   */
 	function loadUrls(urls, callback) {
-		var unLoadedResourcesInfo = urls.map(function (resource) {
+		var unLoadedResourcesInfo = urls.filter(function (url) {
+			return !checkResourceLoaded(url);
+		}).map(function (resource) {
 			var resourceInfo = getUrlTypeInfo(resource);
 			resourceInfo.url = resource;
 			return resourceInfo;

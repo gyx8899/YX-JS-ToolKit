@@ -598,7 +598,7 @@
 	{
 		if (!checkResourceLoaded(url))
 		{
-			window[getUrlTypeInfo(url).loadFn](url, callback);
+			YX.Util.load[getUrlTypeInfo(url).loadFn](url, callback);
 		}
 		else
 		{
@@ -682,7 +682,9 @@
 	 */
 	function loadUrls(urls, callback)
 	{
-		let unLoadedResourcesInfo = urls.map(function (resource) {
+		let unLoadedResourcesInfo = urls.filter(function (url) {
+			return !checkResourceLoaded(url);
+		}).map(function (resource) {
 			let resourceInfo = getUrlTypeInfo(resource);
 			resourceInfo.url = resource;
 			return resourceInfo;
