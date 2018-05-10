@@ -5,7 +5,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 /**
- * YX Common Library v1.0.1.180509_beta
+ * YX Common Library v1.0.1.180510_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -538,6 +538,8 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	function loadResource(url, callback) {
 		if (!checkResourceLoaded(url)) {
 			window[getUrlTypeInfo(url).loadFn](url, callback);
+		} else {
+			callback && callback();
 		}
 	}
 

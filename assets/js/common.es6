@@ -1,5 +1,5 @@
 /**
- * YX Common Library v1.0.1.180509_beta
+ * YX Common Library v1.0.1.180510_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd)
@@ -599,6 +599,10 @@
 		if (!checkResourceLoaded(url))
 		{
 			window[getUrlTypeInfo(url).loadFn](url, callback);
+		}
+		else
+		{
+			callback && callback();
 		}
 	}
 
