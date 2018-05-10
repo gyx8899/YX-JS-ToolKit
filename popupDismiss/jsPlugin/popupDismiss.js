@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.4.20180411
+ * Javascript plugin: popupDismiss v4.5.20180510
  *
  */
 (function () {
@@ -331,17 +331,30 @@
 		return resultElement;
 	}
 
+	function processElements(elements, type)
+	{
+		var popupDismissElements = type === 'delegate' ? function (element) {
+			delegate(element, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+		} : function (element) {
+			element.addEventListener("click", method.popupEvent);
+		};
+		getElements(elements).map(function (element) {
+			if (element.getAttribute("data-" + pluginName) !== pluginName)
+			{
+				element.setAttribute("data-" + pluginName, pluginName);
+				popupDismissElements(element);
+			}
+		});
+	}
+
 	this.popupDismissDelegate = function (elements) {
-		delegate(elements, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+		processElements(elements, 'delegate');
 	};
 
 	this.popupDismiss = function (elements) {
 		if (elements !== undefined)
 		{
-			var allElements = getElements(elements);
-			allElements.map(function (element) {
-				element.addEventListener("click", method.popupEvent);
-			});
+			processElements(getElements(elements));
 		}
 		else
 		{
