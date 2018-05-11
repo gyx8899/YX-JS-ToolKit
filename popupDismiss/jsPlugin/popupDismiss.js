@@ -408,8 +408,8 @@
 
 	if (getUrlQueryParams(getScriptName())['init'] === 'auto')
 	{
-		setTimeout(function () {
+		window.addEventListener('load', function () {
 			new popupDismiss();
-		}, 0);
+		});
 	}
 })();
