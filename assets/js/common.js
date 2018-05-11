@@ -301,6 +301,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 	/**
   * getScriptName
+  * Not support in IE
   * @return {*}
   */
 	function getScriptName() {
@@ -313,6 +314,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 	}
 
 	YX.Util.url.getScriptName = getScriptName;
+
+	/**
+  * getCurrentScriptSrc
+  * @return {string}
+  */
+	function getCurrentScriptSrc() {
+		var scripts = document.getElementsByTagName("script");
+		return (document.currentScript || scripts[scripts.length - 1]).src;
+	}
+
+	YX.Util.url.getCurrentScriptSrc = getCurrentScriptSrc;
 
 	/**
   * Check url is exist or not, callback with success state

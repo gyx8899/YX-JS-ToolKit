@@ -330,6 +330,7 @@
 
 	/**
 	 * getScriptName
+	 * Not support in IE
 	 * @return {*}
 	 */
 	function getScriptName()
@@ -348,6 +349,18 @@
 	}
 
 	YX.Util.url.getScriptName = getScriptName;
+
+	/**
+	 * getCurrentScriptSrc
+	 * @return {string}
+	 */
+	function getCurrentScriptSrc()
+	{
+		var scripts = document.getElementsByTagName("script");
+		return (document.currentScript || scripts[scripts.length - 1]).src;
+	}
+
+	YX.Util.url.getCurrentScriptSrc = getCurrentScriptSrc;
 
 	/**
 	 * Check url is exist or not, callback with success state
