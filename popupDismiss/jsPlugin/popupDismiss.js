@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.6.20180510
+ * Javascript plugin: popupDismiss v4.7.20180511
  *
  */
 (function () {
@@ -154,6 +154,21 @@
 					}
 					body.setAttribute('popup-count', popupCount.toString());
 				}
+			},
+
+			processElements: function (elements, type) {
+				var popupDismissElements = type === 'delegate' ? function (element) {
+					delegate(element, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
+				} : function (element) {
+					element.addEventListener("click", method.popupEvent);
+				};
+				getElements(elements).map(function (element) {
+					if (element.getAttribute("data-" + pluginName) !== pluginName)
+					{
+						element.setAttribute("data-" + pluginName, pluginName);
+						popupDismissElements(element);
+					}
+				});
 			}
 		};
 
@@ -331,30 +346,14 @@
 		return resultElement;
 	}
 
-	function processElements(elements, type)
-	{
-		var popupDismissElements = type === 'delegate' ? function (element) {
-			delegate(element, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
-		} : function (element) {
-			element.addEventListener("click", method.popupEvent);
-		};
-		getElements(elements).map(function (element) {
-			if (element.getAttribute("data-" + pluginName) !== pluginName)
-			{
-				element.setAttribute("data-" + pluginName, pluginName);
-				popupDismissElements(element);
-			}
-		});
-	}
-
 	this.popupDismissDelegate = function (elements) {
-		processElements(elements, 'delegate');
+		method.processElements(elements, 'delegate');
 	};
 
 	this.popupDismiss = function (elements) {
 		if (elements !== undefined)
 		{
-			processElements(getElements(elements));
+			method.processElements(getElements(elements));
 		}
 		else
 		{

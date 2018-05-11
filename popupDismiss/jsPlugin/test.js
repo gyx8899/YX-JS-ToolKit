@@ -68,7 +68,7 @@
 				isTargetDisplayed = isDisplay(targetElement),
 				clickedElementTag = clickedElement.tagName + ' ' + (clickedElement.childNodes.length === 1 ? clickedElement.innerText : clickedElement.classList);
 		if (sourceElement === clickedElement ||
-				(!!isDismissScope && (hasCloset(clickedElement, document.querySelector(isDismissScope)) || hasCloset(clickedElement, targetElement))) ||
+				(!!isDismissScope && (YX.Util.element.hasCloset(clickedElement, document.querySelector(isDismissScope)) || YX.Util.element.hasCloset(clickedElement, targetElement))) ||
 				!isDismissScope)
 		{
 			isDismiss = isDismissTrigger(clickedElement, targetElement);
@@ -91,7 +91,7 @@
 
 	function isDismissTrigger(child, parent)
 	{
-		if (hasCloset(child, parent))
+		if (YX.Util.element.hasCloset(child, parent))
 		{
 			var dataPopupDismiss = child.getAttribute('data-popup-dismiss'),
 					parentDismissFalse;
@@ -99,10 +99,10 @@
 			{
 				return dataPopupDismiss === 'true';
 			}
-			else if (parentDismissFalse = findParent(child, '[data-popup-dismiss="false"]'))
+			else if (parentDismissFalse = YX.Util.element.findParent(child, '[data-popup-dismiss="false"]'))
 			{
-				var parentDismissTrue = findParent(child, '[data-popup-dismiss="true"]');
-				return parentDismissTrue ? hasCloset(parentDismissTrue, parentDismissFalse) : false;
+				var parentDismissTrue = YX.Util.element.findParent(child, '[data-popup-dismiss="true"]');
+				return parentDismissTrue ? YX.Util.element.hasCloset(parentDismissTrue, parentDismissFalse) : false;
 			}
 		}
 		return true;
