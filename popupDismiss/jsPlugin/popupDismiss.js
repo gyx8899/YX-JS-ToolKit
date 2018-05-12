@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.7.20180511
+ * Javascript plugin: popupDismiss v4.8.20180512
  *
  */
 (function () {
@@ -8,6 +8,23 @@
 		method = {
 			isTap: undefined,
 
+			popupTarget: function (dataTarget, triggerElement) {
+				var targetElement = null;
+				if (dataTarget.indexOf('parent.') === 0)
+				{
+					targetElement = triggerElement.parentNode.querySelector(dataTarget.split('parent')[1]);
+					if (dataTarget.split('parent.')[1].indexOf('parent.') === 0)
+					{
+						targetElement = method.popupTarget(dataTarget.split('parent.')[1], triggerElement);
+					}
+				}
+				else
+				{
+					targetElement = document.querySelector(dataTarget);
+				}
+				return targetElement;
+			},
+			
 			popupEvent: function (event) {
 				var popupTrigger = event.target;
 				if (popupTrigger.getAttribute('data-toggle') !== pluginName)
@@ -15,17 +32,17 @@
 					popupTrigger = findParent(popupTrigger, '[data-toggle="' + pluginName + '"]');
 				}
 				var dataDismissScope = popupTrigger.getAttribute('data-dismiss-scope'),
-					dismissScopes = getSelectorsElements(dataDismissScope),
-					eventData = {
-						type: event.type,
-						namespace: popupTrigger.getAttribute('data-target'),
-						popupTrigger: popupTrigger,
-						popupTarget: document.querySelector(popupTrigger.getAttribute('data-target')),
-						toggledClass: popupTrigger.getAttribute('data-toggle-class') || null, // Recommend: 'open'
-						popupHandler: popupTrigger.getAttribute('data-popup-handler') || null,
-						dismissHandler: popupTrigger.getAttribute('data-dismiss-handler') || null,
-						dismissScopes: dismissScopes
-					};
+						dismissScopes = getSelectorsElements(dataDismissScope),
+						eventData = {
+							type: event.type,
+							namespace: popupTrigger.getAttribute('data-target') + '-' + new Date().getTime(),
+							popupTrigger: popupTrigger,
+							popupTarget: method.popupTarget(popupTrigger.getAttribute('data-target'), popupTrigger),
+							toggledClass: popupTrigger.getAttribute('data-toggle-class') || null, // Recommend: 'open'
+							popupHandler: popupTrigger.getAttribute('data-popup-handler') || null,
+							dismissHandler: popupTrigger.getAttribute('data-dismiss-handler') || null,
+							dismissScopes: dismissScopes
+						};
 
 				if (eventData.popupTarget.getAttribute('data-isPopup') !== 'true')
 				{

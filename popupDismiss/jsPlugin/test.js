@@ -10,6 +10,8 @@
 		test('#demo2List', [outerElement], verifyCallback);
 		test('#demo3List', [outerElement], verifyCallback);
 		test('.demo4List', [outerElement, document.querySelector('.demo4-scope')], verifyCallback);
+		// test('parent.popup-list', [outerElement], verifyCallback);
+		// test('parent.popup-list', [outerElement], verifyCallback);
 
 		function verifyCallback(isSuccess, info)
 		{
