@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.8.20180512
+ * Javascript plugin: popupDismiss v4.8.20180513
  *
  */
 (function () {
@@ -10,12 +10,12 @@
 
 			popupTarget: function (dataTarget, triggerElement) {
 				var targetElement = null;
-				if (dataTarget.indexOf('parent.') === 0)
+				if (dataTarget.indexOf('parent ') === 0)
 				{
 					targetElement = triggerElement.parentNode.querySelector(dataTarget.split('parent')[1]);
-					if (dataTarget.split('parent.')[1].indexOf('parent.') === 0)
+					if (dataTarget.split('parent ')[1].indexOf('parent ') === 0)
 					{
-						targetElement = method.popupTarget(dataTarget.split('parent.')[1], triggerElement);
+						targetElement = method.popupTarget(dataTarget.split('parent ')[1], triggerElement);
 					}
 				}
 				else

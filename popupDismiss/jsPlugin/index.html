@@ -166,10 +166,12 @@
 						</ul>
 					</section>
 					<section class="demo5-scope">
-						<h3>Demo5: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>parent.popup-list</b>"
-							data-toggle-class="open"</p></h3>
+						<h3>Demo5: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>parent .popup-list</b>"
+							data-toggle-class="open"</p>
+							<p>data-target="parent [selector]"</p>
+						</h3>
 						<div>
-							<button id="demo51Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="parent.popup-list"
+							<button id="demo51Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="parent .popup-list"
 											data-toggle-class="open">
 								toggle popup
 							</button>
@@ -181,7 +183,7 @@
 							</ul>
 						</div>
 						<div style="padding-top: 120px">
-							<button id="demo52Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="parent.popup-list"
+							<button id="demo52Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="parent .popup-list"
 											data-toggle-class="open">
 								toggle popup
 							</button>
@@ -211,7 +213,8 @@
 
 <!-- Script Demo *** JS -->
 <!--<script src="popupDismiss.js"></script>-->
-<script src="popupDismiss.js?init=auto"></script>
+<!--<script src="popupDismiss.js?init=auto"></script>-->
+<script src="popupDismiss.min.js?init=auto"></script>
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
