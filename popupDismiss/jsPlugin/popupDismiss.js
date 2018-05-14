@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.8.20180513
+ * Javascript plugin: popupDismiss v4.8.20180514
  *
  */
 (function () {
@@ -416,8 +416,15 @@
 
 	if (getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto')
 	{
-		window.addEventListener('load', function () {
+		if (document.readyState !== "complete")
+		{
+			window.addEventListener('load', function () {
+				new popupDismiss();
+			});
+		}
+		else
+		{
 			new popupDismiss();
-		});
+		}
 	}
 })();
