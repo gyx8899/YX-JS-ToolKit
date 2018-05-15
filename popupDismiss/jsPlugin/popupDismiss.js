@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.8.20180514
+ * Javascript plugin: popupDismiss v4.9.20180516
  *
  */
 (function () {
@@ -414,17 +414,19 @@
 		return (document.currentScript || scripts[scripts.length - 1]).src;
 	}
 
-	if (getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto')
+	let pluginName = 'popupDismiss';
+	let hasUrlParamInitAuto = getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto';
+	let dataInitAutoElements = document.querySelectorAll('[data-toggle="' + pluginName + '"][data-init="auto"]');
+
+	if (hasUrlParamInitAuto || dataInitAutoElements.length)
 	{
 		if (document.readyState !== "complete")
 		{
-			window.addEventListener('load', function () {
-				new popupDismiss();
-			});
+			window.addEventListener('load', () => new popupDismiss(hasUrlParamInitAuto ? null : dataInitAutoElements));
 		}
 		else
 		{
-			new popupDismiss();
+			new popupDismiss(hasUrlParamInitAuto ? null : dataInitAutoElements);
 		}
 	}
 })();
