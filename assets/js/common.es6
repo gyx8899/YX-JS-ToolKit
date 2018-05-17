@@ -1,5 +1,5 @@
 /**
- * YX Common Library v1.0.1.180510_beta
+ * YX Common Library v1.0.1.180518_beta
  */
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd)
@@ -13,14 +13,14 @@
 		// Node. Does not work with strict CommonJS, but
 		// only CommonJS-like environments that support module.exports.
 		// like Node.
-		module.exports = factory();
+		module.exports.yx = factory();
 		// module.exports = factory(require('jquery'), require('underscore'));
 	}
 	else
 	{
 		// Browser globals (root is Window)
-		root.YX = factory();
-		// root.YX = factory(root.jQuery, root._);
+		root.yx = factory();
+		// root.yx = factory(root.jQuery, root._);
 	}
 }(window, function () {
 // }(this, function ($, _) {
