@@ -176,14 +176,14 @@
 				var popupDismissElements = type === 'delegate' ? function (element) {
 					delegate(element, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
 				} : function (element) {
-					element.addEventListener("click", method.popupEvent);
-				};
-				getElements(elements).map(function (element) {
-					if (element.getAttribute("data-" + pluginName) !== pluginName)
+					if (element.getAttribute("data-toggle") === pluginName && element.getAttribute("data-" + pluginName) !== pluginName)
 					{
 						element.setAttribute("data-" + pluginName, pluginName);
-						popupDismissElements(element);
+						element.addEventListener("click", method.popupEvent);
 					}
+				};
+				getElements(elements).map(function (element) {
+					popupDismissElements(element);
 				});
 			}
 		};

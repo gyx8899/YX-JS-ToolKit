@@ -47,6 +47,28 @@
 			border-radius: 3px;
 			z-index: 2;
 		}
+		.dropdown-list
+		{
+			width: 250px;
+			height: 0;
+			position: absolute;
+			background-color: white;
+			list-style: none;
+			margin: 0;
+			border: 2px solid #006bb6;
+			border-radius: 3px;
+			z-index: 2;
+			transform: scaleY(0);
+			transform-origin: top;
+			transition: 200ms cubic-bezier(0.000, 0.635, 0.755, 0.970) 10ms;
+			max-height: calc(100vh - 72px);
+		}
+		.dropdown-list.open
+		{
+			transform: scaleY(1);
+			overflow: auto;
+			height: auto;
+		}
 		.dismiss-false
 		{
 			background-color: graytext !important;
@@ -194,6 +216,18 @@
 								<li data-popup-dismiss="false">Demo52 popup list52, data-popup-dismiss="false"</li>
 							</ul>
 						</div>
+						<div style="padding-top: 120px">
+							<button id="demo53Btn" class="trigger-parent" data-toggle="popupDismiss" data-target="parent .demo53List"
+											data-toggle-class="open">
+								toggle popup
+							</button>
+							<ul class="dropdown-list demo53List">
+								<li>Demo53 popup list1</li>
+								<li>Demo53 popup list2</li>
+								<li>Demo53 popup list3</li>
+								<li data-popup-dismiss="false">Demo53 popup list53, data-popup-dismiss="false"</li>
+							</ul>
+						</div>
 					</section>
 				</div>
 				<!--Introduction here-->
@@ -231,6 +265,7 @@
 
 //	2. To all items on body;
 		new popupDismiss();
+		// new popupDismiss($('.row'));
 
 //	3. To all subItems on element;
 //		new popupDismissDelegate(document.getElementById('demos'));
