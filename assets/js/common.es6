@@ -1086,7 +1086,11 @@
 	function getElements(elements)
 	{
 		let resultElement = [];
-		if (elements.jquery)
+		if (elements === undefined || elements === null)
+		{
+			resultElement = [];
+		}
+		else if (elements.jquery)
 		{
 			resultElement = elements.length > 1 ? elements.get() : [elements[0]];
 		}
@@ -1096,9 +1100,11 @@
 		}
 		else if (Array.isArray(elements))
 		{
-			resultElement = elements;
+			resultElement = elements.filter(function (element) {
+				return element.nodeType === 1;
+			});
 		}
-		else if (elements.nodeType)
+		else if (elements.nodeType === 1)
 		{
 			resultElement = [elements];
 		}

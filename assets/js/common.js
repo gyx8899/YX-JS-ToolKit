@@ -939,13 +939,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   */
 	function getElements(elements) {
 		var resultElement = [];
-		if (elements.jquery) {
+		if (elements === undefined || elements === null) {
+			resultElement = [];
+		} else if (elements.jquery) {
 			resultElement = elements.length > 1 ? elements.get() : [elements[0]];
 		} else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection) {
 			resultElement = Array.prototype.slice.call(elements);
 		} else if (Array.isArray(elements)) {
-			resultElement = elements;
-		} else if (elements.nodeType) {
+			resultElement = elements.filter(function (element) {
+				return element.nodeType === 1;
+			});
+		} else if (elements.nodeType === 1) {
 			resultElement = [elements];
 		}
 		return resultElement;
