@@ -344,9 +344,13 @@
 	function getElements(elements)
 	{
 		var resultElement = [];
-		if (elements.jquery)
+		if (elements === undefined || elements === null)
 		{
-			resultElement = elements.length > 1 ? elements.get() : (elements.length === 0 ? [] : [elements[0]]);
+			resultElement = [];
+		}
+		else if (elements.jquery)
+		{
+			resultElement = elements.length > 1 ? elements.get() : [elements[0]];
 		}
 		else if (elements instanceof window.NodeList || elements instanceof NodeList || elements instanceof HTMLCollection)
 		{
@@ -354,9 +358,11 @@
 		}
 		else if (Array.isArray(elements))
 		{
-			resultElement = elements;
+			resultElement = elements.filter(function (element) {
+				return element.nodeType === 1 || element.jquery;
+			});
 		}
-		else if (elements.nodeType)
+		else if (elements.nodeType === 1)
 		{
 			resultElement = [elements];
 		}
@@ -370,7 +376,7 @@
 	this.popupDismiss = function (elements) {
 		if (elements !== undefined)
 		{
-			method.processElements(getElements(elements));
+			method.processElements(elements);
 		}
 		else
 		{
