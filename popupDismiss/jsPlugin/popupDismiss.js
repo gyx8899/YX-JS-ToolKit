@@ -2,9 +2,8 @@
  * Javascript plugin: popupDismiss v4.9.20180517
  *
  */
-(function () {
+(function (root) {
 	var pluginName = 'popupDismiss',
-		that = this,
 		method = {
 			isTap: undefined,
 
@@ -24,7 +23,7 @@
 				}
 				return targetElement;
 			},
-			
+
 			popupEvent: function (event) {
 				var popupTrigger = event.target;
 				if (popupTrigger.getAttribute('data-toggle') !== pluginName)
@@ -369,21 +368,21 @@
 		return resultElement;
 	}
 
-	this.popupDismissDelegate = function (elements) {
+	root.popupDismissDelegate = function (elements) {
 		method.processElements(elements, 'delegate');
 	};
 
-	this.popupDismiss = function (elements) {
+	root.popupDismiss = function (elements) {
 		if (elements !== undefined)
 		{
 			method.processElements(elements);
 		}
 		else
 		{
-			that.popupDismissDelegate(document.body);
+			root.popupDismissDelegate(document.body);
 		}
 	};
-})();
+})(window);
 
 /**
  * Auto init plugin if plugin.js?init=auto
