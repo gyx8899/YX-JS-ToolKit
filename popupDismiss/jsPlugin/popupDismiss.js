@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.9.20180516
+ * Javascript plugin: popupDismiss v4.9.20180517
  *
  */
 (function () {
@@ -414,19 +414,33 @@
 		return (document.currentScript || scripts[scripts.length - 1]).src;
 	}
 
-	let pluginName = 'popupDismiss';
-	let hasUrlParamInitAuto = getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto';
-	let dataInitAutoElements = document.querySelectorAll('[data-toggle="' + pluginName + '"][data-init="auto"]');
-
-	if (hasUrlParamInitAuto || dataInitAutoElements.length)
+	/**
+	 * autoInitPlugin
+	 * @param pluginName
+	 * @param initPlugin
+	 */
+	function autoInitPlugin(pluginName, initPlugin)
 	{
-		if (document.readyState !== "complete")
+		var hasUrlParamInitAuto = getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto';
+		var dataInitAutoElements = document.querySelectorAll('[data-toggle="' + pluginName + '"][data-init="auto"]');
+
+		if (hasUrlParamInitAuto || dataInitAutoElements.length)
 		{
-			window.addEventListener('load', () => new popupDismiss(hasUrlParamInitAuto ? null : dataInitAutoElements));
-		}
-		else
-		{
-			new popupDismiss(hasUrlParamInitAuto ? null : dataInitAutoElements);
+			var initElements = hasUrlParamInitAuto ? undefined : dataInitAutoElements;
+			if (document.readyState !== "complete")
+			{
+				window.addEventListener('load', function () {
+					initPlugin(initElements);
+				});
+			}
+			else
+			{
+				initPlugin(initElements)
+			}
 		}
 	}
+
+	autoInitPlugin('popupDismiss', function (elements) {
+		new popupDismiss(elements)
+	});
 })();
