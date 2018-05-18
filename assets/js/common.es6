@@ -13,13 +13,13 @@
 		// Node. Does not work with strict CommonJS, but
 		// only CommonJS-like environments that support module.exports.
 		// like Node.
-		module.exports.yx = factory();
+		module.exports.YX = factory();
 		// module.exports = factory(require('jquery'), require('underscore'));
 	}
 	else
 	{
 		// Browser globals (root is Window)
-		root.yx = factory();
+		root.YX = factory();
 		// root.yx = factory(root.jQuery, root._);
 	}
 }(window, function () {
