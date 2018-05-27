@@ -5,7 +5,7 @@ let fs = require('fs');
 function writeDataToFile(fileDirName, data)
 {
 	fs.writeFile(fileDirName, data, function (err) {
-		console.log(fileDirName + ': ' + err ? 'Write File failed!' : 'Saved successfully!');
+		console.log(fileDirName + ': ' + (err ? 'Write File failed!' : 'Saved successfully!'));
 	});
 }
 
