@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test module</title>
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="no-dependency.js"></script>
+	<script src="with-dependency.js"></script>
+	<script src="circular-reference.js"></script>
+</head>
+<body>
+	<div id="testId">ABCD</div>
+	<script type="text/javascript">
+		console.table(window.NoDependency);
+		console.table(window.Dependency);
+		console.table(window.Reference);
+	</script>
+</body>
+</html>
