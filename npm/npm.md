@@ -75,6 +75,8 @@ npm install --save-dev gulp
 ----------------------------
 npm install --save-dev gulp-less
 
+npm install -g gulp-if
+
 ```
 [Gulp guide in detail](http://www.ydcss.com/archives/18)
 
