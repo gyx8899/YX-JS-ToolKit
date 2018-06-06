@@ -1,4 +1,5 @@
-//Gulp-minify-css
+// Deprecated: Gulp-minify-css
+// Using: gulp-clean-css
 let gulp = require('gulp'),
 		cssmin = require('gulp-minify-css');
 

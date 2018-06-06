@@ -1,6 +1,7 @@
 'use strict';
 
-//Gulp-minify-css
+// Deprecated: Gulp-minify-css
+// Using: gulp-clean-css
 var gulp = require('gulp'),
     cssmin = require('gulp-minify-css');
 
