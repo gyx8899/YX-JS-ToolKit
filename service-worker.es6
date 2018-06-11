@@ -5,7 +5,7 @@ let CACHE_NAME = 'YX-JS-ToolKit-180407',
 			'./assets/img/favicon-16x16.png'
 		],
 		urlsToCache_data = [
-			'./assets/js/common.min.js'
+			'./assets/js/common.js'
 		],
 		cacheWhiteList = [
 			'urlsToCache_static',

@@ -2,7 +2,7 @@
 
 var CACHE_NAME = 'YX-JS-ToolKit-180407',
     urlsToCache_static = ['./', './assets/img/apple-icon-152x152.png', './assets/img/favicon-16x16.png'],
-    urlsToCache_data = ['./assets/js/common.min.js'],
+    urlsToCache_data = ['./assets/js/common.js'],
     cacheWhiteList = ['urlsToCache_static', 'urlsToCache_data'];
 
 self.addEventListener('install', function (event) {
