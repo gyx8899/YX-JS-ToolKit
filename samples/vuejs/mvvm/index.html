@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>MVVM</title>
+	
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="152x152" href="./assets/img/apple-icon-152x152.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="./assets/img/favicon-16x16.png">
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+	
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.js?type=split-ssc"></script>
+
+<main>
+	<section id="demos">
+		<div class="row">
+			<div class="large-12 columns">
+				<h4 id="basic-demos-">Demo: index title</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div id='app'>
+							<h3>姓名</h3>
+							<p>{{name}}</p>
+							<h3>年龄</h3>
+							<p>{{age}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/assets/js/common.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.js"></script>
+
+<script src="mvvm.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		let opt = {el: '#app', data:{name: 'steper kuo', age: 30}};
+		let vm = new Vue(opt);
+
+		setTimeout(() => {
+			vm.data.age = 21;
+		}, 2000);
+	}, false);
+</script>
+</body>
+</html>
