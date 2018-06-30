@@ -37,14 +37,6 @@ li
 	display: block;
 }
 /* Base */
-body
-{
-	margin: 0;
-	color: #ffffff;
-	background-color: #000000;
-	font-family: Flama-Basic;
-	-webkit-overflow-scrolling: touch;
-}
 /* header begin */
 .header
 {
