@@ -41,3 +41,8 @@ function matches (el, selector) {
 ```
 
 ### JS 
+```javascript
+// NodeList to array
+[].slice.call(document.querySelectorAll('div'));
+Array.prototype.slice.call(document.querySelectorAll('div'));
+```
