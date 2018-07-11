@@ -113,3 +113,11 @@ npm install
 lavas dev
 
 ```
+
+### Webpack
+--------
+```cmd
+npm ERR! Unexpected end of JSON input while parsing near '....0.0","inherits":"^2.'
+> npm clean cache --force
+
+```
