@@ -1,5 +1,5 @@
 /**
- * Javascript plugin: popupDismiss v4.9.20180517
+ * Javascript plugin: popupDismiss v4.9.20180711
  *
  */
 (function (root) {
@@ -446,6 +446,6 @@
 	}
 
 	autoInitPlugin('popupDismiss', function (elements) {
-		new popupDismiss(elements)
+		popupDismiss(elements)
 	});
 })();
