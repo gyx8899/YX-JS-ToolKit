@@ -8,15 +8,15 @@
 * Click the elements **inner** of 'target' element could trigger dismiss event; (data-popup-dismiss could custom trigger or not)
 
 ### API Table - Dom attribute
-|State|data-[xxx]|value|Cases|description|
-|---|---|---|---|---|
+|State|data-[xxx]|value|description|
+|---|---|---|---|
 |*|data-toggle|popupDismiss|popupDismiss|This is plugin name.<br>The element which has this data attribute is the "trigger" element.|
-|*|data-target|[selector]|1. #id<br>2. .class<br>3. tag<br>4. parent [selector]|This is the "target" (Modal) element's query selector.<br>#4 parent [selector] :support find "target" element with "trigger" element which are all under the same parent node.|
-|Optional|data-toggle-class|[class]|1. open<br>2. show<br>3. ...|Will use this class's style to control showing "target" element or not.|
-|Optional|data-popup-dismiss|[true/false]|1. true<br>2. false|Control the element which has this data attribute could trigger dismiss event or not|
-|Optional|data-popup-handler|[function name]|popupHandler|This handler function will be called when trigger popup.<br>Could be used when there is no data-toggle-class, or some custom logic.|
-|Optional|data-dismiss-handler|[function name]|dismissHandler|This handler function will be called when trigger dismiss.<br>Could be used when there is no data-toggle-class, or some custom logic.|
-|Optional|data-dismiss-scope|[selector]|1. #id<br>2. .class<br>3. tag<br>4. ...|This attribute could designated the only scope where can trigger dismiss event.|
+|*|data-target|[selector]|This is the "target" (Modal) element's query selector.|
+| |data-toggle-class|[class]|Using this class's style to control showing "target" element or not.|
+| |data-popup-dismiss|[true/false]|Control the element which has this data attribute could trigger dismiss event or not|
+| |data-popup-handler|[function name]|This handler function will be called when trigger popup.<br>Such as show/hide target in js or other logic.|
+| |data-dismiss-handler|[function name]|This handler function will be called when trigger dismiss.<br>Such as show/hide target in js or other logic.|
+| |data-dismiss-scope|[selector]|This attribute could designated the only scope where can trigger dismiss event.|
 
 ### API - JS function
 ```javascript
@@ -52,15 +52,13 @@ popupDismissDelegate(document.getElementById('containerId'));
 	data-dismiss-handler="dismissHandler">
 	Dropdown list
 </button>
-// ul - data-popup-dismiss="false": Click this ul and all children elements will not trigger dismiss event;
+//  1. data-popup-dismiss="false": Disable dismiss event when click on this element and all children elements;
+//  2. data-popup-dismiss="true": Enable dismiss event when click on this element and all children elements;
 <!--<ul class="dropdown-list" data-popup-dismiss="false">-->
 <ul class="dropdown-list">
 	<li>No.1</li>
 	<li>No.2</li>
-	// li - data-popup-dismiss="false": Click this li element will not trigger dismiss event;
 	<!--<li data-popup-dismiss="false">No.3</li>-->
-	// li - data-popup-dismiss="true": if parent ul element has data-popup-dismiss="false", 
-	// but this li has data-popup-dismiss="true", then click this li element still can trigger dismiss event;
 	<!--<li data-popup-dismiss="true">No.3</li>-->
 	<li>No.3</li>
 	<li>No.4</li>
