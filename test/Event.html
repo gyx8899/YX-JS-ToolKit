@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Event</title>
+</head>
+<body>
+<script type="module" src="../assets/js/Event.js"></script>
+<script type="module">
+	import Event from '../assets/js/Event.js';
+
+	let event = new Event();
+	let func0 = () => {
+		console.log('0: 11111');
+	}
+	let func01 = () => {
+		console.log('01: 11111');
+	}
+	let func02 = () => {
+		console.log('01: 11111');
+	}
+	let func03 = () => {
+		console.log('01: 11111');
+	}
+	Event.on('click', func0);
+	Event.on('click', func01);
+	// event.on('click', func01);
+	Event.on('click', func02);
+	Event.on('click', func03);
+	Event.trigger('click');
+	Event.off('click', func01);
+	Event.trigger('click');
+</script>
+</body>
+</html>
