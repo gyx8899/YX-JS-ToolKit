@@ -46,3 +46,86 @@ function matches (el, selector) {
 [].slice.call(document.querySelectorAll('div'));
 Array.prototype.slice.call(document.querySelectorAll('div'));
 ```
+#### Do not call Object.prototype methods directly, such as hasOwnProperty, propertyIsEnumerable, and isPrototypeOf.
+
+> Why? These methods may be shadowed by properties on the object in question - consider { hasOwnProperty: false } - or, the object may be a null object (Object.create(null)).
+
+```javascript
+// bad
+console.log(object.hasOwnProperty(key));
+
+// good
+console.log(Object.prototype.hasOwnProperty.call(object, key));
+
+// best
+const has = Object.prototype.hasOwnProperty; // cache the lookup once, in module scope.
+/* or */
+import has from 'has'; // https://www.npmjs.com/package/has
+// ...
+console.log(has.call(object, key));
+```
+
+#### Prefer the object spread operator over Object.assign to shallow-copy objects. Use the object rest operator to get a new object with certain properties omitted.
+```javascript
+// very bad
+const original = { a: 1, b: 2 };
+const copy = Object.assign(original, { c: 3 }); // this mutates `original` ಠ_ಠ
+delete copy.a; // so does this
+
+// bad
+const original = { a: 1, b: 2 };
+const copy = Object.assign({}, original, { c: 3 }); // copy => { a: 1, b: 2, c: 3 }
+
+// good
+const original = { a: 1, b: 2 };
+const copy = { ...original, c: 3 }; // copy => { a: 1, b: 2, c: 3 }
+
+const { a, ...noA } = copy; // noA => { b: 2, c: 3 }
+```
+#### To convert an iterable object to an array, use spreads ... instead of Array.from.
+```javascript
+const foo = document.querySelectorAll('.foo');
+
+// good
+const nodes = Array.from(foo);
+
+// best
+const nodes = [...foo];
+```
+#### Use Array.from for converting an array-like object to an array.
+```javascript
+const arrLike = { 0: 'foo', 1: 'bar', 2: 'baz', length: 3 };
+
+// bad
+const arr = Array.prototype.slice.call(arrLike);
+
+// good
+const arr = Array.from(arrLike);
+```
+
+#### Use named function expressions instead of function declarations. eslint: func-style
+```javascript
+// bad
+function foo() {
+  // ...
+}
+
+// bad
+const foo = function () {
+  // ...
+};
+
+// good
+// lexical name distinguished from the variable-referenced invocation(s)
+const short = function longUniqueMoreDescriptiveLexicalFoo() {
+  // ...
+};
+```
+
+#### Wrap immediately invoked function expressions in parentheses. eslint: wrap-iife
+```javascript
+// immediately-invoked function expression (IIFE)
+(function () {
+  console.log('Welcome to the Internet. Please follow me.');
+}());
+```
