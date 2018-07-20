@@ -17,8 +17,8 @@ class Event
 		}
 		else
 		{
-			typeof callback !== 'function' && alert(`Your add func ${callback} is not one valid function.`);
-			this._cache[eventName].indexOf(callback) !== -1 && alert(`Same on(eventName, func) have been called!`);
+			typeof callback !== 'function' && alert(`Your added callback ${callback} is not one valid function.`);
+			this._cache[eventName].indexOf(callback) !== -1 && alert(`Same on(eventName, callback) have been called!`);
 		}
 		return this;
 	}
@@ -43,8 +43,8 @@ class Event
 		let eventCallbacks = this._cache[eventName];
 		if (eventCallbacks && eventCallbacks.length)
 		{
-			eventCallbacks.forEach((func) => {
-				func(data);
+			eventCallbacks.forEach((callback) => {
+				callback(data);
 			});
 		}
 		return this;
