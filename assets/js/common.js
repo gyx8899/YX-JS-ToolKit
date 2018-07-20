@@ -1,5 +1,6 @@
 /**!
- * YX Common Library v1.1.1.180720_beta
+ * YX Common Library v1.2.0.180720_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
+ * Copyright (c) 2018 Kate Kuo @Steper
  */
 (function () {
 	let YX = {};
@@ -474,6 +475,10 @@
 			{
 				reject(new Error("url is null!"));
 			}
+			if (checkResourceLoaded(url))
+			{
+				resolve(true);
+			}
 
 			let script = document.createElement("script"),
 					isSuccess = true;
@@ -490,7 +495,7 @@
 					{
 						script.onreadystatechange = null;
 						setTimeout(function () {
-							resolve();
+							resolve(true);
 						}, 0);
 					}
 				};
@@ -498,7 +503,7 @@
 			else
 			{  //Others
 				script.onload = function () {
-					resolve();
+					resolve(true);
 				};
 			}
 
@@ -561,13 +566,17 @@
 			{
 				reject(new Error("url is null!"));
 			}
+			if (checkResourceLoaded(url))
+			{
+				resolve(true);
+			}
 
 			let link = document.createElement('link');
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
 			link.href = url;
 			link.onload = function () {
-				resolve();
+				resolve(true);
 			};
 			link.onerror = function (error) {
 				reject(new Error(error));
@@ -1646,6 +1655,62 @@
 	}
 
 	YX.Util.event.mouseTouchTrack = mouseTouchTrack;
+
+	YX.Util.event.notification = (option, spopOption) => {
+		let showNotification = (option) => {
+			if (option.registration)
+			{
+				let {title, registration} = option;
+				registration.showNotification(title, option);
+			}
+			else
+			{
+				new Notification(option.title, option);
+			}
+		};
+		if (!("Notification" in window))
+		{
+			YX.Plugin.spop(spopOption);
+		}
+		else if (Notification.permission === "granted")
+		{
+			showNotification(option);
+		}
+		else if (Notification.permission !== 'denied')
+		{
+			Notification.requestPermission(function (permission) {
+				if (permission === "granted")
+				{
+					showNotification(option);
+				}
+				else
+				{
+					YX.Plugin.spop(spopOption);
+				}
+			});
+		}
+		else
+		{
+			YX.Plugin.spop(spopOption);
+		}
+	};
+
+	/********************************************************************************************************************/
+
+	YX.Plugin = {};
+
+	YX.Plugin.spop = (options) => {
+		const commonPath = 'https://gyx8899.github.io/YX-WebThemeKit/';
+		const spopScript = commonPath + 'theme-pop/spop/spop.min.js';
+		const spopStyle = commonPath + 'theme-pop/spop/spop.min.css';
+		Promise.all([YX.Util.load.loadScriptWithPromise(spopScript), YX.Util.load.loadCSSWithPromise(spopStyle)])
+				.then((results) => {
+					if (results[0] && results[1])
+					{
+						spop(options);
+					}
+				});
+	};
 
 	/********************************************************************************************************************/
 
