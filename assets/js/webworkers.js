@@ -110,10 +110,11 @@ onconnect = function (e) {
 		let {type, event, message, method, params, scripts, callback} = e.data;
 		if (type === 'apply')
 		{
-			applyMethod({method, params, scripts})
+			this.applyMethod({method, params, scripts})
 					.then((result) => {
 						port.postMessage({event: event, message: result, callback: callback});
 					});
+			portsEvent.trigger(event, {event: event, message: message});
 		}
 		else if (type === 'post')
 		{
