@@ -53,6 +53,18 @@
 
 <main>
 	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<div id="demoHTML">
+					<h3>Check number is prime or not</h3>
+					<label for="inputLabel">Number:</label>
+					<input id="inputLabel" placeholder="number:" value="1000001111111111">
+					<button id="checkAction" onclick="checkIsPrimeNumber();">Check</button>
+					<div id="value"></div>
+				</div>
+			</div>
+		</div>
 	</section>
 </main>
 
@@ -64,15 +76,24 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
 <script>
 
-	YX.WebWorker
-			.getInstance({
-				workerUrl: window.location.origin + '/YX-JS-ToolKit/assets/js/webworkers.js'
-			})
-			.postMessage('YX.Util.math.isPrime', '1000001111111111', 'YX.Util.tool.consoleLog', [
-				window.location.origin + '/YX-JS-ToolKit/assets/js/common.js',
-				// 'http://localhost:63342/YX-JS-ToolKit/assets/js/commonModal.js'
-			]);
+	function checkIsPrimeNumber()
+	{
+		let number = document.getElementById('inputLabel').value;
+		document.getElementById('value').innerHTML = 'checking in worker.js...';
+		YX.WebWorker
+				.getInstance({
+					workerUrl: window.location.origin + '/YX-JS-ToolKit/assets/js/webworkers.js'
+				})
+				.postMessage('YX.Util.math.isPrime', number, 'checkResultCallback', [
+					window.location.origin + '/YX-JS-ToolKit/assets/js/common.js',
+					// 'http://localhost:63342/YX-JS-ToolKit/assets/js/commonModal.js'
+				]);
+	}
 
+	function checkResultCallback(data)
+	{
+		document.getElementById('value').innerHTML = data;
+	}
 </script>
 </body>
 </html>
