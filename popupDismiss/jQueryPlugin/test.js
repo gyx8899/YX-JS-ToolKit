@@ -68,7 +68,7 @@
 				isTargetDisplayed = isDisplay(targetElement),
 				clickedElementTag = clickedElement.tagName + ' ' + (clickedElement.childNodes.length === 1 ? clickedElement.innerText : clickedElement.classList);
 		if (sourceElement === clickedElement ||
-				(!!isDismissScope && (hasCloset(clickedElement, document.querySelector(isDismissScope)) || hasCloset(clickedElement, targetElement))) ||
+				(!!isDismissScope && (hasClosest(clickedElement, document.querySelector(isDismissScope)) || hasClosest(clickedElement, targetElement))) ||
 				!isDismissScope)
 		{
 			isDismiss = isDismissTrigger(clickedElement, targetElement);
@@ -91,7 +91,7 @@
 
 	function isDismissTrigger(child, parent)
 	{
-		if (hasCloset(child, parent))
+		if (hasClosest(child, parent))
 		{
 			var dataPopupDismiss = child.getAttribute('data-popup-dismiss'),
 					parentDismissFalse;
@@ -102,7 +102,7 @@
 			else if (parentDismissFalse = findParent(child, '[data-popup-dismiss="false"]'))
 			{
 				var parentDismissTrue = findParent(child, '[data-popup-dismiss="true"]');
-				return parentDismissTrue ? hasCloset(parentDismissTrue, parentDismissFalse) : false;
+				return parentDismissTrue ? hasClosest(parentDismissTrue, parentDismissFalse) : false;
 			}
 		}
 		return true;

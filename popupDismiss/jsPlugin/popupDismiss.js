@@ -84,7 +84,7 @@
 					return;
 
 				if (!isTrigger ||
-						(!hasCloset(eventData.dismissTrigger, eventData.popupTrigger)
+						(!hasClosest(eventData.dismissTrigger, eventData.popupTrigger)
 								&& method.isDismissTrigger(eventData.dismissTrigger, eventData.popupTarget)
 								&& eventData.popupTarget.getAttribute('data-isPopup') === 'true'
 						)
@@ -137,7 +137,7 @@
 			// Default: all be dismiss trigger(return true);
 			// Check click point ($child) has '[data-popup-dismiss="false"]'('[data-popup-dismiss="true"]') or not;
 			isDismissTrigger: function (child, parent) {
-				if (hasCloset(child, parent))
+				if (hasClosest(child, parent))
 				{
 					var dataPopupDismiss = child.getAttribute('data-popup-dismiss'),
 							parentDismissFalse;
@@ -148,7 +148,7 @@
 					else if (parentDismissFalse = findParent(child, '[data-popup-dismiss="false"]'))
 					{
 						var parentDismissTrue = findParent(child, '[data-popup-dismiss="true"]');
-						return parentDismissTrue ? hasCloset(parentDismissTrue, parentDismissFalse) : false;
+						return parentDismissTrue ? hasClosest(parentDismissTrue, parentDismissFalse) : false;
 					}
 				}
 				return true;
@@ -216,7 +216,7 @@
 		return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
 	}
 
-	function hasCloset(el, parentElement)
+	function hasClosest(el, parentElement)
 	{
 		if (el === parentElement)
 		{
