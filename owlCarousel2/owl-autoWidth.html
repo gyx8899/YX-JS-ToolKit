@@ -90,7 +90,7 @@
 					1. Auto-width<br>
 					2. Fixed different width;<br>
 					3. <b>Nav full height</b> nav-prev/next and over item;<br>
-					4. <a href="javascript:void(0);" onclick="switchOwlJS()">Click to use the owl.carousel.custom.js</a>, fixed
+					4. <a href="javascript:void(0);" onclick="switchOwlJS()">Click to use the owl.carousel.2.3.4.custom.js</a>, fixed
 					the
 					last item space to the right, fixed the nav slide pagination<br>
 				</p>
@@ -130,7 +130,7 @@
 	function switchOwlJS()
 	{
 		$('#owlCarouselJS').remove();
-		YX.Util.load.loadScript("scripts/owl.carousel.custom.js", function () {
+		YX.Util.load.loadScript("scripts/owl.carousel.2.3.4.custom.js", function () {
 			$('#owlAutoWidth').trigger('destroy.owl.carousel');
 			initOwl();
 		})
