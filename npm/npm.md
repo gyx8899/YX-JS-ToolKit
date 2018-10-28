@@ -2,8 +2,40 @@
 
 ---
 
+### Base
+```cmd
+npm install <packageName>
+npm install <packageName> -f
+npm install <packageName> --force
+
+npm update <packageName>
+
+npm view react
+npm view 的别名
+npm info react
+npm show react
+npm v react
+
+// Not work
+npm cache ls react
+// But return
+npm cache add <tarball file>
+npm cache add <folder>
+npm cache add <tarball url>
+npm cache add <git url>
+npm cache add <name>@<version>
+npm cache clean
+npm cache verify
+
+
+npm cache clean
+```
+
 ### IDEA auto babel setting ES6 to ES5 in project
 * Add package.json file;
+```cmd
+npm init
+```
 ```json
 {
   "name": "YX-JS-ToolKit",
@@ -13,10 +45,13 @@
 ```
 
 * Add .babelrc file;
+> env: es6
+react: react
+stage-0: propTypes
 ```json
 {
   "presets": [
-    "es2015"
+    "env", "react", "stage-0"
   ]
 }
 ```
@@ -116,8 +151,35 @@ lavas dev
 
 ### Webpack
 --------
+> npm ERR! Unexpected end of JSON input while parsing near '....0.0","inherits":"^2.'
 ```cmd
-npm ERR! Unexpected end of JSON input while parsing near '....0.0","inherits":"^2.'
 > npm clean cache --force
+```
+> Init package.json 
+```cmd
+// Step by step: info
+npm init
 
+// Init in default on one step
+npm init -y
+```
+
+> Install webpack webpack-cli
+```cmd
+npm i webpack webpack-cli --save-dev
+npm install webpack webpack-cli --save-dev
+npm install webpack webpack-cli -D
+
+yarn add webpack -D
+```
+
+> React
+```cmd
+npm i react react-dom
+
+npm i --save-dev babel-preset-react
+
+npm i --save-dev babel-preset-stage-0 prop-types
+
+npm i --save-dev react-hot-loader
 ```
