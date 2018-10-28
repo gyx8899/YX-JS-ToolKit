@@ -129,3 +129,38 @@ const short = function longUniqueMoreDescriptiveLexicalFoo() {
   console.log('Welcome to the Internet. Please follow me.');
 }());
 ```
+
+
+
+#### Closure
+```javascript
+foo.addEventListener('click', (function() {
+    var times = 0
+    return function() {
+        times++
+        console.log(times)
+    }
+})(), false)
+
+var counter = function() {
+    var count = 0
+    return function() {
+        return count++
+    }
+}
+
+var counter1 = counter();
+counter1();//0
+counter1();//1
+```
+
+#### apple-mobile-web-app-status-bar-style
+ Sets the style of the status bar for a web application.
+
+> Syntax
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+> Discussion
+This meta tag has no effect unless you first specify full-screen mode as described in apple-apple-mobile-web-app-capable.
+If content is set to default, the status bar appears normal. If set to black, the status bar has a black background. If set to black-translucent, the status bar is black and translucent. If set to default or black, the web content is displayed below the status bar. If set to black-translucent, the web content is displayed on the entire screen, partially obscured by the status bar. The default value is default.
+ 
