@@ -1,52 +1,72 @@
-class Event
-{
+/**
+ * Event: v1.2.0.20181021
+ * Copyright (c) 2018 Kate Kuo @Steper
+ */
+class Event {
 	constructor()
 	{
 		this._cache = {};
+		this._unread = {};
 	}
-	on(eventName, callback)
-	{
-		if (!this._cache[eventName])
-		{
-			this._cache[eventName] = [];
-		}
 
-		if (typeof callback === 'function' && this._cache[eventName].indexOf(callback) === -1)
+	on(key, fn)
+	{
+		if (!this._cache[key])
 		{
-			this._cache[eventName].push(callback);
+			this._cache[key] = [];
+		}
+		if (typeof fn === 'function')
+		{
+			this._cache[key].push(fn);
+
+			let unReads = this._unread[key];
+			if (!!unReads)
+			{
+				unReads.forEach(args => {
+					this.trigger(key, ...args);
+				});
+				this._unread[key] = [];
+				delete this._unread[key];
+			}
 		}
 		else
 		{
-			typeof callback !== 'function' && alert(`Your added callback ${callback} is not one valid function.`);
-			this._cache[eventName].indexOf(callback) !== -1 && alert(`Same on(eventName, callback) have been called!`);
+			alert(`Your listen on ${fn.toString()} is not one valid function`);
+		}
+
+		return this;
+	}
+
+	off(key, fn)
+	{
+		let fns = this._cache[key];
+		if (!!fns)
+		{
+			fns.slice(fns.indexOf(fn), 1);
 		}
 		return this;
 	}
-	off(eventName, callback)
+
+	trigger(key)
 	{
-		let eventCallbacks = this._cache[eventName];
-		if (Array.isArray(eventCallbacks) && eventCallbacks.length)
+		[].shift.call(arguments);
+		let args = [].slice.call(arguments),
+				cacheFns = this._cache[key];
+		if (!!cacheFns)
 		{
-			if (callback)
-			{
-				eventCallbacks.splice(eventCallbacks.indexOf(callback), 1);
-			}
-			else
-			{
-				eventCallbacks.length = 0;
-			}
-		}
-		return this;
-	}
-	trigger(eventName, data)
-	{
-		let eventCallbacks = this._cache[eventName];
-		if (eventCallbacks && eventCallbacks.length)
-		{
-			eventCallbacks.forEach((callback) => {
-				callback(data);
+			cacheFns.forEach(fn => {
+				fn.call(this, ...args);
 			});
 		}
+		else
+		{
+			if (!this._unread[key])
+			{
+				this._unread[key] = [];
+			}
+			this._unread[key].push(arguments);
+		}
+
 		return this;
 	}
 }
