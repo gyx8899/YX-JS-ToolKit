@@ -1,5 +1,5 @@
 /**!
- * YX Common Library v1.2.7.181028_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
+ * YX Common Library v1.2.8.181029_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
  * Copyright (c) 2018 Kate Kuo @Steper
  */
 (function () {
@@ -55,23 +55,64 @@
 	YX.Util.array.getArrayString = getArrayString;
 
 	/**
+	 * Find item with key
+	 * @param array
+	 * @param item
+	 * @param key
+	 * @return {*}
+	 */
+	function findObject(array, key, value)
+	{
+		if (array.length === 0 || !key || !value)
+		{
+			return null;
+		}
+		for (let i = array.length - 1; i >= 0; i--)
+		{
+			if (array[i][key] === value)
+			{
+				return array[i];
+			}
+		}
+		return null;
+	}
+
+	YX.Util.array.findObject = findObject;
+
+	/**
 	 * Find item's index in array
 	 * @param array
 	 * @param item
+	 * @param key
 	 * @return {number}
 	 */
-	function findIndex(array, item)
+	function findIndex(array, item, key)
 	{
-		let ret = -1;
-		for (let i = array.length - 1; i > 0; i--)
+		let isObject = (typeof item === 'object' && !!key);
+		if (isObject && !item[key])
 		{
-			if (array[i] === item)
-			{
-				ret = i;
-				break;
+			return -1;
+		}
+		let comparedValue = isObject ? item[key] : item;
+		let arrayItemValue = (ary, i, key) => {
+			return ary[i];
+		};
+		if (isObject)
+		{
+			arrayItemValue = (ary, i, key) => {
+				return ary[i][key];
 			}
 		}
-		return ret;
+
+		for (let i = array.length - 1; i >= 0; i--)
+		{
+			let arrayValue = arrayItemValue(array, i, key);
+			if (arrayValue === comparedValue)
+			{
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	YX.Util.array.findIndex = findIndex;
