@@ -1,195 +1,10 @@
-/**
- * Javascript plugin: popupDismiss v4.9.20180711
+/**!
+ * Javascript plugin: popupDismiss v5.0.20181103
  *
  */
-(function (root) {
-	var pluginName = 'popupDismiss',
-		method = {
-			isTap: undefined,
-
-			popupTarget: function (dataTarget, triggerElement) {
-				var targetElement = null;
-				if (dataTarget.indexOf('parent ') === 0)
-				{
-					targetElement = triggerElement.parentNode.querySelector(dataTarget.split('parent')[1]);
-					if (dataTarget.split('parent ')[1].indexOf('parent ') === 0)
-					{
-						targetElement = method.popupTarget(dataTarget.split('parent ')[1], triggerElement);
-					}
-				}
-				else
-				{
-					targetElement = document.querySelector(dataTarget);
-				}
-				return targetElement;
-			},
-
-			popupEvent: function (event) {
-				var popupTrigger = event.target;
-				if (popupTrigger.getAttribute('data-toggle') !== pluginName)
-				{
-					popupTrigger = findParent(popupTrigger, '[data-toggle="' + pluginName + '"]');
-				}
-				var dataDismissScope = popupTrigger.getAttribute('data-dismiss-scope'),
-						dismissScopes = getSelectorsElements(dataDismissScope),
-						eventData = {
-							type: event.type,
-							namespace: popupTrigger.getAttribute('data-target') + '-' + new Date().getTime(),
-							popupTrigger: popupTrigger,
-							popupTarget: method.popupTarget(popupTrigger.getAttribute('data-target'), popupTrigger),
-							toggledClass: popupTrigger.getAttribute('data-toggle-class') || null, // Recommend: 'open'
-							popupHandler: popupTrigger.getAttribute('data-popup-handler') || null,
-							dismissHandler: popupTrigger.getAttribute('data-dismiss-handler') || null,
-							dismissScopes: dismissScopes
-						};
-
-				if (eventData.popupTarget.getAttribute('data-isPopup') !== 'true')
-				{
-					method.monitorTap();
-					if (eventData.toggledClass)
-					{
-						addClass(eventData.popupTrigger, eventData.toggledClass);
-						addClass(eventData.popupTarget, eventData.toggledClass);
-					}
-					eventData.popupTarget.setAttribute('data-isPopup', 'true');
-					eventData.dismissScopes.forEach(function (scope) {
-						extendOnOff(scope).on(eventData.type + "." + eventData.namespace, function (newEvent) {
-							if (event === newEvent)
-								return;
-							var newEventData = {
-								type: eventData.type,
-								namespace: eventData.namespace,
-								dismissTrigger: newEvent.target,
-								popupTrigger: eventData.popupTrigger,
-								popupTarget: eventData.popupTarget,
-								toggledClass: eventData.toggledClass,
-								dismissHandler: eventData.dismissHandler,
-								dismissScopes: eventData.dismissScopes
-							};
-							method.popupDismiss(newEventData, true);
-						});
-					});
-					eventData.popupHandler !== null && window[eventData.popupHandler](eventData.popupTarget);
-					method.setBodyCursorInIOS("pointer");
-				}
-				else
-				{
-					eventData.dismissTrigger = popupTrigger;
-					method.popupDismiss(eventData);
-				}
-			},
-
-			popupDismiss: function (eventData, isTrigger) {
-				if (method.isTap === false)
-					return;
-
-				if (!isTrigger ||
-						(!hasClosest(eventData.dismissTrigger, eventData.popupTrigger)
-								&& method.isDismissTrigger(eventData.dismissTrigger, eventData.popupTarget)
-								&& eventData.popupTarget.getAttribute('data-isPopup') === 'true'
-						)
-				)
-				{
-					if (eventData.toggledClass)
-					{
-						removeClass(eventData.popupTrigger, eventData.toggledClass);
-						removeClass(eventData.popupTarget, eventData.toggledClass);
-					}
-					eventData.popupTarget.setAttribute('data-isPopup', 'false');
-					eventData.dismissScopes.forEach(function (scope) {
-						scope.off(eventData.type + "." + eventData.namespace, function () {
-							method.popupDismiss(eventData, true);
-						});
-					});
-					eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.popupTarget);
-
-					method.setBodyCursorInIOS("default");
-				}
-			},
-
-			monitorTap: function () {
-				method.isTap = undefined;
-				var start = {}, end = {};
-				document.body.addEventListener('mousedown', mouseDown);
-				document.body.addEventListener('mouseup', mouseUp);
-
-				function mouseDown(event)
-				{
-					method.isTap = false;
-					start.x = event.pageX;
-					start.y = event.pageY;
-				}
-
-				function mouseUp(event)
-				{
-					end.x = event.pageX;
-					end.y = event.pageY;
-
-					if (Math.abs(end.x - start.x) < 5 && Math.abs(end.y - start.y) < 5)
-					{
-						method.isTap = true;
-						document.body.removeEventListener('mousedown', mouseDown);
-						document.body.removeEventListener('mouseup', mouseUp);
-					}
-				}
-			},
-
-			// Default: all be dismiss trigger(return true);
-			// Check click point ($child) has '[data-popup-dismiss="false"]'('[data-popup-dismiss="true"]') or not;
-			isDismissTrigger: function (child, parent) {
-				if (hasClosest(child, parent))
-				{
-					var dataPopupDismiss = child.getAttribute('data-popup-dismiss'),
-							parentDismissFalse;
-					if (dataPopupDismiss === 'false' || dataPopupDismiss === 'true')
-					{
-						return dataPopupDismiss === 'true';
-					}
-					else if (parentDismissFalse = findParent(child, '[data-popup-dismiss="false"]'))
-					{
-						var parentDismissTrue = findParent(child, '[data-popup-dismiss="true"]');
-						return parentDismissTrue ? hasClosest(parentDismissTrue, parentDismissFalse) : false;
-					}
-				}
-				return true;
-			},
-
-			// Fix issue : In iOS device, the dismiss function could not be triggered;
-			setBodyCursorInIOS: function (val) {
-				if (/iPhone|iPad|iPod/i.test(navigator.userAgent))
-				{
-					var body = document.querySelector('body'),
-							popupCount = parseInt(body.getAttribute('popup-count') || '0', 10);
-					if (val === 'pointer')
-					{
-						++popupCount === 1 && (body.style.cursor = val);
-					}
-					else if (val === 'default')
-					{
-						--popupCount && (body.style.cursor = val);
-					}
-					body.setAttribute('popup-count', popupCount.toString());
-				}
-			},
-
-			processElements: function (elements, type) {
-				var popupDismissElements = type === 'delegate' ? function (element) {
-					delegate(element, 'click', '[data-toggle="' + pluginName + '"]', method.popupEvent);
-				} : function (element) {
-					if (element.getAttribute("data-toggle") === pluginName && element.getAttribute("data-" + pluginName) !== pluginName)
-					{
-						element.setAttribute("data-" + pluginName, pluginName);
-						element.addEventListener("click", method.popupEvent);
-					}
-				};
-				getElements(elements).map(function (element) {
-					popupDismissElements(element);
-				});
-			}
-		};
-
+class Util {
 	// Utils
-	function addClass(el, className)
+	static addClass(el, className)
 	{
 		if (el.classList)
 			el.classList.add(className);
@@ -197,7 +12,7 @@
 			el.className += ' ' + className;
 	}
 
-	function removeClass(el, className)
+	static removeClass(el, className)
 	{
 		if (el.classList)
 			el.classList.remove(className);
@@ -205,18 +20,20 @@
 			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 
-	function findParent(element, selector)
-	{
-		while ((element = element.parentElement) && !matches(element, selector)) {}
-		return element;
-	}
-
-	function matches(el, selector)
+	static matches(el, selector)
 	{
 		return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
 	}
 
-	function hasClosest(el, parentElement)
+	static findParent(element, selector)
+	{
+		while ((element = element.parentElement) && !Util.matches(element, selector))
+		{
+		}
+		return element;
+	}
+
+	static hasClosest(el, parentElement)
 	{
 		if (el === parentElement)
 		{
@@ -227,38 +44,28 @@
 			return false;
 		}
 
-		var parents = [], p = el.parentNode;
+		let parents = [], p = el.parentNode;
 		while (p !== parentElement && p.parentNode)
 		{
-			var o = p;
+			let o = p;
 			parents.push(o);
 			p = o.parentNode;
 		}
 		return p === parentElement;
 	}
 
-	function convertNodeListToArray(nodeList)
-	{
-		var resultArray = [];
-		for (var i = 0, l = nodeList.length; i < l; i++)
-		{
-			resultArray[i] = nodeList[i];
-		}
-		return resultArray;
-	}
-
-	function getSelectorsElements(selectorString)
+	static getSelectorsElements(selectorString)
 	{
 		if (!selectorString || (selectorString && selectorString.trim() === ''))
 		{
 			return [document];
 		}
-		var selectorsElements = [],
-				selectorsArray = selectorString.split(',').map(function (selectorStringItem) {
+		let selectorsElements = [],
+				selectorsArray = selectorString.split(',').map((selectorStringItem) => {
 					return selectorStringItem.trim();
 				});
-		selectorsArray = uniqueArray(selectorsArray);
-		for (var i = 0, l = selectorsArray.length; i < l; i++)
+		selectorsArray = Util.uniqueArray(selectorsArray);
+		for (let i = 0, l = selectorsArray.length; i < l; i++)
 		{
 			if (selectorsArray[i] === 'document')
 			{
@@ -266,17 +73,17 @@
 			}
 			else
 			{
-				var scopeNodeList = convertNodeListToArray(document.querySelectorAll(selectorsArray[i]));
+				let scopeNodeList = [].slice.call(document.querySelectorAll(selectorsArray[i]));
 				selectorsElements = selectorsElements.concat(scopeNodeList);
 			}
 		}
 		return selectorsElements;
 	}
 
-	function uniqueArray(sourceArray)
+	static uniqueArray(sourceArray)
 	{
-		var resultArray = [], hash = {};
-		for (var i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
+		let resultArray = [], hash = {};
+		for (let i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
 		{
 			if (!hash[elem])
 			{
@@ -288,17 +95,17 @@
 	}
 
 	//Extend on/off methods
-	function extendOnOff(el)
+	static extendOnOff(el)
 	{
 		if (el.length === 0)
 			return null;
-		var events = {
+		let events = {
 			on: function (event, callback, opts) {
 				if (!this.namespaces) // save the namespaces on the DOM element itself
 					this.namespaces = {};
 
 				this.namespaces[event] = callback;
-				var options = opts || false;
+				let options = opts || false;
 
 				this.addEventListener(event.split('.')[0], callback, options);
 				return this;
@@ -320,29 +127,9 @@
 		return el;
 	}
 
-	function delegate(element, eventName, selector, handler)
+	static getElements(elements)
 	{
-		element.addEventListener(eventName, listenerHandler);
-
-		function listenerHandler(event)
-		{
-			var target = event.target,
-					popupDismissElement = null;
-			if (target.getAttribute('data-toggle') === pluginName)
-			{
-				popupDismissElement = target;
-			}
-			else
-			{
-				popupDismissElement = findParent(target, selector);
-			}
-			popupDismissElement && handler.call(popupDismissElement, event);
-		}
-	}
-
-	function getElements(elements)
-	{
-		var resultElement = [];
+		let resultElement = [];
 		if (elements === undefined || elements === null)
 		{
 			resultElement = [];
@@ -365,42 +152,21 @@
 		{
 			resultElement = [elements];
 		}
+		else if (typeof elements === 'string')
+		{
+			resultElement = document.querySelectorAll(elements);
+		}
 		return resultElement;
 	}
 
-	root.popupDismissDelegate = function (elements) {
-		method.processElements(elements, 'delegate');
-	};
-
-	root.popupDismiss = function (elements) {
-		if (elements !== undefined)
-		{
-			method.processElements(elements);
-		}
-		else
-		{
-			root.popupDismissDelegate(document.body);
-		}
-	};
-})(window);
-
-/**
- * Auto init plugin if plugin.js?init=auto
- */
-(function () {
-	/***
-	 * getUrlQueryParams
-	 * @param {string} url
-	 * @returns {object}
-	 */
-	function getUrlQueryParams(url)
+	static getUrlQueryParams(url)
 	{
-		var query = {},
+		let query = {},
 				searchStr = url ? (url.indexOf('?') !== -1 ? url.split('?')[1] : '') : window.location.search.substring(1),
 				queryParams = searchStr.split("&");
-		for (var i = 0; i < queryParams.length; i++)
+		for (let i = 0; i < queryParams.length; i++)
 		{
-			var queryParam = queryParams[i].split("=");
+			let queryParam = queryParams[i].split("=");
 			if (queryParam.length > 1)
 			{
 				query[queryParam[0]] = queryParam[1];
@@ -409,43 +175,268 @@
 		return query;
 	}
 
-	/**
-	 * getCurrentScriptSrc
-	 * @return {string}
-	 */
-	function getCurrentScriptSrc()
+	static getCurrentScriptSrc()
 	{
-		var scripts = document.getElementsByTagName("script");
+		let scripts = document.getElementsByTagName("script");
 		return (document.currentScript || scripts[scripts.length - 1]).src;
 	}
+}
 
-	/**
-	 * autoInitPlugin
-	 * @param pluginName
-	 * @param initPlugin
-	 */
-	function autoInitPlugin(pluginName, initPlugin)
+class PopupDismiss {
+	constructor(elements, isDelegated = false)
 	{
-		var hasUrlParamInitAuto = getUrlQueryParams(getCurrentScriptSrc())['init'] === 'auto';
-		var dataInitAutoElements = document.querySelectorAll('[data-toggle="' + pluginName + '"][data-init="auto"]');
+		this.name = 'popupDismiss';
+		this.isTap = undefined;
+		this.attr = {
+			dataToggle: 'data-toggle',
+			dataTarget: 'data-target',
+			dataDismissScope: 'data-dismiss-scope',
+			dataToggleClass: 'data-toggle-class',
+			dataPopupHandler: 'data-popup-handler',
+			dataDismissHandler: 'data-dismiss-handler',
+			dataIsPopup: 'data-isPopup',
+			dataPopupDismiss: 'data-popup-dismiss',
+		};
+		this.popupEvent = this.popupEvent.bind(this);
 
-		if (hasUrlParamInitAuto || dataInitAutoElements.length)
+		if (elements === undefined)
 		{
-			var initElements = hasUrlParamInitAuto ? undefined : dataInitAutoElements;
-			if (document.readyState !== "complete")
+			this.initDelegate(document.body);
+		}
+		else
+		{
+			this.elements = Util.getElements(elements);
+			this.isDelegated = isDelegated || (elements === undefined);
+
+			this.init = this.isDelegated ? this.initDelegate : this.initElement;
+			this.elements.forEach(element => this.init(element));
+		}
+	}
+
+	initElement(element)
+	{
+		if (element.getAttribute(this.attr.dataToggle) === this.name && element.getAttribute(`data-${this.name}`) !== this.name)
+		{
+			element.setAttribute(`data-${this.name}`, this.name);
+			element.addEventListener("click", this.popupEvent);
+		}
+	}
+
+	initDelegate(element)
+	{
+		this.delegate(element, 'click', `[${this.attr.dataToggle}="${this.name}"]`, this.popupEvent);
+	}
+
+	delegate(element, eventName, selector, handler)
+	{
+		element.addEventListener(eventName, (event) => {
+			let target = event.target,
+					popupDismissElement = null;
+			if (target.getAttribute(this.attr.dataToggle) === this.name)
 			{
-				window.addEventListener('load', function () {
-					initPlugin(initElements);
-				});
+				popupDismissElement = target;
 			}
 			else
 			{
-				initPlugin(initElements)
+				popupDismissElement = Util.findParent(target, selector);
+			}
+			popupDismissElement && handler.call(popupDismissElement, event);
+		});
+	}
+
+	popupTarget(dataTarget, triggerElement)
+	{
+		let targetElement = null,
+				parentParam = 'parent ';
+		if (dataTarget.indexOf(parentParam) === 0)
+		{
+			targetElement = triggerElement.parentNode.querySelector(dataTarget.split(parentParam.trim())[1]);
+			if (dataTarget.split(parentParam)[1].indexOf(parentParam) === 0)
+			{
+				targetElement = this.popupTarget(dataTarget.split(parentParam)[1], triggerElement);
+			}
+		}
+		else
+		{
+			targetElement = document.querySelector(dataTarget);
+		}
+		return targetElement;
+	}
+
+	popupEvent(event)
+	{
+		let popupTrigger = event.target,
+				that = this;
+		if (popupTrigger.getAttribute(this.attr.dataToggle) !== this.name)
+		{
+			popupTrigger = Util.findParent(popupTrigger, `[${this.attr.dataToggle}="${this.name}"]`);
+		}
+		let dataDismissScope = popupTrigger.getAttribute(this.attr.dataDismissScope),
+				dismissScopes = Util.getSelectorsElements(dataDismissScope),
+				eventData = {
+					type: event.type,
+					namespace: popupTrigger.getAttribute(this.attr.dataTarget) + '-' + new Date().getTime(),
+					popupTrigger: popupTrigger,
+					popupTarget: this.popupTarget(popupTrigger.getAttribute(this.attr.dataTarget), popupTrigger),
+					toggledClass: popupTrigger.getAttribute(this.attr.dataToggleClass) || null, // Recommend: 'open'
+					popupHandler: popupTrigger.getAttribute(this.attr.dataPopupHandler) || null,
+					dismissHandler: popupTrigger.getAttribute(this.attr.dataDismissHandler) || null,
+					dismissScopes: dismissScopes
+				};
+
+		if (eventData.popupTarget.getAttribute(this.attr.dataIsPopup) !== 'true')
+		{
+			this.monitorTap();
+			if (eventData.toggledClass)
+			{
+				Util.addClass(eventData.popupTrigger, eventData.toggledClass);
+				Util.addClass(eventData.popupTarget, eventData.toggledClass);
+			}
+			eventData.popupTarget.setAttribute(this.attr.dataIsPopup, 'true');
+			eventData.dismissScopes.forEach((scope) => {
+				Util.extendOnOff(scope)
+						.on(`${eventData.type}.${eventData.namespace}`, (newEvent) => {
+							if (event === newEvent)
+								return;
+							let newEventData = {
+								type: eventData.type,
+								namespace: eventData.namespace,
+								dismissTrigger: newEvent.target,
+								popupTrigger: eventData.popupTrigger,
+								popupTarget: eventData.popupTarget,
+								toggledClass: eventData.toggledClass,
+								dismissHandler: eventData.dismissHandler,
+								dismissScopes: eventData.dismissScopes
+							};
+							that.dismiss(newEventData, true);
+						});
+			});
+			eventData.popupHandler !== null && window[eventData.popupHandler](eventData.popupTarget);
+			PopupDismiss.setBodyCursorInIOS("pointer");
+		}
+		else
+		{
+			eventData.dismissTrigger = popupTrigger;
+			that.dismiss(eventData);
+		}
+	}
+
+	dismiss(eventData, isTrigger)
+	{
+		if (this.isTap === false)
+			return;
+
+		if (!isTrigger ||
+				(!Util.hasClosest(eventData.dismissTrigger, eventData.popupTrigger)
+						&& this.isDismissTrigger(eventData.dismissTrigger, eventData.popupTarget)
+						&& eventData.popupTarget.getAttribute(this.attr.dataIsPopup) === 'true'
+				)
+		)
+		{
+			if (eventData.toggledClass)
+			{
+				Util.removeClass(eventData.popupTrigger, eventData.toggledClass);
+				Util.removeClass(eventData.popupTarget, eventData.toggledClass);
+			}
+			eventData.popupTarget.setAttribute(this.attr.dataIsPopup, 'false');
+			eventData.dismissScopes.forEach((scope) => {
+				scope.off(`${eventData.type}.${eventData.namespace}`, () => this.dismiss(eventData, true));
+			});
+			eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.popupTarget);
+
+			PopupDismiss.setBodyCursorInIOS("default");
+		}
+	}
+
+	monitorTap()
+	{
+		let that = this,
+				start = {},
+				end = {};
+		this.isTap = undefined;
+
+		document.body.addEventListener('mousedown', mouseDown);
+		document.body.addEventListener('mouseup', mouseUp);
+
+		function mouseDown(event)
+		{
+			that.isTap = false;
+			start.x = event.pageX;
+			start.y = event.pageY;
+		}
+
+		function mouseUp(event)
+		{
+			end.x = event.pageX;
+			end.y = event.pageY;
+
+			if (Math.abs(end.x - start.x) < 5 && Math.abs(end.y - start.y) < 5)
+			{
+				that.isTap = true;
+				document.body.removeEventListener('mousedown', mouseDown);
+				document.body.removeEventListener('mouseup', mouseUp);
 			}
 		}
 	}
 
-	autoInitPlugin('popupDismiss', function (elements) {
-		popupDismiss(elements)
-	});
+	// Default: all be dismiss trigger(return true);
+	// Check click point ($child) has '[data-popup-dismiss="false"]'('[data-popup-dismiss="true"]') or not;
+	isDismissTrigger(child, parent)
+	{
+		if (Util.hasClosest(child, parent))
+		{
+			let dataPopupDismiss = child.getAttribute(this.attr.dataPopupDismiss),
+					parentDismissFalse;
+			if (dataPopupDismiss === 'false' || dataPopupDismiss === 'true')
+			{
+				return dataPopupDismiss === 'true';
+			}
+			else if (parentDismissFalse = Util.findParent(child, `[${this.attr.dataPopupDismiss}="false"]`))
+			{
+				let parentDismissTrue = Util.findParent(child, `[${this.attr.dataPopupDismiss}="true"]`);
+				return parentDismissTrue ? Util.hasClosest(parentDismissTrue, parentDismissFalse) : false;
+			}
+		}
+		return true;
+	}
+
+	// Fix issue : In iOS device, the dismiss function could not be triggered;
+	static setBodyCursorInIOS(val)
+	{
+		if (/iPhone|iPad|iPod/i.test(navigator.userAgent))
+		{
+			let body = document.querySelector('body'),
+					popupCount = parseInt(body.getAttribute('popup-count') || '0', 10);
+			if (val === 'pointer')
+			{
+				++popupCount === 1 && (body.style.cursor = val);
+			}
+			else if (val === 'default')
+			{
+				--popupCount && (body.style.cursor = val);
+			}
+			body.setAttribute('popup-count', popupCount.toString());
+		}
+	}
+}
+
+/**
+ * Auto init plugin if plugin.js?init=auto
+ */
+(function () {
+	let scriptParamInit = Util.getUrlQueryParams(Util.getCurrentScriptSrc())['init'],
+			initPopupDismiss = () => new PopupDismiss();
+	if (scriptParamInit === 'auto')
+	{
+		if (document.readyState !== "complete")
+		{
+			window.addEventListener('DOMContentLoaded', initPopupDismiss);
+		}
+		else
+		{
+			initPopupDismiss();
+		}
+	}
 })();
+
+export default PopupDismiss

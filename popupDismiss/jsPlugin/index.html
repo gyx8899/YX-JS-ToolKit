@@ -80,10 +80,10 @@
 	</style>
 
 	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--[if lt IE 9]>
-	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<!--<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+	<!--<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>-->
 	<![endif]-->
 
 </head>
@@ -246,8 +246,8 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
 
 <!-- Script Demo *** JS -->
-<script src="popupDismiss.js"></script>
-<!--<script src="popupDismiss.js?init=auto"></script>-->
+<script src="popupDismiss.min.js"></script>
+<!--<script src="popupDismiss.min.js?init=auto"></script>-->
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
@@ -255,20 +255,20 @@
 		initColor();
 
 //	1. To special items;
-//		popupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
-//		popupDismiss(document.querySelectorAll('.trigger-parent'));
-//		popupDismiss(document.querySelectorAll('#tapId'));
-//		popupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
-//		popupDismiss($('[data-toggle="popupDismiss"]'));
-//		popupDismiss($('.trigger-parent'));
-//		popupDismiss($('#tapId'));
+		new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		new PopupDismiss(document.querySelectorAll('.trigger-parent'));
+//		new PopupDismiss(document.querySelectorAll('#tapId'));
+//		new PopupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
+//		new PopupDismiss($('[data-toggle="popupDismiss"]'));
+//		new PopupDismiss($('.trigger-parent'));
+//		new PopupDismiss($('#tapId'));
 
 //	2. To all items on body;
-		popupDismiss();
-		// popupDismiss($('.row'));
+// 		new PopupDismiss();
+		// new PopupDismiss($('.row'));
 
 //	3. To all subItems on element;
-//		popupDismissDelegate(document.getElementById('demos'));
+//		new PopupDismiss(document.getElementById('demos'), true);
 	});
 
 	function popupHandler()
