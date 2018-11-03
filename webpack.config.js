@@ -20,6 +20,10 @@ let jsFiles = [
 		library: 'YX',
 		libraryTarget: 'umd'
 	},
+	{
+		dir: 'popupDismiss/jsPlugin',
+		name: 'popupDismiss',
+	},
 ];
 let fileConfigs = jsFiles.map((file) => {
 	let filePath = './' + file.dir + '/';
