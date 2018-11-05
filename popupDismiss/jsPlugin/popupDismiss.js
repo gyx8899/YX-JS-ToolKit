@@ -1,5 +1,5 @@
 /**!
- * Javascript plugin: popupDismiss v5.0.20181103
+ * Javascript plugin: popupDismiss v5.0.20181105
  *
  */
 class Util {
@@ -20,14 +20,12 @@ class Util {
 			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	}
 
-	static matches(el, selector)
-	{
-		return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
-	}
-
 	static findParent(element, selector)
 	{
-		while ((element = element.parentElement) && !Util.matches(element, selector))
+		let matches = (el, selector) => {
+			return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+		};
+		while ((element = element.parentElement) && !matches(element, selector))
 		{
 		}
 		return element;
@@ -175,10 +173,34 @@ class Util {
 		return query;
 	}
 
-	static getCurrentScriptSrc()
+	static getCurrentScript(scriptName)
 	{
-		let scripts = document.getElementsByTagName("script");
-		return (document.currentScript || scripts[scripts.length - 1]).src;
+		let allScripts = document.getElementsByTagName("script");
+
+		if (scriptName)
+		{
+			for (let i = 0; i < allScripts.length; i++)
+			{
+				let script = allScripts.item(i);
+
+				if (script.src && script.src.match(scriptName))
+				{
+					return script;
+				}
+			}
+		}
+		else
+		{
+			if (document.currentScript)
+			{
+				return document.currentScript;
+			}
+			else
+			{
+				return allScripts[allScripts.length - 1];
+			}
+		}
+		return null;
 	}
 }
 
@@ -424,18 +446,27 @@ class PopupDismiss {
  * Auto init plugin if plugin.js?init=auto
  */
 (function () {
-	let scriptParamInit = Util.getUrlQueryParams(Util.getCurrentScriptSrc())['init'],
-			initPopupDismiss = () => new PopupDismiss();
-	if (scriptParamInit === 'auto')
+	let pluginFileName = 'popupDismiss',
+			currentScript = Util.getCurrentScript(pluginFileName);
+	if (!!currentScript)
 	{
-		if (document.readyState !== "complete")
+		let scriptParamInit = Util.getUrlQueryParams(currentScript['src'])['init'],
+				initPopupDismiss = () => new PopupDismiss();
+		if (scriptParamInit === 'auto')
 		{
-			window.addEventListener('DOMContentLoaded', initPopupDismiss);
+			if (document.readyState !== "complete")
+			{
+				document.addEventListener('DOMContentLoaded', initPopupDismiss);
+			}
+			else
+			{
+				initPopupDismiss();
+			}
 		}
-		else
-		{
-			initPopupDismiss();
-		}
+	}
+	else
+	{
+		console.log('PopupDismiss initialized failed if you import with "popupDismiss.min.js?init=auto"!');
 	}
 })();
 

@@ -246,8 +246,9 @@
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
 
 <!-- Script Demo *** JS -->
-<script src="popupDismiss.min.js"></script>
-<!--<script src="popupDismiss.min.js?init=auto"></script>-->
+<!--<script src="popupDismiss.min.js"></script>-->
+<!-- 0. ?init=auto-->
+<script src="popupDismiss.min.js?init=auto"></script>
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
@@ -255,7 +256,7 @@
 		initColor();
 
 //	1. To special items;
-		new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+// 		new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
 //		new PopupDismiss(document.querySelectorAll('.trigger-parent'));
 //		new PopupDismiss(document.querySelectorAll('#tapId'));
 //		new PopupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
@@ -306,6 +307,5 @@
 		$('[data-popup-dismiss="true"]').addClass('dismiss-true');
 	}
 </script>
-
 </body>
 </html>
