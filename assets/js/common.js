@@ -1,5 +1,5 @@
 /**!
- * YX Common Library v1.2.8.181029_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
+ * YX Common Library v1.2.9.181106_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
  * Copyright (c) 2018 Kate Kuo @Steper
  */
 (function () {
@@ -27,7 +27,17 @@
 	 */
 	function uniqueArray(sourceArray)
 	{
-		return [...new Set(sourceArray)];
+		// return [...new Set(sourceArray)];
+		let resultArray = [], hash = {};
+		for (let i = 0, elem, l = sourceArray.length; i < l && (elem = sourceArray[i]) !== null; i++)
+		{
+			if (!hash[elem])
+			{
+				resultArray.push(elem);
+				hash[elem] = true;
+			}
+		}
+		return resultArray;
 	}
 
 	YX.Util.array.uniqueArray = uniqueArray;
@@ -202,7 +212,7 @@
 	function isZHLanguage()
 	{
 		let browserLanguage = root.navigator.languages ? root.navigator.languages : root.navigator.browserLanguage;
-		return browserLanguage.some(language => {
+		return !!browserLanguage && browserLanguage.some(language => {
 			return language.indexOf('zh') === 0;
 		});
 	}
@@ -328,7 +338,7 @@
 			{
 				let script = allScripts.item(i);
 
-				if (script.src && script.src.match(scriptName))
+				if (script.src && script.src.split('?')[0].match(scriptName))
 				{
 					return script;
 				}
