@@ -183,7 +183,7 @@ class Util {
 			{
 				let script = allScripts.item(i);
 
-				if (script.src && script.src.match(scriptName))
+				if (script.src && script.src.split('?')[0].match(scriptName))
 				{
 					return script;
 				}
