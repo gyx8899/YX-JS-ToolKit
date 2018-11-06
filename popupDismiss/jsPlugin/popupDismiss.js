@@ -1,5 +1,5 @@
 /**!
- * Javascript plugin: popupDismiss v5.0.20181105
+ * Javascript plugin: popupDismiss v5.1.20181106
  *
  */
 class Util {
@@ -173,7 +173,7 @@ class Util {
 		return query;
 	}
 
-	static getCurrentScript(scriptName)
+	static getScriptByName(scriptName)
 	{
 		let allScripts = document.getElementsByTagName("script");
 
@@ -187,17 +187,6 @@ class Util {
 				{
 					return script;
 				}
-			}
-		}
-		else
-		{
-			if (document.currentScript)
-			{
-				return document.currentScript;
-			}
-			else
-			{
-				return allScripts[allScripts.length - 1];
 			}
 		}
 		return null;
@@ -447,7 +436,7 @@ class PopupDismiss {
  */
 (function () {
 	let pluginFileName = 'popupDismiss',
-			currentScript = Util.getCurrentScript(pluginFileName);
+			currentScript = Util.getScriptByName(pluginFileName);
 	if (!!currentScript)
 	{
 		let scriptParamInit = Util.getUrlQueryParams(currentScript['src'])['init'],
@@ -466,7 +455,7 @@ class PopupDismiss {
 	}
 	else
 	{
-		console.log('PopupDismiss initialized failed if you import with "popupDismiss.min.js?init=auto"!');
+		console.warn('PopupDismiss auto initialization failed with compatibility issue if import with "[url]?init=auto"!');
 	}
 })();
 
