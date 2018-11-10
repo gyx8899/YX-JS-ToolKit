@@ -1,5 +1,5 @@
 /**!
- * Javascript plugin: popupDismiss v5.1.20181106
+ * Javascript plugin: popupDismiss v5.3.1.20181110
  *
  */
 class Util {
@@ -17,7 +17,7 @@ class Util {
 		if (el.classList)
 			el.classList.remove(className);
 		else
-			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+			el.className = el.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
 	}
 
 	static findParent(element, selector)
@@ -220,7 +220,7 @@ class PopupDismiss {
 			this.isDelegated = isDelegated || (elements === undefined);
 
 			this.init = this.isDelegated ? this.initDelegate : this.initElement;
-			this.elements.forEach(element => this.init(element));
+			[].slice.call(this.elements).forEach(element => this.init(element));
 		}
 	}
 
@@ -258,13 +258,22 @@ class PopupDismiss {
 	popupTarget(dataTarget, triggerElement)
 	{
 		let targetElement = null,
-				parentParam = 'parent ';
-		if (dataTarget.indexOf(parentParam) === 0)
+				parentParam = 'parent',
+				parentParamIndex = dataTarget.indexOf(parentParam);
+		if (parentParamIndex === 0)
 		{
-			targetElement = triggerElement.parentNode.querySelector(dataTarget.split(parentParam.trim())[1]);
-			if (dataTarget.split(parentParam)[1].indexOf(parentParam) === 0)
+			targetElement = triggerElement.parentNode;
+			let subSelector = dataTarget.slice(parentParam.length).trim();
+			if (subSelector.length)
 			{
-				targetElement = this.popupTarget(dataTarget.split(parentParam)[1], triggerElement);
+				if (subSelector.indexOf(parentParam) === 0)
+				{
+					targetElement = this.popupTarget(subSelector, triggerElement);
+				}
+				else
+				{
+					targetElement = triggerElement.querySelector(subSelector);
+				}
 			}
 		}
 		else
@@ -431,6 +440,17 @@ class PopupDismiss {
 	}
 }
 
+// Downward compatibility
+window.popupDismiss = (elements) => {
+	console.warn('popupDismiss.min.js: [Deprecation] popupDismiss() is deprecated. Please use new PopupDismiss(elements) instead.');
+	return new PopupDismiss(elements);
+};
+
+window.popupDismissDelegate = (elements) => {
+	console.warn('popupDismiss.min.js: [Deprecation] popupDismissDelegate() is deprecated. Please use new PopupDismiss(elements, true) instead.');
+	return new PopupDismiss(elements, true);
+};
+
 /**
  * Auto init plugin if plugin.js?init=auto
  */
@@ -455,7 +475,7 @@ class PopupDismiss {
 	}
 	else
 	{
-		console.warn('PopupDismiss auto initialization failed with compatibility issue if import with "[url]?init=auto"!');
+		console.warn('popupDismiss.min.js: [Notice] PopupDismiss auto-initialization failed with compatibility issue if import with "[url]?init=auto"!');
 	}
 })();
 
