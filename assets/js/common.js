@@ -1,5 +1,5 @@
 /**!
- * YX Common Library v1.2.9.181106_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
+ * YX Common Library v1.2.10.181118_beta | https://github.com/gyx8899/YX-JS-ToolKit/blob/master/assets/js
  * Copyright (c) 2018 Kate Kuo @Steper
  */
 (function () {
@@ -935,12 +935,12 @@
 	let timeChunk = (ary, fn, count) => {
 		let timer = null,
 				array = [...ary],
-		start = () => {
-			for (let i = 0; i < Math.min(count || 1, array.length); i++)
-			{
-				fn(array.shift());
-			}
-		};
+				start = () => {
+					for (let i = 0; i < Math.min(count || 1, array.length); i++)
+					{
+						fn(array.shift());
+					}
+				};
 		return () => {
 			timer = setInterval(() => {
 				if (array.length === 0)
@@ -1510,7 +1510,7 @@
 			if (element.classList)
 				element.classList.remove(className);
 			else
-				element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+				element.className = element.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
 		}
 	}
 
@@ -1882,6 +1882,61 @@
 
 	/********************************************************************************************************************/
 
+	class CopyToClipboard {
+		string(copiedString, callback)
+		{
+			let bodyBackground = document.body.style.background,
+					addDomToBody = (dom, id) => {
+						let copiedElement = document.createElement('div');
+						id && copiedElement.setAttribute('id', id);
+						// copiedElement.setAttribute('style', 'height: 1px;border: 0;opacity: 0;overflow: hidden;');
+						copiedElement.innerHTML = dom;
+						document.body.appendChild(copiedElement);
+						// Set copy element bg transparent
+						document.body.style.background = 'transparent';
+						return copiedElement;
+					},
+					removeElementFromBody = (element) => {
+						document.body.removeChild(element);
+						document.body.style.background = bodyBackground;
+					},
+					copiedElement = addDomToBody(copiedString);
+			copyElementToClipboard(copiedElement, callback);
+			removeElementFromBody(copiedElement);
+		}
+
+		element(copiedElement, callback)
+		{
+			let range = document.createRange();
+			range.selectNode(copiedElement);
+
+			let selection = window.getSelection();
+			selection.removeAllRanges();
+			selection.addRange(range);
+
+			try
+			{
+				// Selected the required text, execute the copy command
+				let successful = document.execCommand('copy'),
+						msg = successful ? 'successful' : 'unsuccessful';
+				console.log('Copy command was ' + msg);
+				callback && callback(true);
+			}
+			catch (err)
+			{
+				console.log('Oops, unable to copy');
+				callback && callback(false);
+			}
+
+			// Remove the selections - NOTE: Should use removeRange(range) when it is supported
+			selection.removeAllRanges();
+		}
+	}
+
+	YX.CopyToClipboard = new CopyToClipboard();
+
+	/********************************************************************************************************************/
+
 	YX.Plugin = {};
 
 	YX.Plugin.spop = (options) => {
@@ -1963,8 +2018,7 @@
 
 	/********************************************************************************************************************/
 
-	class SharedWorkers
-	{
+	class SharedWorkers {
 		constructor(options)
 		{
 			if (window.Worker && options.workerUrl)
@@ -1977,6 +2031,7 @@
 				alert('Browser does not support Worker, or workUrl not set!');
 			}
 		}
+
 		static getInstance(options)
 		{
 			if (!this.instance)
@@ -2049,8 +2104,7 @@
 
 	/********************************************************************************************************************/
 
-	class Event
-	{
+	class Event {
 		constructor(options)
 		{
 			this._cache = {};
