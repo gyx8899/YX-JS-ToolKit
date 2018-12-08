@@ -4,7 +4,7 @@
 class Class {
 	constructor()
 	{
-		if (!('classList' in document.createElement('div')))
+		if (!document.createElement('div').classList)
 		{
 			this.has = this._has;
 			this.add = this._add;
@@ -15,7 +15,7 @@ class Class {
 
 	has(element, className)
 	{
-		if (!element || !className)
+		if (!element || (!!element && element.length === 0) || !className)
 		{
 			return false;
 		}
@@ -23,7 +23,7 @@ class Class {
 	}
 	_has(element, className)
 	{
-		if (!element || !className)
+		if (!element || (!!element && element.length === 0) || !className)
 		{
 			return false;
 		}
@@ -50,7 +50,7 @@ class Class {
 
 	toggle(element, className)
 	{
-		if (!element || !className)
+		if (!element || (!!element && element.length === 0) || !className)
 		{
 			return false;
 		}
@@ -68,7 +68,7 @@ class Class {
 
 	_addRemoveClassList(element, className, isAdd)
 	{
-		if (!element || !className)
+		if (!element || (!!element && element.length === 0) || !className)
 		{
 			return false;
 		}
@@ -82,7 +82,7 @@ class Class {
 
 	_addRemoveClassName(element, className, isAdd)
 	{
-		if (!element || !className)
+		if (!element || (!!element && element.length === 0) || !className)
 		{
 			return false;
 		}

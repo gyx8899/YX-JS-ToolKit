@@ -10,6 +10,13 @@
 		// import Class from '../../assets/js/Class.min.js';
 		// let classUtil = new Class();
 		function init () {
+			classUtil.add(document.getElementById('id0'), 'selectedId1');
+			classUtil.add(document.querySelectorAll('.item0'), 'selectItem1');
+			classUtil.remove(document.getElementById('id0'), 'selectedId2');
+			classUtil.remove(document.querySelectorAll('.item0'), 'selectedId2');
+			classUtil.toggle(document.querySelector('.item0'), 'selectItem31');
+			classUtil.toggle(document.querySelectorAll('.item0'), 'selectItem41');
+
 			classUtil.add(document.getElementById('id1'), 'selectedId1');
 			classUtil.remove(document.getElementById('id2'), 'selectedId2');
 			classUtil.add(document.querySelectorAll('.item1'), 'selectItem1');
