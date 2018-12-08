@@ -117,7 +117,7 @@ class Class {
 		}
 	}
 
-	_addRemoveClassName(el, className, isAdd = true)
+	_addRemoveClassName(el, className, isAdd)
 	{
 		let hasClass = this.has(el, className);
 		if (hasClass !== isAdd)
