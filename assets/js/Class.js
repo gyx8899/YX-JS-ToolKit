@@ -1,136 +1,110 @@
 /**
- * Class v1.0.1.20181208
+ * Class v1.0.2.20181208
  */
 class Class {
 	constructor()
 	{
-		this._addRemoveClassList = this._addRemoveClassList.bind(this);
-		this._addRemoveClassName = this._addRemoveClassName.bind(this);
+		if (!('classList' in document.createElement('div')))
+		{
+			this.has = this._has;
+			this.add = this._add;
+			this.remove = this._remove;
+			this.toggle = this._toggle;
+		}
 	}
 
 	has(element, className)
 	{
-		if (!element)
+		if (!element || !className)
 		{
 			return false;
 		}
-		if (element.classList)
+		return element.classList.contains(className);
+	}
+	_has(element, className)
+	{
+		if (!element || !className)
 		{
-			this.has = (element, className) => {
-				return this._areParmetersVaild(element, className) && element.classList.contains(className);
-			};
+			return false;
 		}
-		else
-		{
-			this.has = (element, className) => {
-				return this._areParmetersVaild(element, className) && (new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className));
-			}
-		}
-		this.has(element, className);
+		return (new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className));
 	}
 
 	add(element, className)
 	{
-		if (!element)
-		{
-			return false;
-		}
-		if (element.classList || (element.length > 1 && element[0].classList))
-		{
-			this.add = (element, className) => {
-				this._areParmetersVaild(element, className) && this._forEach(element, this._addRemoveClassList, className, true);
-			}
-		}
-		else
-		{
-			this.add = (element, className) => {
-				this._areParmetersVaild(element, className) && this._forEach(element, this._addRemoveClassName, className, true);
-			}
-		}
-		this.add(element, className);
+		return this._addRemoveClassList(element, className, true);
 	}
-
 	remove(element, className)
 	{
-		if (!element)
-		{
-			return false;
-		}
-		if (element.classList || (element.length > 1 && element[0].classList))
-		{
-			this.remove = (element, className) => {
-				this._areParmetersVaild(element, className) && this._forEach(element, this._addRemoveClassList, className, false);
-			}
-		}
-		else
-		{
-			this.remove = (element, className) => {
-				this._areParmetersVaild(element, className) && this._forEach(element, this._addRemoveClassName, className, false);
-			};
-		}
-		this.remove(element, className);
+		return this._addRemoveClassList(element, className, false);
+	}
+
+	_add(element, className)
+	{
+		return this._addRemoveClassName(element, className, true);
+	}
+	_remove(element, className)
+	{
+		return this._addRemoveClassName(element, className, false);
 	}
 
 	toggle(element, className)
 	{
-		if (!element)
+		if (!element || !className)
 		{
 			return false;
 		}
-		if (element.classList)
+		let elements = [element];
+		if (element.length > 1)
 		{
-			element.classList.toggle(className);
+			elements = element;
 		}
-		else if (element.length > 1 && element[0].classList)
-		{
-			[].forEach.call(element, item => item.classList.toggle(className));
-		}
-		else
-		{
-			this._addRemoveClassName(element, className, undefined);
-		}
+		return [].forEach.call(elements, item => item.classList.toggle(className));
+	}
+	_toggle(element, className)
+	{
+		return this._addRemoveClassName(element, className);
 	}
 
-	_areParmetersVaild(element, className)
+	_addRemoveClassList(element, className, isAdd)
 	{
-		return !(!element || element.length === 0 || !className || className.trim() === '');
+		if (!element || !className)
+		{
+			return false;
+		}
+		let elements = [element];
+		if (element.length > 1)
+		{
+			elements = element;
+		}
+		return [].forEach.call(elements, item => item.classList[isAdd ? 'add': 'remove'](className));
 	}
 
-	_forEach(array, callback)
+	_addRemoveClassName(element, className, isAdd)
 	{
-		let arrays = array;
-		if (!arrays.length)
+		if (!element || !className)
 		{
-			arrays = [array];
+			return false;
 		}
-		[].forEach.call(arrays, (item) => {
-			callback(item, ...[].slice.call(arguments, 2));
+		let elements = [element];
+		if (element.length > 1)
+		{
+			elements = element;
+		}
+		return [].forEach.call(elements, item => {
+			let hasClass = this.has(item, className);
+			if (hasClass !== isAdd)
+			{
+				if (hasClass)
+				{
+					item.className = item.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
+				}
+				else
+				{
+					item.className += ' ' + className;
+				}
+			}
 		});
-	}
-
-	_addRemoveClassList(el, className, isAdd = true)
-	{
-		let hasClass = this.has(el, className);
-		if (hasClass !== isAdd)
-		{
-			el.classList[hasClass ? 'remove': 'add'](className);
-		}
-	}
-
-	_addRemoveClassName(el, className, isAdd)
-	{
-		let hasClass = this.has(el, className);
-		if (hasClass !== isAdd)
-		{
-			if (hasClass)
-			{
-				el.className = el.className.replace(new RegExp('(\\s|^)' + className + '(\\s|$)'), ' ');
-			}
-			else
-			{
-				el.className += ' ' + className;
-			}
-		}
 	}
 }
 
