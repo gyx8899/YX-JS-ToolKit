@@ -1,5 +1,5 @@
 /**!
- * Javascript plugin: popupDismiss v5.3.1.20181110
+ * Javascript plugin: popupDismiss v5.4.0.20181211
  *
  */
 class Util {
@@ -201,6 +201,7 @@ class PopupDismiss {
 		this.attr = {
 			dataToggle: 'data-toggle',
 			dataTarget: 'data-target',
+			dataTargetParent: 'data-target-parent',
 			dataDismissScope: 'data-dismiss-scope',
 			dataToggleClass: 'data-toggle-class',
 			dataPopupHandler: 'data-popup-handler',
@@ -255,25 +256,15 @@ class PopupDismiss {
 		});
 	}
 
-	popupTarget(dataTarget, triggerElement)
+	popupTarget(dataTarget, triggerElement, dataTargetParent)
 	{
-		let targetElement = null,
-				parentParam = 'parent',
-				parentParamIndex = dataTarget.indexOf(parentParam);
-		if (parentParamIndex === 0)
+		let targetElement = null;
+		if (!!dataTargetParent)
 		{
-			targetElement = triggerElement.parentNode;
-			let subSelector = dataTarget.slice(parentParam.length).trim();
-			if (subSelector.length)
+			let commonParent = Util.findParent(triggerElement, dataTargetParent);
+			if (commonParent)
 			{
-				if (subSelector.indexOf(parentParam) === 0)
-				{
-					targetElement = this.popupTarget(subSelector, triggerElement);
-				}
-				else
-				{
-					targetElement = triggerElement.querySelector(subSelector);
-				}
+				targetElement = commonParent.querySelector(dataTarget);
 			}
 		}
 		else
@@ -297,7 +288,7 @@ class PopupDismiss {
 					type: event.type,
 					namespace: popupTrigger.getAttribute(this.attr.dataTarget) + '-' + new Date().getTime(),
 					popupTrigger: popupTrigger,
-					popupTarget: this.popupTarget(popupTrigger.getAttribute(this.attr.dataTarget), popupTrigger),
+					popupTarget: this.popupTarget(popupTrigger.getAttribute(this.attr.dataTarget), popupTrigger, popupTrigger.getAttribute(this.attr.dataTargetParent)),
 					toggledClass: popupTrigger.getAttribute(this.attr.dataToggleClass) || null, // Recommend: 'open'
 					popupHandler: popupTrigger.getAttribute(this.attr.dataPopupHandler) || null,
 					dismissHandler: popupTrigger.getAttribute(this.attr.dataDismissHandler) || null,
