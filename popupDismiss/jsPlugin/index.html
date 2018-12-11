@@ -255,31 +255,31 @@
 		initColor();
 
 //	1. To special items;
-// 		new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
-//		new PopupDismiss(document.querySelectorAll('.trigger-parent'));
-//		new PopupDismiss(document.querySelectorAll('#tapId'));
-//		new PopupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
-//		new PopupDismiss($('[data-toggle="popupDismiss"]'));
-//		new PopupDismiss($('.trigger-parent'));
-//		new PopupDismiss($('#tapId'));
+// 		window.popup = new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		window.popup = new PopupDismiss(document.querySelectorAll('.trigger-parent'));
+//		window.popup = new PopupDismiss(document.querySelectorAll('#tapId'));
+//		window.popup = new PopupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
+// 		window.popup = new PopupDismiss($('[data-toggle="popupDismiss"]'));
+// 		window.popup = new PopupDismiss($('.trigger-parent'));
+// 		window.popup = new PopupDismiss($('#tapId'));
 
 //	2. To all items on body;
-// 		new PopupDismiss();
-		// new PopupDismiss($('.row'));
+// 		window.popup = new PopupDismiss();
+// 		window.popup = new PopupDismiss($('.row'), true);
 
 //	3. To all subItems on element;
-//		new PopupDismiss(document.getElementById('demos'), true);
+// 		window.popup = new PopupDismiss(document.getElementById('demos'), true);
 	});
 
-	function popupHandler()
+	window.popupHandler = function()
 	{
 		outputTextArea("Popup handler triggering...");
-	}
+	};
 
-	function dismissHandler()
+	window.dismissHandler = function()
 	{
 		outputTextArea("Dismiss handler triggering...");
-	}
+	};
 
 	function outputTextArea(output)
 	{
@@ -288,17 +288,17 @@
 		textarea.scrollTop = textarea.scrollHeight;
 	}
 
-	function popupList($target)
+	window.popupList = function ($target)
 	{
 //		$($target) && $($target).fadeIn();
 		$($target) && $($target).css('display', 'block');
-	}
+	};
 
-	function dismissList($target)
+	window.dismissList = function ($target)
 	{
 //		$($target) && $($target).fadeOut();
 		$($target) && $($target).css('display', 'none');
-	}
+	};
 
 	function initColor()
 	{

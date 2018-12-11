@@ -1,6 +1,7 @@
+import Event from './Event.js';
+
 /**!
- * Javascript plugin: popupDismiss v5.4.0.20181211
- *
+ * Javascript plugin: popupDismiss v5.5.0.20181211
  */
 class Util {
 	// Utils
@@ -198,6 +199,7 @@ class PopupDismiss {
 	{
 		this.name = 'popupDismiss';
 		this.isTap = undefined;
+		this.isDelegated = isDelegated;
 		this.attr = {
 			dataToggle: 'data-toggle',
 			dataTarget: 'data-target',
@@ -209,51 +211,28 @@ class PopupDismiss {
 			dataIsPopup: 'data-isPopup',
 			dataPopupDismiss: 'data-popup-dismiss',
 		};
+		this.event = new Event();
 		this.popupEvent = this.popupEvent.bind(this);
 
 		if (elements === undefined)
 		{
-			this.initDelegate(document.body);
+			this.isDelegated = true;
+			this.elements = [document.body];
 		}
 		else
 		{
 			this.elements = Util.getElements(elements);
-			this.isDelegated = isDelegated || (elements === undefined);
-
-			this.init = this.isDelegated ? this.initDelegate : this.initElement;
-			[].slice.call(this.elements).forEach(element => this.init(element));
 		}
+		[].forEach.call(this.elements, element => this.initElement(element));
 	}
 
 	initElement(element)
 	{
-		if (element.getAttribute(this.attr.dataToggle) === this.name && element.getAttribute(`data-${this.name}`) !== this.name)
+		if ((this.isDelegated || element.getAttribute(this.attr.dataToggle) === this.name) && element.getAttribute(`data-${this.name}`) !== this.name)
 		{
 			element.setAttribute(`data-${this.name}`, this.name);
 			element.addEventListener("click", this.popupEvent);
 		}
-	}
-
-	initDelegate(element)
-	{
-		this.delegate(element, 'click', `[${this.attr.dataToggle}="${this.name}"]`, this.popupEvent);
-	}
-
-	delegate(element, eventName, selector, handler)
-	{
-		element.addEventListener(eventName, (event) => {
-			let target = event.target,
-					popupDismissElement = null;
-			if (target.getAttribute(this.attr.dataToggle) === this.name)
-			{
-				popupDismissElement = target;
-			}
-			else
-			{
-				popupDismissElement = Util.findParent(target, selector);
-			}
-			popupDismissElement && handler.call(popupDismissElement, event);
-		});
 	}
 
 	popupTarget(dataTarget, triggerElement, dataTargetParent)
@@ -281,6 +260,10 @@ class PopupDismiss {
 		if (popupTrigger.getAttribute(this.attr.dataToggle) !== this.name)
 		{
 			popupTrigger = Util.findParent(popupTrigger, `[${this.attr.dataToggle}="${this.name}"]`);
+		}
+		if (!popupTrigger)
+		{
+			return ;
 		}
 		let dataDismissScope = popupTrigger.getAttribute(this.attr.dataDismissScope),
 				dismissScopes = Util.getSelectorsElements(dataDismissScope),
@@ -322,7 +305,9 @@ class PopupDismiss {
 							that.dismiss(newEventData, true);
 						});
 			});
-			eventData.popupHandler !== null && window[eventData.popupHandler](eventData.popupTarget);
+
+			this._eventHandler(eventData.popupHandler, eventData.popupTarget);
+
 			PopupDismiss.setBodyCursorInIOS("pointer");
 		}
 		else
@@ -353,7 +338,8 @@ class PopupDismiss {
 			eventData.dismissScopes.forEach((scope) => {
 				scope.off(`${eventData.type}.${eventData.namespace}`, () => this.dismiss(eventData, true));
 			});
-			eventData.dismissHandler !== null && window[eventData.dismissHandler](eventData.popupTarget);
+
+			this._eventHandler(eventData.dismissHandler, eventData.popupTarget);
 
 			PopupDismiss.setBodyCursorInIOS("default");
 		}
@@ -409,6 +395,41 @@ class PopupDismiss {
 			}
 		}
 		return true;
+	}
+
+	on(eventName, callback)
+	{
+		this.event.on(eventName, callback);
+	}
+
+	off(eventName, callback)
+	{
+		this.event.off(eventName, callback);
+	}
+
+	destroy()
+	{
+		[].forEach.call(this.elements, (element) => {
+			delete element[`data-${this.name}`];
+			element.removeEventListener('click', this.popupEvent);
+		});
+
+		this.event.destroy();
+	}
+
+	_eventHandler(eventName, targetElement)
+	{
+		if (eventName !== null)
+		{
+			if (eventName in window)
+			{
+				window[eventName](targetElement);
+			}
+			else
+			{
+				this.event.trigger(eventName, targetElement);
+			}
+		}
 	}
 
 	// Fix issue : In iOS device, the dismiss function could not be triggered;
@@ -470,4 +491,4 @@ window.popupDismissDelegate = (elements) => {
 	}
 })();
 
-export default PopupDismiss
+export default PopupDismiss;
