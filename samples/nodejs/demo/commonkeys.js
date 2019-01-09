@@ -1,7 +1,7 @@
 'use strict';
 
 var fs = require('fs'),
-    projectIds = ['insight', 'ufc', 'nflgp', 'nba', 'crtv', 'site_12'],
+    projectIds = ['a', 'b', 'c', 'd', 'e', 'f'],
     totalKeyValueInfo = {},
     commonKeyValues = [];
 

@@ -13,7 +13,7 @@ const gulpif = require('gulp-if');
 
 let isWatchingTask = false;
 
-const siteId = 'sgp';
+const siteId = 'aaa';
 const templateId = '4';
 const libStylePath = './WebContent/' + siteId + '/site_' + templateId + '/app/site/styles/';
 const libScriptPath = './WebContent/' + siteId + '/site_' + templateId + '/app/site/scripts/';
@@ -32,9 +32,8 @@ let allTasks = [
 		type: 'css',
 		isWatching: isWatchingTask
 	}, {
-		// ["bootstrap.css", "burgermenu.css",  "sgp.css"] => "custom.min.css"
 		name: 'minify-custom-css',
-		src: [customStylePath + 'bootstrap.css', customStylePath + 'burgermenu.css', customStylePath + 'sgp.css',
+		src: [customStylePath + 'bootstrap.css', customStylePath + 'burgermenu.css', customStylePath + 'bb.css',
 			customStylePath + 'swc.css'],
 		fullName: 'custom.min.css',
 		dest: customStylePath,
@@ -105,9 +104,8 @@ let allTasks = [
 		type: 'css',
 		isWatching: isWatchingTask
 	}, {
-		// ["libs/jquery-1.10.2.min.js", "neu.js", "modal.js", "countdown.js"] => "lib.min.js"
 		name: 'minify-lib-js',
-		src: [libScriptPath + 'libs/jquery-1.10.2.min.js', libScriptPath + 'neu.js', libScriptPath + 'modal.js'],
+		src: [libScriptPath + 'libs/jquery-1.10.2.min.js', libScriptPath + '111.js', libScriptPath + 'modal.js'],
 		fullName: 'lib.min.js',
 		dest: libScriptPath,
 		type: 'js',
