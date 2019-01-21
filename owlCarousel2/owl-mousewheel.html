@@ -112,7 +112,7 @@
 <!--<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>-->
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
-	function initMouseWheelOwlCarousel(carouselConfig)
+	function initMouseWheelOwlCarousel(selector, carouselConfig)
 	{
 		// Auto mousewheel configs
 		var $owl = null,
@@ -134,9 +134,8 @@
 					isCarouselMouseWheelOn = !!isBindOn;
 				},
 				activeEPGList = function (event) {
-					var activeOwlItems = event.currentTarget.querySelectorAll('.owl-item.active'),
-							activeEPGItems = [];
-					if (activeEPGItems.length === 0)
+					var activeOwlItems = event.currentTarget.querySelectorAll('.owl-item.active');
+					if (activeOwlItems.length === 0)
 					{
 						initRefresh = true;
 					}
@@ -147,7 +146,7 @@
 								activeItemsWidth = [].reduce.call(activeOwlItems, (accumulator, currentItem) => {
 									return accumulator + currentItem.clientWidth + carouselConfigMargin;
 								}, 0),
-								isActiveItemsWidthMoreThanContainer = (activeItemsWidth - $owl.width() - carouselConfigMargin) > 0;
+								isActiveItemsWidthMoreThanContainer = (activeItemsWidth - event.currentTarget.clientWidth - carouselConfigMargin) > 0;
 						if (event.currentTarget.querySelectorAll('.owl-item').length > activeOwlItems.length && !isActiveItemsWidthMoreThanContainer)
 						{
 							isActiveItemsWidthMoreThanContainer = true;
@@ -169,11 +168,13 @@
 						activeEPGList(event);
 					}
 				};
-		$owl = $('.owl-carousel').on('refreshed.owl.carousel', refreshedCallback)
+		$owl = $(selector).owlCarousel(carouselConfig)
+				.on('refreshed.owl.carousel', refreshedCallback)
 				.on('translated.owl.carousel', activeEPGList)
-				.on('resized.owl.carousel', activeEPGList)
-				.owlCarousel(carouselConfig);
+				.on('resized.owl.carousel', activeEPGList);
 		bindCarouselMouseWheel(true);
+		$owl.trigger('refresh.owl.carousel');
+
 		return $owl;
 	}
 	// Demo's JS here
@@ -204,7 +205,7 @@
 				}
 			}
 		};
-		$globalCarousel = initMouseWheelOwlCarousel(carouselConfig);
+		$globalCarousel = initMouseWheelOwlCarousel('.owl-carousel', carouselConfig);
 	}, false);
 
 	// For test case
