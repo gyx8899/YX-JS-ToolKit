@@ -50,6 +50,21 @@
 				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
 					<p>Mouse wheel to slide item</p>
 					<!--Demo's html here-->
+					Owl Items Count:
+					<p class="test-links">
+						<a href="?apply=applyItemsDom(0)">Init 0</a>
+						<a href="?apply=applyItemsDom(1)">Init 1</a>
+						<a href="?apply=applyItemsDom(2)">Init 2</a>
+						<a href="?apply=applyItemsDom(3)">Init 3</a>
+						<a href="?apply=applyItemsDom(4)">Init 4</a>
+					</p>
+					<p class="buttons">
+						<button onclick="updateOwl(0);">Replace 0</button>
+						<button onclick="updateOwl(1);">Replace 1</button>
+						<button onclick="updateOwl(2);">Replace 2</button>
+						<button onclick="updateOwl(3);">Replace 3</button>
+						<button onclick="updateOwl(4);">Replace 4</button>
+					</p>
 					<div id="owlBasicBar" class="owl-carousel">
 						<div class="item">
 							<h4>1</h4>
@@ -97,10 +112,75 @@
 <!--<script type="text/javascript" src="https://owlcarousel2.github.io/OwlCarousel2/assets/owlcarousel/owl.carousel.js"></script>-->
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
+	function initMouseWheelOwlCarousel(carouselConfig)
+	{
+		// Auto mousewheel configs
+		var $owl = null,
+				initRefresh = true,
+				isCarouselMouseWheelOn = false;
+		var mouseWheelEvent = function (e) {
+					if (e.deltaY > 0)
+					{
+						$owl.trigger('next.owl');
+					}
+					else
+					{
+						$owl.trigger('prev.owl');
+					}
+					e.preventDefault();
+				},
+				bindCarouselMouseWheel = function (isBindOn) {
+					$owl[!!isBindOn ? 'on' : 'off']('mousewheel', '.owl-stage', mouseWheelEvent);
+					isCarouselMouseWheelOn = !!isBindOn;
+				},
+				activeEPGList = function (event) {
+					var activeOwlItems = event.currentTarget.querySelectorAll('.owl-item.active'),
+							activeEPGItems = [];
+					if (activeEPGItems.length === 0)
+					{
+						initRefresh = true;
+					}
+					else
+					{
+						// Bind on/off mousewheel
+						var carouselConfigMargin = carouselConfig.margin || 0,
+								activeItemsWidth = [].reduce.call(activeOwlItems, (accumulator, currentItem) => {
+									return accumulator + currentItem.clientWidth + carouselConfigMargin;
+								}, 0),
+								isActiveItemsWidthMoreThanContainer = (activeItemsWidth - $owl.width() - carouselConfigMargin) > 0;
+						if (event.currentTarget.querySelectorAll('.owl-item').length > activeOwlItems.length && !isActiveItemsWidthMoreThanContainer)
+						{
+							isActiveItemsWidthMoreThanContainer = true;
+						}
+						if (!isCarouselMouseWheelOn && isActiveItemsWidthMoreThanContainer)
+						{
+							bindCarouselMouseWheel(true);
+						}
+						else if (isCarouselMouseWheelOn && !isActiveItemsWidthMoreThanContainer)
+						{
+							bindCarouselMouseWheel(false);
+						}
+					}
+				},
+				refreshedCallback = (event) => {
+					if (initRefresh)
+					{
+						initRefresh = false;
+						activeEPGList(event);
+					}
+				};
+		$owl = $('.owl-carousel').on('refreshed.owl.carousel', refreshedCallback)
+				.on('translated.owl.carousel', activeEPGList)
+				.on('resized.owl.carousel', activeEPGList)
+				.owlCarousel(carouselConfig);
+		bindCarouselMouseWheel(true);
+		return $owl;
+	}
 	// Demo's JS here
+	var $globalCarousel = null;
 	window.addEventListener("load", function () {
-		var responsiveOption = {
-			loop: true,
+		var carouselConfig = {
+			loop: false,
 			nav: true,
 			navText: ['', ''],
 			dots: false,
@@ -124,32 +204,34 @@
 				}
 			}
 		};
-		var owl = $('.owl-carousel').owlCarousel(responsiveOption);
-
-		// Custom mousewheel one item for slideBy page;
-		// Add custom script owl.carousel.custom.mousewheel.slideone.js to override owl.carousel.js
-		var mousewheelOneItem = responsiveOption.slideBy === 'page';
-
-		owl.on('mousewheel', '.owl-stage', function (e) {
-			if (e.deltaY > 0)
-			{
-				// Case 1. Default slide one item;
-				owl.trigger('next.owl');
-
-				// Case 2. Custom mousewheel also slide one item for slideBy page;
-//				owl.trigger('next.owl.carousel', [500, mousewheelOneItem]);
-			}
-			else
-			{
-				// Case 1. Default slide one item;
-				owl.trigger('prev.owl');
-
-				// Case 2. Custom mousewheel also slide one item for slideBy page;
-//				owl.trigger('prev.owl.carousel', [500, mousewheelOneItem]);
-			}
-			e.preventDefault();
-		});
+		$globalCarousel = initMouseWheelOwlCarousel(carouselConfig);
 	}, false);
+
+	// For test case
+	function updateOwl(count)
+	{
+		$globalCarousel.trigger('replace.owl.carousel', initOwlItemsDom(count).join(''))
+				.trigger('translated.owl.carousel')
+				.trigger('refresh.owl.carousel');
+	}
+
+	// For test case
+	function initOwlItemsDom(count)
+	{
+		var listDomArray = [],
+				template = '<div class="item"><h4>index</h4></div>';
+		for (var i = 0; i < count; i++)
+		{
+			listDomArray.push(template.replace('index', i + 1));
+		}
+		return listDomArray;
+	}
+
+	function applyItemsDom(count)
+	{
+		// ?apply=initState(1, "abc", {"a": true}
+		document.getElementById('owlBasicBar').innerHTML = initOwlItemsDom(count).join('');
+	}
 </script>
 
 </body>
