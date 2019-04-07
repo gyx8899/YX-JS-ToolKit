@@ -1442,22 +1442,64 @@
 		switch (position && position.toLowerCase())
 		{
 			case 'replace':
-				targetElement.innerHTML = '';
-				resultAddedElement = targetElement.appendChild(addedElement);
+				if (!!addedElement.nodeType)
+				{
+					targetElement.innerHTML = '';
+					resultAddedElement = targetElement.appendChild(addedElement);
+				}
+				else
+				{
+					targetElement.innerHTML = addedElement;
+					resultAddedElement = targetElement.firstChild;
+				}
 				break;
 			case 'prepend':
-				resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
+				if (!!addedElement.nodeType)
+				{
+					resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
+				}
+				else
+				{
+					targetElement.insertAdjacentHTML('afterbegin', addedElement);
+				}
 				break;
 			case 'insertbefore':
-				targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
-				resultAddedElement = targetElement.previousSibling;
+				if (!!addedElement.nodeType)
+				{
+					targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
+					resultAddedElement = targetElement.previousSibling;
+				}
+				else
+				{
+					if (targetElement.parentNode)
+					{
+						targetElement.parentNode.insertBefore(addedElement, targetElement);
+					}
+				}
 				break;
 			case 'insertafter':
-				targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
-				resultAddedElement = targetElement.nextSibling;
+				if (!!addedElement.nodeType)
+				{
+					targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
+					resultAddedElement = targetElement.nextSibling;
+				}
+				else
+				{
+					if (targetElement.parentNode)
+					{
+						targetElement.parentNode.insertBefore(addedElement, targetElement.nextSibling);
+					}
+				}
 				break;
 			default: //'append'
-				resultAddedElement = targetElement.appendChild(addedElement);
+				if (!!addedElement.nodeType)
+				{
+					resultAddedElement = targetElement.appendChild(addedElement);
+				}
+				else
+				{
+					targetElement.insertAdjacentHTML('beforeend', addedElement);
+				}
 		}
 		return resultAddedElement;
 	}
