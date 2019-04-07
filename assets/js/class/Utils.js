@@ -62,6 +62,30 @@ const closest = (element, className) => {
 	return closetElement;
 };
 
+const parentsUntil = (el, selector, filter) => {
+	const result = [];
+	const matchesSelector = el.matches || el.webkitMatchesSelector || el.mozMatchesSelector || el.msMatchesSelector;
+
+	// match start from parent
+	el = el.parentElement;
+	while (el && !matchesSelector.call(el, selector))
+	{
+		if (!filter)
+		{
+			result.push(el);
+		}
+		else
+		{
+			if (matchesSelector.call(el, filter))
+			{
+				result.push(el);
+			}
+		}
+		el = el.parentElement;
+	}
+	return result;
+}
+
 // Url
 const getQueryPramsString = (url) => {
 	let query = '';
@@ -371,6 +395,47 @@ const getResources = (urls) => {
 	return Promise.all(resourcesPromise);
 };
 
+// is
+const isWindow = (obj) => {
+  return obj !== null && obj !== undefined && obj === obj.window;
+}
+
+const isNumeric = (value) => {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+const isFunction = (item) => {
+  if (typeof item === 'function') {
+    return true;
+  }
+  let type = Object.prototype.toString.call(item);
+  return type === '[object Function]' || type === '[object GeneratorFunction]';
+}
+
+const isEmptyObject = (obj) => {
+  return Object.keys(obj).length === 0;
+}
+
+const isPlainObject = (obj) => {
+	if (typeof (obj) !== 'object' || obj.nodeType || obj !== null && obj !== undefined && obj === obj.window)
+	{
+		return false;
+	}
+
+	if (obj.constructor &&
+			!Object.prototype.hasOwnProperty.call(obj.constructor.prototype, 'isPrototypeOf'))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+// Scroll
+const scrollTop = () => {
+	(document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
+}
+
 export {
 	// Element
 	getElements,
@@ -378,6 +443,7 @@ export {
 	matches,
 	findParent,
 	closest,
+	parentsUntil,
 	// Url
 	getQueryPramsString,
 	getQueryParamValue,
@@ -395,5 +461,13 @@ export {
 	isResourceLoaded,
 	getScript,
 	getStyle,
-	getResources
+	getResources,
+	// is
+	isWindow,
+	isNumeric,
+	isFunction,
+	isEmptyObject,
+	isPlainObject,
+	// Scroll
+	scrollTop
 }
