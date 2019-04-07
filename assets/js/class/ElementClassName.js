@@ -1,7 +1,7 @@
 /**
- * Class v1.0.2.20181208
+ * ClassName v1.1.1.20181222
  */
-class Class {
+class ElementClassName {
 	constructor()
 	{
 		if (!document.createElement('div').classList)
@@ -54,11 +54,7 @@ class Class {
 		{
 			return false;
 		}
-		let elements = [element];
-		if (element.length > 1)
-		{
-			elements = element;
-		}
+		let elements = element.length ? element : [element];
 		return [].forEach.call(elements, item => item.classList.toggle(className));
 	}
 	_toggle(element, className)
@@ -72,11 +68,7 @@ class Class {
 		{
 			return false;
 		}
-		let elements = [element];
-		if (element.length > 1)
-		{
-			elements = element;
-		}
+		let elements = element.length ? element : [element];
 		return [].forEach.call(elements, item => item.classList[isAdd ? 'add': 'remove'](className));
 	}
 
@@ -86,11 +78,7 @@ class Class {
 		{
 			return false;
 		}
-		let elements = [element];
-		if (element.length > 1)
-		{
-			elements = element;
-		}
+		let elements = element.length ? element : [element];
 		return [].forEach.call(elements, item => {
 			let hasClass = this.has(item, className);
 			if (hasClass !== isAdd)
@@ -108,4 +96,11 @@ class Class {
 	}
 }
 
-export default Class;
+const classNameUtil = new ElementClassName();
+
+const hasClass = classNameUtil.has.bind(classNameUtil);
+const addClass = classNameUtil.add.bind(classNameUtil);
+const removeClass = classNameUtil.remove.bind(classNameUtil);
+const toggleClass = classNameUtil.toggle.bind(classNameUtil);
+
+export {hasClass, addClass, removeClass, toggleClass};

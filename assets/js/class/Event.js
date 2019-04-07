@@ -1,6 +1,5 @@
 /**
- * Event: v1.2.0.20181021
- * Copyright (c) 2018 Kate Kuo @Steper
+ * Event v1.0.1.20181211
  */
 class Event {
 	constructor()
@@ -31,7 +30,7 @@ class Event {
 		}
 		else
 		{
-			alert(`Your listen on ${fn.toString()} is not one valid function`);
+			alert(`Your listen on ${fn.toString()} is not one valid function!`);
 		}
 
 		return this;
@@ -42,7 +41,11 @@ class Event {
 		let fns = this._cache[key];
 		if (!!fns)
 		{
-			fns.slice(fns.indexOf(fn), 1);
+			this._cache[key].splice(fns.indexOf(fn), 1);
+		}
+		if (!fn)
+		{
+			delete this._cache[key];
 		}
 		return this;
 	}
@@ -68,6 +71,12 @@ class Event {
 		}
 
 		return this;
+	}
+
+	destroy()
+	{
+		Object.keys(this._cache).forEach(key => delete this._cache[key]);
+		Object.keys(this._unread).forEach(key => delete this._unread[key]);
 	}
 }
 
