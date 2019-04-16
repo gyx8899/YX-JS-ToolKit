@@ -1,4 +1,4 @@
-class NodeObserver {
+class ObserverNode {
 	constructor(){
 		this.subNode = []
 	}
@@ -12,4 +12,4 @@ class NodeObserver {
 	}
 }
 
-export default NodeObserver
+export default ObserverNode

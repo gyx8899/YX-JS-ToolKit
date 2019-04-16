@@ -1,10 +1,16 @@
-import NodeObserver from './NodeObserver'
+import ObserverNode from './ObserverNode'
+import ObserverClassName from './ObserverClassName'
+
+/**!
+ * MVVM v1.0.1.20190416
+ */
 
 class MVVM {
 	constructor(opt)
 	{
 		this.opt = opt
 		this.data = this.opt.data
+		this.classNameObv = new ObserverClassName();
 
 		this.observe(opt.data)
 
@@ -15,17 +21,20 @@ class MVVM {
 	observe(data)
 	{
 		Object.keys(data).forEach(key => {
-			let obv = new NodeObserver()
+			let _nodeObv = new ObserverNode(),
+					_classNameObv = new ObserverClassName();
 			data['_' + key] = data[key]
 
 			Object.defineProperty(data, key, {
 				get(){
-					NodeObserver.target && obv.addSubNode(NodeObserver.target);
+					ObserverNode.target && _nodeObv.addSubNode(ObserverNode.target);
+					ObserverClassName.target && ObserverClassName.className && _classNameObv.addSubNode(ObserverClassName.target, ObserverClassName.className);
 					return data['_' + key];
 				},
 				set(newVal)
 				{
-					obv.update(newVal);
+					_nodeObv.update(newVal);
+					_classNameObv.update(newVal);
 					data['_' + key] = newVal;
 				}
 			})
@@ -34,14 +43,31 @@ class MVVM {
 
 	compile(node){
 		[].forEach.call(node.childNodes, child => {
-			if (!child.firstElementChild && /\{\{(.*)\}\}/.test(child.innerHTML))
+			if (!child.firstElementChild)
 			{
-				let key = RegExp.$1.trim()
-				child.innerHTML = child.innerHTML.replace(new RegExp('\\{\\{\\s*' + key + '\\s*\\}\\}', 'gm'), this.opt.data[key])
-				NodeObserver.target = child
-
-				this.opt.data[key]
-				NodeObserver.target = null
+				let hasHTMLBrace = /\{\{(.*)\}\}/.test(child.innerHTML),
+						hasClassBrace = /\{\{(.*)\}\}/.test(child.className);
+				if (hasHTMLBrace || hasClassBrace)
+				{
+					let key = RegExp.$1.trim(),
+							value = this.opt.data[key];
+					if (hasHTMLBrace)
+					{
+						child.innerHTML = child.innerHTML.replace(new RegExp('\\{\\{\\s*' + key + '\\s*\\}\\}', 'gm'), value);
+						ObserverNode.target = child;
+						this.opt.data[key];
+						ObserverNode.target = null;
+					}
+					if (hasClassBrace)
+					{
+						this.classNameObv.replace(child, `{{${key}}}`, value);
+						ObserverClassName.target = child;
+						ObserverClassName.className = value;
+						this.opt.data[key];
+						ObserverClassName.target = null;
+						ObserverClassName.className = null;
+					}
+				}
 			}
 			else if (child.firstElementChild)
 			{
