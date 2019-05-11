@@ -1,0 +1,59 @@
+{
+  "name": "jest-default",
+  "version": "1.0.0",
+  "description": "jest default test demo",
+  "main": "index.js",
+  "scripts": {
+    "test-module": "jest ./test/sum-module.test.js",
+    "test-module-coverage": "npm run test-module -- --coverage",
+    "test-normal": "jest ./test/sum.test.js",
+    "test-normal-coverage": "npm run test-normal -- --coverage",
+    "jest:watch": "jest ./test --watch",
+    "jest:coverage:color": "jest ./test --coverage --color"
+  },
+  "author": "steper <gyx8899@126.com> (http://github.com/gyx8899)",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "modules": false
+        }
+      ]
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "transform-es2015-modules-commonjs"
+        ]
+      }
+    }
+  },
+  "jest": {
+    "//": "Comment: Below are optional for jest config",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/node_modules/"
+    ],
+    "coverageReporters": [
+      "json",
+      "html",
+      "text",
+      "json-summary"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^23.0.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^24.8.0",
+    "mock-local-storage": "^1.1.8",
+    "ts-jest": "^24.0.2",
+    "vue-jest": "^3.0.4"
+  },
+  "//Note:babe-jest": "version should be ^23.0.1, bigger will cause: Cannot read property 'bindings' of null",
+  "//learn-from": "https://github.com/hogesuke/jest-demo.git"
+}
