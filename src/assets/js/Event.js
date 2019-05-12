@@ -1,5 +1,5 @@
 /**
- * Event v1.0.2.20190512
+ * Event v1.1.0.20190512
  */
 class Event {
 	constructor()
@@ -48,6 +48,16 @@ class Event {
 			delete this._cache[key];
 		}
 		return this;
+	}
+
+	once(key, fn)
+	{
+		let that = this,
+				newFn = function () {
+					fn.call(that, ...arguments);
+					that.off(key);
+				};
+		this.on(key, newFn);
 	}
 
 	trigger(key)

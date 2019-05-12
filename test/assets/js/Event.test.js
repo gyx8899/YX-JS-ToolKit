@@ -58,19 +58,29 @@ describe('Event component', function () {
 
 		eventInstance.on(keys.key1, KeyFnObj[keys.key1]);
 		eventInstance.trigger(keys.key1);
+		expect(spy).toHaveBeenCalled();
 
+		eventInstance.trigger(keys.key1);
 		expect(spy).toHaveBeenCalled();
 		spy.mockRestore();
 	});
 	test('Event.trigger() after Event.off()', function () {
-		const spy = jest.spyOn(KeyFnObj, keys.key1);
-
+		const spy1 = jest.spyOn(KeyFnObj, keys.key1);
 		eventInstance.on(keys.key1, KeyFnObj[keys.key1]);
+		eventInstance.trigger(keys.key1);
+		expect(spy1).toHaveBeenCalled();
+		spy1.mockRestore();
+
+		const spy3 = jest.spyOn(KeyFnObj, keys.key1);
 		eventInstance.off(keys.key1, KeyFnObj[keys.key1]);
 		eventInstance.trigger(keys.key1);
+		expect(spy3).not.toHaveBeenCalled();
+		spy3.mockRestore();
 
-		expect(spy).not.toHaveBeenCalled();
-		spy.mockRestore();
+		const spy4 = jest.spyOn(KeyFnObj, keys.key1);
+		eventInstance.trigger(keys.key1);
+		expect(spy4).not.toHaveBeenCalled();
+		spy4.mockRestore();
 	});
 	test('Event.trigger() after Event.off(): one key, multiple events, off one event', function () {
 		const spyObj1 = jest.spyOn(KeyFnObj, keys.key1);
@@ -152,5 +162,21 @@ describe('Event component', function () {
 	}, fns = [undefined, 1, '1', {'1': '1'}, []];
 	fns.forEach((fn) => {
 		testInvalidFn(fn);
-	})
+	});
+
+	test('Event.trigger() after Event.once()', function () {
+		const spy1 = jest.spyOn(KeyFnObj, keys.key1);
+
+		eventInstance.once(keys.key1, KeyFnObj[keys.key1]);
+
+		eventInstance.trigger(keys.key1);
+		expect(spy1).toHaveBeenCalled();
+		spy1.mockRestore();
+
+		const spy2 = jest.spyOn(KeyFnObj, keys.key1);
+		eventInstance.trigger(keys.key1);
+		expect(spy2).not.toHaveBeenCalled();
+
+		spy2.mockRestore();
+	});
 });
