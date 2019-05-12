@@ -1,5 +1,5 @@
 /**
- * Event v1.0.1.20181211
+ * Event v1.0.2.20190512
  */
 class Event {
 	constructor()
@@ -30,7 +30,7 @@ class Event {
 		}
 		else
 		{
-			alert(`Your listen on ${fn.toString()} is not one valid function!`);
+			throw new Error(`Your listen on ${fn} is not one valid function!`);
 		}
 
 		return this;
