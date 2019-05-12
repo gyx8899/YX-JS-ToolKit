@@ -69,18 +69,17 @@ describe('Event component', function () {
 		eventInstance.on(keys.key1, KeyFnObj[keys.key1]);
 		eventInstance.trigger(keys.key1);
 		expect(spy1).toHaveBeenCalled();
+		eventInstance.trigger(keys.key1);
+		expect(spy1).toHaveBeenCalled();
 		spy1.mockRestore();
 
 		const spy3 = jest.spyOn(KeyFnObj, keys.key1);
 		eventInstance.off(keys.key1, KeyFnObj[keys.key1]);
 		eventInstance.trigger(keys.key1);
 		expect(spy3).not.toHaveBeenCalled();
-		spy3.mockRestore();
-
-		const spy4 = jest.spyOn(KeyFnObj, keys.key1);
 		eventInstance.trigger(keys.key1);
-		expect(spy4).not.toHaveBeenCalled();
-		spy4.mockRestore();
+		expect(spy3).not.toHaveBeenCalled();
+		spy3.mockRestore();
 	});
 	test('Event.trigger() after Event.off(): one key, multiple events, off one event', function () {
 		const spyObj1 = jest.spyOn(KeyFnObj, keys.key1);
