@@ -127,6 +127,24 @@
 
 	YX.Util.array.findIndex = findIndex;
 
+	function find(array, value, key)
+	{
+		if (!array || array.length === 0)
+		{
+			return null;
+		}
+		let result = null;
+		[].forEach.call(array, (item, index) => {
+			if (item === value || (!!key && item[key] === value))
+			{
+				array = array.concat(array.splice(index, array.length - index));
+				result = item;
+			}
+		});
+
+		return result;
+	}
+
 	/**
 	 * Remove item from array
 	 * @param array
@@ -1439,68 +1457,72 @@
 	function addElement(targetElement, addedElement, position)
 	{
 		let resultAddedElement = null;
-		switch (position && position.toLowerCase())
+		if (!!targetElement && !!addedElement)
 		{
-			case 'replace':
-				if (!!addedElement.nodeType)
-				{
-					targetElement.innerHTML = '';
-					resultAddedElement = targetElement.appendChild(addedElement);
-				}
-				else
-				{
-					targetElement.innerHTML = addedElement;
-					resultAddedElement = targetElement.firstChild;
-				}
-				break;
-			case 'prepend':
-				if (!!addedElement.nodeType)
-				{
-					resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
-				}
-				else
-				{
-					targetElement.insertAdjacentHTML('afterbegin', addedElement);
-				}
-				break;
-			case 'insertbefore':
-				if (!!addedElement.nodeType)
-				{
-					targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
-					resultAddedElement = targetElement.previousSibling;
-				}
-				else
-				{
-					if (targetElement.parentNode)
+			switch (position && position.toLowerCase())
+			{
+				case 'replace':
+					if (!!addedElement.nodeType)
 					{
-						targetElement.parentNode.insertBefore(addedElement, targetElement);
+						targetElement.innerHTML = '';
+						resultAddedElement = targetElement.appendChild(addedElement);
 					}
-				}
-				break;
-			case 'insertafter':
-				if (!!addedElement.nodeType)
-				{
-					targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
-					resultAddedElement = targetElement.nextSibling;
-				}
-				else
-				{
-					if (targetElement.parentNode)
+					else
 					{
-						targetElement.parentNode.insertBefore(addedElement, targetElement.nextSibling);
+						targetElement.innerHTML = addedElement;
+						resultAddedElement = targetElement.firstChild;
 					}
-				}
-				break;
-			default: //'append'
-				if (!!addedElement.nodeType)
-				{
-					resultAddedElement = targetElement.appendChild(addedElement);
-				}
-				else
-				{
-					targetElement.insertAdjacentHTML('beforeend', addedElement);
-				}
+					break;
+				case 'prepend':
+					if (!!addedElement.nodeType)
+					{
+						resultAddedElement = targetElement.insertBefore(addedElement, targetElement.firstChild);
+					}
+					else
+					{
+						targetElement.insertAdjacentHTML('afterbegin', addedElement);
+					}
+					break;
+				case 'insertbefore':
+					if (!!addedElement.nodeType)
+					{
+						targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
+						resultAddedElement = targetElement.previousSibling;
+					}
+					else
+					{
+						if (targetElement.parentNode)
+						{
+							targetElement.parentNode.insertBefore(addedElement, targetElement);
+						}
+					}
+					break;
+				case 'insertafter':
+					if (!!addedElement.nodeType)
+					{
+						targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
+						resultAddedElement = targetElement.nextSibling;
+					}
+					else
+					{
+						if (targetElement.parentNode)
+						{
+							targetElement.parentNode.insertBefore(addedElement, targetElement.nextSibling);
+						}
+					}
+					break;
+				default: //'append'
+					if (!!addedElement.nodeType)
+					{
+						resultAddedElement = targetElement.appendChild(addedElement);
+					}
+					else
+					{
+						targetElement.insertAdjacentHTML('beforeend', addedElement);
+					}
+			}
 		}
+
 		return resultAddedElement;
 	}
 
@@ -1985,9 +2007,21 @@
 		const commonPath = 'https://gyx8899.github.io/YX-WebThemeKit/';
 		const spopScript = commonPath + 'theme-pop/spop/spop.min.js';
 		const spopStyle = commonPath + 'theme-pop/spop/spop.min.css';
-		Promise.all([YX.Util.load.loadScriptWithPromise(spopScript), YX.Util.load.loadCSSWithPromise(spopStyle)])
+		const successCallback = () => {
+
+		};
+		let promiseArray = [];
+		if (!checkResourceLoaded(spopScript))
+		{
+			promiseArray.push(YX.Util.load.loadScriptWithPromise(spopScript));
+		}
+		if (!checkResourceLoaded(spopStyle))
+		{
+			promiseArray.push(YX.Util.load.loadCSSWithPromise(spopStyle));
+		}
+		Promise.all(promiseArray)
 				.then((results) => {
-					if (results[0] && results[1])
+					if (results.every(item => !!item))
 					{
 						spop(options);
 					}
