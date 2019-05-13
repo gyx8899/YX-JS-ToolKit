@@ -40,6 +40,16 @@
 							<h3>年龄</h3>
 							<p>{{age}}</p>
 						</div>
+						<div id="rating" class="{{showClass}}">
+							<div class="side-bar"></div>
+							<div class="rating-content">
+								<div class="rating-container">
+									<div class="rating-name">{{name}}</div>
+									<div class="rating-divider"></div>
+									<div class="rating-desc">{{desc}}</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -56,13 +66,22 @@
 <script src="mvvm.js"></script>
 
 <script>
+	let vm = null;
 	document.addEventListener('DOMContentLoaded', () => {
 		let opt = {el: '#app', data:{name: 'steper kuo', age: 30}};
-		let vm = new Vue(opt);
+		vm = new Vue(opt);
 
 		setTimeout(() => {
 			vm.data.age = 21;
 		}, 2000);
+
+		let config = {el: '#rating', data: {name: 'PG15', desc: '12324', showClass: 'show-rating'}};
+		let ratingVM = new Vue(config);
+
+		setTimeout(() => {
+			ratingVM.data.name = '18';
+			ratingVM.data.desc = '000000';
+		});
 	}, false);
 </script>
 </body>
