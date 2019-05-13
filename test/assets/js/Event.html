@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Event</title>
+</head>
+<body>
+
+<button onclick=""></button>
+<script type="module" src="../../../src/assets/js/Event.js"></script>
+<script type="module">
+	import Event from '../../../src/assets/js/Event.js';
+
+	let event = new Event();
+	let func0 = function() {
+		console.log(`00: 00000 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	let func01 = function() {
+		console.log(`01: 11111 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	let func02 = function() {
+		console.log(`02: 22222 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	let func03 = function() {
+		console.log(`03: 33333 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	let func04 = function() {
+		console.log(`04: 44444 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	let func05 = function() {
+		console.log(`05: 55555 ${this.name} ${JSON.stringify(arguments)}`);
+	}
+	event.on('click', func0);
+	event.on('click', func01);
+	event.on('click', func02);
+	event.on('click', func03);
+	event.trigger('click', 1, 3, 5);
+	event.off('click', func01);
+	event.trigger('click', 2, 4, 6);
+	// event.once('click', func04);
+	event.trigger('click');
+	event.trigger('click');
+	event.trigger('event5', 12, 34, 0);
+	event.on('event5', function (a, b, c) {
+		console.log(`Event5: ${a} ${b} ${c}`);
+		let args = [].slice.call(arguments);
+		console.log(`${JSON.stringify(args)}`);
+		console.log(`${args[0]} - ${args[1]}`);
+	});
+
+	event.once('EventOnce', function (a, b, c, d){
+		let args = [].slice.call(arguments);
+		console.log('EventOnce!' + args.join(','));
+	});
+	event.trigger('EventOnce', 'a', 'b', 'ccc', 'ddd');
+	event.trigger('EventOnce', 'aaa');
+</script>
+</body>
+</html>
