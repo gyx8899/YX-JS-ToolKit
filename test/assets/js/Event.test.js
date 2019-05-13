@@ -1,5 +1,7 @@
 import Event from '../../../src/assets/js/Event'
 
+let debugOn = false;
+
 describe('Event component', function () {
 	let keys = {
 		key1: 'key1',
@@ -9,30 +11,30 @@ describe('Event component', function () {
 	};
 	let KeyFnObj = {
 		key1: () => {
-			console.log('1-Key1: ' + 'no param');
+			debugOn && console.log('1-Key1: ' + 'no param');
 		},
 		key2: (param1) => {
-			console.log('1-Key2: ' + param1);
+			debugOn && console.log('1-Key2: ' + param1);
 		},
 		key3: (param1, param2) => {
-			console.log('1-Key3: ' + param1 + ' ' + param2);
+			debugOn && console.log('1-Key3: ' + param1 + ' ' + param2);
 		},
 		key4: (param1, param2, param3) => {
-			console.log('1-Key4: ' + param1 + ' ' + param2 + ' ' + param3);
+			debugOn && console.log('1-Key4: ' + param1 + ' ' + param2 + ' ' + param3);
 		}
 	};
 	let KeyFnObj2 = {
 		key1: () => {
-			console.log('2-Key1: ' + 'no param');
+			debugOn && console.log('2-Key1: ' + 'no param');
 		},
 		key2: (param1) => {
-			console.log('2-Key2: ' + param1);
+			debugOn && console.log('2-Key2: ' + param1);
 		},
 		key3: (param1, param2) => {
-			console.log('2-Key3: ' + param1 + ' ' + param2);
+			debugOn && console.log('2-Key3: ' + param1 + ' ' + param2);
 		},
 		key4: (param1, param2, param3) => {
-			console.log('2-Key4: ' + param1 + ' ' + param2 + ' ' + param3);
+			debugOn && console.log('2-Key4: ' + param1 + ' ' + param2 + ' ' + param3);
 		}
 	};
 	let eventInstance = null;
@@ -132,6 +134,24 @@ describe('Event component', function () {
 		expect(spyObj2).not.toHaveBeenCalled();
 		spyObj1.mockRestore();
 		spyObj2.mockRestore();
+	});
+	test('Event.off() with not on() fn after Event.on()', function () {
+		expect(eventInstance._cache[keys.key1]).toBeUndefined();
+
+		eventInstance.off(keys.key1, KeyFnObj2[keys.key1]);
+		expect(eventInstance._cache[keys.key1]).toBeUndefined();
+
+		eventInstance.on(keys.key1, KeyFnObj[keys.key1]);
+		expect(eventInstance._cache[keys.key1].indexOf(KeyFnObj2[keys.key1])).toBe(-1);
+
+		eventInstance.off(keys.key1, KeyFnObj2[keys.key1]);
+		expect(eventInstance._cache[keys.key1].indexOf(KeyFnObj2[keys.key1])).toBe(-1);
+
+		eventInstance.off(keys.key1, KeyFnObj[keys.key1]);
+		expect(eventInstance._cache[keys.key1].indexOf(KeyFnObj[keys.key1])).toBe(-1);
+
+		eventInstance.off(keys.key1);
+		expect(eventInstance._cache[keys.key1]).toBeUndefined();
 	});
 
 	let testParams = function (keyItem) {

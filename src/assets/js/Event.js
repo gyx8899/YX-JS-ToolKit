@@ -1,5 +1,5 @@
 /**
- * Event v1.1.0.20190512
+ * Event v1.1.1.20190513
  */
 class Event {
 	constructor()
@@ -39,9 +39,13 @@ class Event {
 	off(key, fn)
 	{
 		let fns = this._cache[key];
-		if (!!fns)
+		if (fns !== undefined && fns.length !== 0)
 		{
-			this._cache[key].splice(fns.indexOf(fn), 1);
+			let index = fns.indexOf(fn);
+			if (index >= 0)
+			{
+				this._cache[key].splice(index, 1);
+			}
 		}
 		if (!fn)
 		{
@@ -73,10 +77,7 @@ class Event {
 		}
 		else
 		{
-			if (!this._unread[key])
-			{
-				this._unread[key] = [];
-			}
+			this._unread[key] = this._unread[key] || [];
 			this._unread[key].push(arguments);
 		}
 
