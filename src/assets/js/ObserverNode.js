@@ -1,3 +1,6 @@
+/**!
+ * ObserverNode v1.0.0.20190513
+ */
 class ObserverNode {
 	constructor(){
 		this.subNode = []

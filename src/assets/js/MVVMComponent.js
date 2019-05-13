@@ -1,6 +1,6 @@
 import MVVM from './MVVM';
-import {addClass, removeClass} from './ElementClassName';
-import {addElement} from './Utils';
+import {addClass, removeClass} from 'ClassNameUtil';
+import {addElement} from '../../../assets/js/class/Utils';
 
 class MVVMComponent
 {
