@@ -12,13 +12,59 @@ describe('Test addClass, removeClass, toggleClass, hasClass', () => {
 		document.body.innerHTML = '';
 	});
 
-	test('Test undefined selector with hasClass', () => {
-		let selector = undefined,
-				testClass = 'has-class';
-		expect(hasClass(document.querySelector(selector), testClass)).not.toBeTruthy();
+	let invalidElements = [undefined, '', 1, null, new Date(), 'dsaf'];
+	const testElementIsValid = (element, className, parameterName, erroInfo) => {
+		test(`Test ${parameterName} value "${element}" is invalid`, () => {
+			expect(() => {
+				hasClass(element, className);
+			}).toThrowError(erroInfo);
+			expect(() => {
+				addClass(element, className);
+			}).toThrowError(erroInfo);
+			expect(() => {
+				removeClass(element, className);
+			}).toThrowError(erroInfo);
+			expect(() => {
+				toggleClass(element, className);
+			}).toThrowError(erroInfo);
+		});
+	};
+	invalidElements.forEach((param) => {
+		testElementIsValid(param, 'has-class', 'element', `element: "${param}" should be an HTMLElement.`);
 	});
 
-	let elSelectors = ['#no', '#noClass', '#hasClass', '.item'],
+	test(`Test className value "element" is invalid`, () => {
+		let element = document.querySelector('#hasClass'),
+				param = '',
+				errorInfo = `className: "${param}" should be an non-empty string.`;
+		expect(() => {
+			hasClass(element, param);
+		}).toThrowError(errorInfo);
+	});
+
+	let invalidClassNames = [undefined, '', 1, null, new Date()];
+	const testClassNameIsValid = (className, errorInfo) => {
+		test(`Test className value "element" is invalid`, () => {
+			let element = document.querySelector('#hasClass');
+			expect(() => {
+				hasClass(element, className);
+			}).toThrowError(errorInfo);
+			expect(() => {
+				addClass(element, className);
+			}).toThrowError(errorInfo);
+			expect(() => {
+				removeClass(element, className);
+			}).toThrowError(errorInfo);
+			expect(() => {
+				toggleClass(element, className);
+			}).toThrowError(errorInfo);
+		});
+	};
+	invalidClassNames.forEach((param) => {
+		testClassNameIsValid(param,`className: "${param}" should be an non-empty string.`);
+	});
+
+	let elSelectors = ['#noClass', '#hasClass', '.item'],
 			apis = [hasClass, addClass, removeClass, toggleClass],
 			apiStrings = ['hasClass', 'addClass', 'removeClass', 'toggleClass', 'toggleClass'],
 			testClasses = ['has-class', 'add-class', 'same-class', 'same-class', "add-class", 'toggle-class'];
@@ -36,5 +82,5 @@ describe('Test addClass, removeClass, toggleClass, hasClass', () => {
 		{
 			testAPIS(elSelectors[i], api, testClasses[index], apiStrings[index]);
 		}
-	})
+	});
 });

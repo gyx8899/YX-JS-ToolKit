@@ -1,5 +1,5 @@
 /**
- * ClassName v1.1.2.20190513
+ * ClassName v1.1.2.20190515
  */
 class ClassName {
 	constructor()
@@ -80,18 +80,26 @@ class ClassName {
 	}
 }
 
+const isElement = (o) => {
+	return (
+			typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+					o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string"
+	);
+};
+
 const argumentsProxyHandler = {
 	get(target, propKey, receiver)
 	{
-		const origMethod = target[propKey];
 		return function (...args) {
-			let element = args[0],
-					className = args[1];
-			if (!element || (!!element && element.length === 0) || !className)
+			if (!isElement(args[0]))
 			{
-				return false;
+				throw new Error(`element: "${args[0]}" should be an HTMLElement.`);
 			}
-			return origMethod.apply(this, args);
+			if (typeof args[1] !== 'string' || args[1] === '')
+			{
+				throw new Error(`className: "${args[1]}" should be an non-empty string.`);
+			}
+			return target[propKey].apply(this, args);
 		};
 	}
 };
