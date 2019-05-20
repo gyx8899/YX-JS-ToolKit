@@ -14,6 +14,13 @@
  * @todo itemsScaleUp
  * @todo Test Zepto
  * @todo stagePadding calculate wrong active classes
+ *
+ * Owl carousel 5 custom changes list:
+ * 1. Fixed the last item space to the right when set autoWith with true;
+ * 2. Fixed with the case of iterator(this._items.length) == 0;
+ * 3. Fixed items scrolled left even when items width small than container width;
+ * 4. Add owlOnClick function(file bottom): fix drag end trigger click on item;
+ * 5. Fixed lazyLoad not updating/loading images responsively
  */
 ;(function($, window, document, undefined) {
 
@@ -1216,7 +1223,7 @@
 
 			// Custom change : #1 Fixed the last item space to the right when set autoWith with true;
 			// Custom change : #1 Re-fixed last item space to right when all items width small than the container width;
-			// Custom change : #4 Fixed items scrolled left even when items width small than container width;
+			// Custom change : #3 Fixed items scrolled left even when items width small than container width;
 			var settings = this.settings,
 					iterator = this._items.length,
 					itemsWidthSum = this._items[--iterator].width(),
@@ -1233,12 +1240,12 @@
 
 			if (accommodate)
 			{
-				// Custom change : #4 Fixed if items width small than container width, reset coordinate with 0;
+				// Custom change : #3 Fixed if items width small than container width, reset coordinate with 0;
 				coordinate = 0;
 			}
 			else
 			{
-				// Custom change : #3 Fixed with the case of iterator(this._items.length) == 0;
+				// Custom change : #2 Fixed with the case of iterator(this._items.length) == 0;
 				if ((settings.autoWidth || settings.merge)
 						&& !settings.loop
 						&& iterator > 0 && position > 0
@@ -1950,7 +1957,8 @@
 					return;
 				}
 
-				if ((e.property && e.property.name == 'position') || e.type == 'initialized') {
+				// #5 Fixed lazyLoad not updating/loading images responsively. (Add 'resized' type )
+				if ((e.property && e.property.name == 'position') || e.type == 'initialized' || e.type == 'resized') {
 					var settings = this._core.settings,
 						n = (settings.center && Math.ceil(settings.items / 2) || settings.items),
 						i = ((settings.center && n * -1) || 0),
@@ -3485,3 +3493,52 @@
 	}
 
 })(window.Zepto || window.jQuery, window, document);
+
+// #4. Add owlOnClick function(file bottom): fix drag end trigger click on item;
+// Custom for item click which can ignore drag trigger click
+function owlOnClick(element, selector, handler)
+{
+	var mouseDownX = 0,
+			mouseDownY = 0;
+	element.on('mousedown touchstart', selector, mouseTouchDownHandler);
+
+	function mouseTouchDownHandler(event)
+	{
+		mouseDownX = event.pageX;
+		mouseDownY = event.pageY;
+		$(event.target).on('mouseup touchend', mouseTouchUpMoveHandler)
+				.on('mousemove touchmove', mouseTouchUpMoveHandler);
+	}
+
+	function mouseTouchUpMoveHandler(event)
+	{
+		if ((event.type === 'mouseup' && event.which <= 1) || (event.type === 'touchend')) //only for left key
+		{
+			handler(event);
+		}
+		if ((event.type === 'mousemove' || event.type === 'touchmove') && (Math.abs(event.pageX - mouseDownX) + Math.abs(event.pageY - mouseDownY) === 0))
+		{
+			return;
+		}
+		$(event.target).off('mouseup touchend', mouseTouchUpMoveHandler)
+				.off('mousemove touchmove', mouseTouchUpMoveHandler);
+	}
+}
+
+/**
+* Fixed: Warnings in console
+ Warning: [Violation] Added non-passive event listener to a scroll-blocking 'touchstart' event. Consider marking event handler as 'passive' to make the page more responsive.
+**/
+jQuery.event.special.touchstart = {
+	setup: function (_, ns, handle)
+	{
+		if (ns.includes && ns.includes("noPreventDefault"))
+		{
+			this.addEventListener("touchstart", handle, {passive: false});
+		}
+		else
+		{
+			this.addEventListener("touchstart", handle, {passive: true});
+		}
+	}
+};

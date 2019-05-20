@@ -69,6 +69,9 @@
 								<div class="item"><h4>4</h4></div>
 								<div class="item"><h4>5</h4></div>
 								<div class="item"><h4>6</h4></div>
+								<div class="item"><h4>7</h4></div>
+								<div class="item"><h4>8</h4></div>
+								<div class="item"><h4>9</h4></div>
 							</div>
 							<h3>owl items: Different width</h3>
 							<div id="owl2" class="owl-carousel">
@@ -100,7 +103,7 @@
 				<h3 id="overview">Overview</h3>
 				<!--Introduction here-->
 				<p>
-
+					<a href="javascript:void(0);" onclick="switchOwlJS()">Click to use the owl.carousel.2.3.4.custom.js</a>
 				</p>
 			</div>
 		</div>
@@ -118,7 +121,9 @@
 
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
-	window.addEventListener("load", function () {
+	var owl1 = null;
+	var owl2 = null;
+	function initOwl() {
 		var owlOption1 = {
 //			stagePadding: 50,
 			margin: 10,
@@ -170,8 +175,8 @@
 			items: 1
 		};
 
-		$('#owl1').owlCarousel(owlOption1);
-		$('#owl2').owlCarousel(owlOption2);
+		owl1 = $('#owl1').owlCarousel(owlOption1);
+		owl2 = $('#owl2').owlCarousel(owlOption2);
 		$('#prev').on('click', function () {
 			$('#owl1').trigger('prev.owl');
 			$('#owl2').trigger('prev.owl');
@@ -249,8 +254,8 @@
 		});
 
 		$('#re-init-owl').on('click', function () {
-			$('#owl1').owlCarousel(owlOption1);
-			$('#owl2').owlCarousel(owlOption2);
+			owl1 = $('#owl1').owlCarousel(owlOption1);
+			owl2 = $('#owl2').owlCarousel(owlOption2);
 		});
 
 		$('#destroy-reinit').on('click', function () {
@@ -262,10 +267,21 @@
 			//		Destroy
 			$('#owl2').trigger('destroy.owl.carousel');
 			//		Init
-			$('#owl2').owlCarousel(owlOption2);
+			owl2 = $('#owl2').owlCarousel(owlOption2);
 		});
+	}
 
-	}, false);
+	window.addEventListener("load", initOwl, false);
+
+	function switchOwlJS()
+	{
+		$('#owlCarouselJS').remove();
+		YX.Util.load.loadScript("scripts/owl.carousel.2.3.4.custom.js", function () {
+			owl1.trigger('destroy.owl.carousel');
+			owl2.trigger('destroy.owl.carousel');
+			initOwl();
+		})
+	}
 </script>
 
 </body>
