@@ -1487,7 +1487,7 @@
 					if (!!addedElement.nodeType)
 					{
 						targetElement.insertAdjacentHTML('beforebegin', addedElement.outerHTML);
-						resultAddedElement = targetElement.previousSibling;
+						resultAddedElement = targetElement.previousElementSibling;
 					}
 					else
 					{
@@ -1501,7 +1501,7 @@
 					if (!!addedElement.nodeType)
 					{
 						targetElement.insertAdjacentHTML('afterend', addedElement.outerHTML);
-						resultAddedElement = targetElement.nextSibling;
+						resultAddedElement = targetElement.nextElementSibling;
 					}
 					else
 					{
