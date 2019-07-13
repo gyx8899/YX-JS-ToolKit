@@ -332,3 +332,14 @@ Clean jQuery widget
     window.addEventListener('scroll', lazyload, false);
 // </script>
 ```
+
+### JS delegate event
+```javascript
+document.getElementById("myDiv").addEventListener("click",function(e) {
+	// e.target was the clicked element
+	// matches: IE9+, https://caniuse.com/#search=matches
+  if (e.target && e.target.matches("a.classA")) {
+    console.log("Anchor element clicked!");
+	}
+});
+```
