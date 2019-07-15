@@ -175,6 +175,8 @@ yarn add webpack -D
 
 > React
 ```cmd
+npx create-react-app react-exercise
+
 npm i react react-dom
 
 npm i --save-dev babel-preset-react
