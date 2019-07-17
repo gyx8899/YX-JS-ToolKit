@@ -1,5 +1,5 @@
 /**
- * ClassName v1.1.2.20190515
+ * ClassName v1.1.3.20190717
  */
 class ClassName {
 	constructor()
@@ -54,18 +54,18 @@ class ClassName {
 		return this._addRemoveClassName(element, className);
 	}
 
-	_addRemoveClassList(element, className, isAdd)
+	_addRemoveClassList(element, className, force)
 	{
 		let elements = element.length ? element : [element];
-		return [].forEach.call(elements, item => item.classList[isAdd ? 'add' : 'remove'](className));
+		return [].forEach.call(elements, item => item.classList[force ? 'add' : 'remove'](className));
 	}
 
-	_addRemoveClassName(element, className, isAdd)
+	_addRemoveClassName(element, className, force)
 	{
 		let elements = element.length ? element : [element];
 		return [].forEach.call(elements, item => {
 			let hasClass = this.has(item, className);
-			if (hasClass !== isAdd)
+			if (hasClass !== force)
 			{
 				if (hasClass)
 				{
