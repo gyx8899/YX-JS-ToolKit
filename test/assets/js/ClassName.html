@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Class</title>
+	<!--<script type="module" src="../../assets/js/Class.js"></script>-->
+	<script type="text/javascript" src="../../../src/assets/js/ClassName.js"></script>
+	<!--<script type="module">-->
+	<script type="text/javascript">
+		import {addClass, removeClass, toggleClass, hasClass} from '../../../src/assets/js/ClassName.js';
+		let className = new ClassName();
+
+		function init () {
+			addClass(document.getElementById('id0'), 'selectedId1');
+			addClass(document.querySelectorAll('.item0'), 'selectItem1');
+			removeClass(document.getElementById('id0'), 'selectedId2');
+			removeClass(document.querySelectorAll('.item0'), 'selectedId2');
+			toggleClass(document.querySelector('.item0'), 'selectItem31');
+			toggleClass(document.querySelectorAll('.item0'), 'selectItem41');
+
+			addClass(document.getElementById('id1'), 'selectedId1');
+			removeClass(document.getElementById('id2'), 'selectedId2');
+			addClass(document.querySelectorAll('.item1'), 'selectItem1');
+			removeClass(document.querySelectorAll('.item2'), 'selectItem2');
+			toggleClass(document.querySelector('.item31'), 'selectItem31');
+			toggleClass(document.querySelector('.item32'), 'selectItem32');
+			toggleClass(document.querySelectorAll('.item41'), 'selectItem41');
+			toggleClass(document.querySelectorAll('.item42'), 'selectItem42');
+		}
+
+		document.addEventListener('DOMContentLoaded', init);
+	</script>
+</head>
+<body>
+	<div id="id1"></div>
+	<div id="id2" class="selectedId2"></div>
+	<div class="item1"></div>
+	<div class="item1"></div>
+	<div class="item2 selectItem2"></div>
+	<div class="item2 selectItem2"></div>
+	<div class="item31"></div>
+	<div class="item32 selectItem32"></div>
+	<div class="item41"></div>
+	<div class="item41"></div>
+	<div class="item42 selectItem42"></div>
+	<div class="item42 selectItem42"></div>
+
+</body>
+</html>

@@ -104,11 +104,11 @@ const argumentsProxyHandler = {
 	}
 };
 
-const classNameUtil = new Proxy(new ClassName(), argumentsProxyHandler);
+const className = new Proxy(new ClassName(), argumentsProxyHandler);
 
-const hasClass = classNameUtil.has.bind(classNameUtil);
-const addClass = classNameUtil.add.bind(classNameUtil);
-const removeClass = classNameUtil.remove.bind(classNameUtil);
-const toggleClass = classNameUtil.toggle.bind(classNameUtil);
+const hasClass = className.has.bind(className);
+const addClass = className.add.bind(className);
+const removeClass = className.remove.bind(className);
+const toggleClass = className.toggle.bind(className);
 
 export {hasClass, addClass, removeClass, toggleClass};
