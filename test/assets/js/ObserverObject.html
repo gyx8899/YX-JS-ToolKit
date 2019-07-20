@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ObjectObserver</title>
+</head>
+<body>
+<!--<script type="module" src="../../../src/assets/js/ObserverObject.js"></script>-->
+<script type="module">
+	import ObserverObject from '../../../src/assets/js/ObserverObject.js';
+
+	var onchange = function (target, key, value) {
+		console.log(`${target}  -  ${key}  -  ${value}`);
+	};
+	var onUpdate = function (prevValue, nextValue) {
+		console.log(`onUpdate:`);
+		console.log(`prevValue: ${JSON.stringify(prevValue)}`);
+		console.log(`nextValue: ${JSON.stringify(nextValue)}`);
+	};
+	var channel1 = {
+		seoName: 'channel-1',
+		id: 111,
+		noAccess: true,
+	};
+	var channel2 = {
+		seoName: 'channel-2',
+		id: 112,
+		noAccess: true,
+	};
+	var channels = [
+		new ObserverObject(channel1, {onchange, onUpdate}, ['seoName', 'id', 'noAccess']),
+		new ObserverObject(channel2, {onchange, onUpdate}, ['seoName', 'id', 'noAccess']),
+	];
+	channels[0].noAccess = false;
+	channels[0].seoName = 'seoName0';
+	channels[1].id = 222;
+	channels[0][ObserverObject.updateEventKey] = Date.now();
+	channels[0].seoName = 'seoName1';
+	channels[0][ObserverObject.updateEventKey] = Date.now();
+	channels[1].id = 222111;
+	channels[1][ObserverObject.updateEventKey] = Date.now();
+
+	var observer1 = new ObserverObject(channel1, {onchange}, [dd]);
+	observer1.dd = false;
+</script>
+</body>
+</html>
