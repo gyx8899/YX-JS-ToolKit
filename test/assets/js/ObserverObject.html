@@ -9,8 +9,8 @@
 <script type="module">
 	import ObserverObject from '../../../src/assets/js/ObserverObject.js';
 
-	var onchange = function (target, key, value) {
-		console.log(`${target}  -  ${key}  -  ${value}`);
+	var onChange = function (target, key, value) {
+		console.log(`${JSON.stringify(target)}  -  ${key}  -  ${value}`);
 	};
 	var onUpdate = function (prevValue, nextValue) {
 		console.log(`onUpdate:`);
@@ -28,8 +28,8 @@
 		noAccess: true,
 	};
 	var channels = [
-		new ObserverObject(channel1, {onchange, onUpdate}, ['seoName', 'id', 'noAccess']),
-		new ObserverObject(channel2, {onchange, onUpdate}, ['seoName', 'id', 'noAccess']),
+		new ObserverObject(channel1, {onChange, onUpdate}, ['seoName', 'id', 'noAccess']),
+		new ObserverObject(channel2, {onChange, onUpdate}, ['seoName', 'id', 'noAccess']),
 	];
 	channels[0].noAccess = false;
 	channels[0].seoName = 'seoName0';
@@ -40,7 +40,7 @@
 	channels[1].id = 222111;
 	channels[1][ObserverObject.updateEventKey] = Date.now();
 
-	var observer1 = new ObserverObject(channel1, {onchange}, [dd]);
+	var observer1 = new ObserverObject(channel1, {onChange}, ['dd']);
 	observer1.dd = false;
 </script>
 </body>
