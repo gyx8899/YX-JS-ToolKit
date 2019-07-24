@@ -1,5 +1,5 @@
 /**
- * Event v1.1.1.20190513
+ * Event v1.1.2.20190724
  */
 class Event {
 	constructor()
@@ -8,7 +8,7 @@ class Event {
 		this._unread = {};
 	}
 
-	on(key, fn)
+	on(key, fn, isFirst = false)
 	{
 		if (!this._cache[key])
 		{
@@ -16,7 +16,7 @@ class Event {
 		}
 		if (typeof fn === 'function')
 		{
-			this._cache[key].push(fn);
+			this._cache[key][isFirst ? 'unshift' : 'push'](fn);
 
 			let unReads = this._unread[key];
 			if (!!unReads)

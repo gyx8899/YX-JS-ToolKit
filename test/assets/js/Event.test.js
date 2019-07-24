@@ -65,6 +65,9 @@ describe('Event component', function () {
 		eventInstance.trigger(keys.key1);
 		expect(spy).toHaveBeenCalled();
 		spy.mockRestore();
+
+		// TODO: on(type, fn, isFirst), isFirst
+
 	});
 	test('Event.trigger() after Event.off()', function () {
 		const spy1 = jest.spyOn(KeyFnObj, keys.key1);

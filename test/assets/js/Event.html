@@ -34,6 +34,7 @@
 	event.on('click', func01);
 	event.on('click', func02);
 	event.on('click', func03);
+	event.on('click', func04, true);
 	event.trigger('click', 1, 3, 5);
 	event.off('click', func01);
 	event.trigger('click', 2, 4, 6);
