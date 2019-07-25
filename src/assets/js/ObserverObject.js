@@ -95,7 +95,7 @@ class ObserverObject {
 	_set(target, key, nextValue, receiver) {
 		let prevValue = this.getValue(target, key);
 		this.updateState(key, prevValue, nextValue);
-		this.onChange(target, key, nextValue, prevValue);
+		this.onChange(key, nextValue, prevValue, target);
 		return this.setValue(target, key, nextValue, receiver);
 	}
 
