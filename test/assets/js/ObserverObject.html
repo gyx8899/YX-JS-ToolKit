@@ -16,7 +16,7 @@
 -->
 <script type="text/javascript" src="../../../src/assets/js/ObserverObject.min.js"></script>
 <script type="text/javascript">
-	var onChange = function (target, key, value) {
+	var onChange = function (key, nextValue, prevValue, target) {
 		console.log('onChange: ' + window.Proxy ? JSON.stringify(target) : 'Non-Proxy' + ' - ' + key + ' - ' + value);
 	};
 	var onUpdate = function (prevValue, nextValue) {
