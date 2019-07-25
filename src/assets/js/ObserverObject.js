@@ -1,13 +1,12 @@
 /**!
- * ObserverObject V1.0.1.20190720
+ * ObserverObject V1.0.2.20190725
  */
 class ObserverObject {
-	constructor(obj = {}, options, keys = [])
-	{
-		this.obj = obj;
-		this.observerKeys = [...Object.keys(obj), ...keys];
-		this.observerKeys.push(ObserverObject.updateEventKey);
-		this.hasProxy = !!window.Proxy;
+	UPDATE_EVENT_KEY = 'triggerUpdate';
+
+	constructor(obj = {}, options, extraKeys = []) {
+		this.obj = {...obj};
+
 		this.onChange = options.onChange || (() => {});
 		this.onUpdate = options.onUpdate || (() => {});
 		this.prevState = {};
@@ -15,105 +14,99 @@ class ObserverObject {
 		this._set = this._set.bind(this);
 		this._get = this._get.bind(this);
 
+		if (!window.Proxy) {
+			this.observerKeys = [...Object.keys(obj), ...extraKeys, this.UPDATE_EVENT_KEY];
+			this.proxy = this._proxy;
+			this.getValue = this._getValue;
+			this.setValue = this._setValue;
+		}
+
 		return this.proxy();
 	}
 
-	initState()
-	{
+	initState() {
 		this.prevState = ObserverObject.clearObject(this.prevState);
 		this.nextState = ObserverObject.clearObject(this.nextState);
 	}
 
-	updateState(key, prevValue, nextValue)
-	{
-		if (key !== ObserverObject.updateEventKey)
-		{
+	updateState(key, prevValue, nextValue) {
+		if (key !== this.UPDATE_EVENT_KEY) {
 			this.prevState[key] = prevValue;
 			this.nextState[key] = nextValue;
 		}
 	}
 
-	proxy()
-	{
-		if (this.hasProxy)
-		{
-			return new Proxy(this.obj, {
-				get: this._get,
-				set: this._set
-			});
-		}
-		else
-		{
-			this.observerKeys.forEach((key) => {
-				Object.defineProperty(this.obj, key, {
-					get: () => {
-						return this._get(this.obj, key);
-					},
-					set: (nextValue) => {
-						return this._set(this.obj, key, nextValue);
-					},
-					enumerable: true,
-					configurable: true
-				});
-			});
-			return this.obj;
-		}
+	proxy() {
+		return new Proxy(this.obj, {
+			get: this._get,
+			set: this._set
+		});
 	}
 
-	shouldUpdate(target)
-	{
-		if (JSON.stringify(this.prevState) !== JSON.stringify(this.nextState))
-		{
+	_proxy() {
+		this.observerKeys
+				.forEach((key) => {
+					Object.defineProperty(this.obj, key, {
+						get: () => {
+							return this._get(this.obj, key);
+						},
+						set: (nextValue) => {
+							return this._set(this.obj, key, nextValue);
+						},
+						enumerable: true,
+						configurable: true
+					});
+				});
+		return this.obj;
+	}
+
+	triggerUpdate(target) {
+		if (JSON.stringify(this.prevState) !== JSON.stringify(this.nextState)) {
 			this.onUpdate(this.prevState, this.nextState, target);
 
 			this.initState();
 		}
 	}
 
-	_get(target, key, receiver)
-	{
-		if (this.hasProxy)
-		{
-			return target[key];
-		}
-		else
-		{
-			return this[`_${key}`];
-		}
+	getValue(target, key) {
+		return target[key];
 	}
 
-	_set(target, key, nextValue, receiver)
-	{
-		let prevValue = target[key];
+	_getValue(target, key) {
+		return this[`_${key}`];
+	}
+
+	setValue(target, key, nextValue, receiver) {
+		return Reflect.set(target, key, nextValue, receiver);
+	}
+
+	_setValue(target, key, nextValue) {
+		this[`_${key}`] = nextValue;
+	}
+
+	_get(target, key, receiver) {
+		if (key === this.UPDATE_EVENT_KEY) {
+			this.triggerUpdate(target);
+			return;
+		}
+		return this.getValue(target, key, receiver);
+	}
+
+	_set(target, key, nextValue, receiver) {
+		let prevValue = this.getValue(target, key);
 		this.updateState(key, prevValue, nextValue);
 		this.onChange(target, key, nextValue, prevValue);
-		if (key === ObserverObject.updateEventKey)
-		{
-			this.shouldUpdate(target);
-		}
-		if (this.hasProxy)
-		{
-			return Reflect.set(target, key, nextValue, receiver);
-		}
-		else
-		{
-			this[`_${key}`] = nextValue;
-		}
+		return this.setValue(target, key, nextValue, receiver);
 	}
 
-	static clearObject(obj)
-	{
-		for (let key in obj)
-		{
-			if (obj.hasOwnProperty(key))
-			{
+	static clearObject(obj) {
+		for (let key in obj) {
+			if (obj.hasOwnProperty(key)) {
 				delete obj[key];
 			}
 		}
 		return obj;
 	}
 }
-
-ObserverObject.updateEventKey = '_update';
 
 export default ObserverObject
