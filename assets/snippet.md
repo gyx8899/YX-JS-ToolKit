@@ -343,3 +343,5 @@ document.getElementById("myDiv").addEventListener("click",function(e) {
 	}
 });
 ```
+
+### PoW（Proof of Work）
