@@ -25,7 +25,7 @@ import * as url from './util/URL';
 
 import Event from './components/Event';
 import WebWorker from './components/WebWorker';
-import ShareWorkers from './components/ShareWorkers';
+import SharedWorkers from './components/SharedWorkers';
 
 let YX = {
 	Util: {
@@ -50,7 +50,7 @@ let YX = {
 		url,
 	},
 	WebWorker,
-	ShareWorkers,
+	SharedWorkers,
 	event: new Event(),
 };
 
