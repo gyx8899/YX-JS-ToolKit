@@ -1,4 +1,4 @@
-import Event from '../../../src/assets/js/Event'
+import Event from '../../../src/app/components/Event'
 
 let debugOn = false;
 

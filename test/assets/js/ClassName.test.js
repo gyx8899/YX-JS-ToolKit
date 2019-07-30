@@ -1,4 +1,4 @@
-import {addClass, removeClass, toggleClass, hasClass} from "../../../src/assets/js/ClassName";
+import {addClass, removeClass, toggleClass, hasClass} from "../../../src/app/components/ClassName";
 
 describe('Test addClass, removeClass, toggleClass, hasClass', () => {
 	const $ = require('jquery');
