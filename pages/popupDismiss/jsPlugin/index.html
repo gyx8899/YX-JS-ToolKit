@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="JS plugin: popup and dismiss everywhere">
+	<meta name="keywords" content="web, js demo, popup, dismiss, js, jQuery plugin">
+	<meta name="author" content="Steper Kuo">
+	<title>Demo: popup and dismiss everywhere</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-touch-icon.png">
+	<link rel="icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon.png">
+
+	<!-- Style custom *** CSS -->
+	<style data-toggle="previewCode" data-target="#demoWrap" data-collapse="on" type="text/css">
+		/* Demo's CSS here */
+		.trigger-parent
+		{
+			color: #000000;
+			font-size: 24px;
+			cursor: pointer;
+			background-color: #006bb6;
+		}
+		.trigger-parent:focus
+		{
+			background-color: #006bb6;
+		}
+		section
+		{
+			position: relative;
+		}
+		.popup-list
+		{
+			display: none;
+		}
+		.popup-list.open
+		{
+			display: block;
+			width: 100%;
+			position: absolute;
+			background-color: white;
+			list-style: none;
+			margin: 0;
+			border: 2px solid #006bb6;
+			border-radius: 3px;
+			z-index: 2;
+		}
+		.dropdown-list
+		{
+			width: 250px;
+			height: 0;
+			position: absolute;
+			background-color: white;
+			list-style: none;
+			margin: 0;
+			border: 2px solid #006bb6;
+			border-radius: 3px;
+			z-index: 2;
+			transform: scaleY(0);
+			transform-origin: top;
+			transition: 200ms cubic-bezier(0.000, 0.635, 0.755, 0.970) 10ms;
+			max-height: calc(100vh - 72px);
+		}
+		.dropdown-list.open
+		{
+			transform: scaleY(1);
+			overflow: auto;
+			height: auto;
+		}
+		.dismiss-false
+		{
+			background-color: graytext !important;
+		}
+		.dismiss-true
+		{
+			background-color: #1ccacd !important;
+		}
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<!--<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+	<!--<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>-->
+	<![endif]-->
+
+</head>
+<body>
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.js?type=split-ssc"></script>
+
+<!-- Script Fundebug code *** JS -->
+<script src="https://js.fundebug.cn/fundebug.0.3.6.min.js" apikey="f3b60739271056d85641a316cd13350f5960922b510427e3ec514bc3f0a74ac5"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<div data-toggle="previewCode" data-target="#demoWrap" data-collapse="on">
+					<!--Demo's html here-->
+					<section>
+						<h3>Demo1: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo1List</b>"
+							data-toggle-class="open"</p></h3>
+						<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo1List" data-toggle-class="open">
+							toggle popup
+						</div>
+						<ul id="demo1List" class="popup-list">
+							<li>Demo1 popup list1</li>
+							<li data-popup-dismiss="false">Demo1 popup list2, data-popup-dismiss="false"</li>
+							<li>Demo1 popup list3</li>
+							<li>Demo1 popup list4</li>
+							<li>
+								<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo11List" data-toggle-class="open" data-popup-dismiss="false">
+									Demo1 SubSelector, data-popup-dismiss="false"
+								</div>
+								<ul id="demo11List" class="popup-list" data-popup-dismiss="true">
+									SubList1-parent : data-popup-dismiss="true"
+									<li data-popup-dismiss="false">SubList110 data-popup-dismiss="false"
+										<span>(no data-) SubList111 </span> <span>(no data-) SubList112 </span></li>
+									<li data-popup-dismiss="false">SubList12, data-popup-dismiss="false"</li>
+									<li>SubList13</li>
+								</ul>
+							</li>
+							<li>Demo1 popup list6</li>
+							<li>
+								<div class="trigger-parent" data-toggle="popupDismiss" data-target="#demo12List" data-toggle-class="open" data-popup-dismiss="false">
+									Demo1 SubSelector, data-popup-dismiss="false"
+								</div>
+								<ul id="demo12List" class="popup-list" data-popup-dismiss="false">
+									SubList2-parent : data-popup-dismiss="false"
+									<li data-popup-dismiss="true">SubList210 data-popup-dismiss="true" <span>(no data-)SubList211</span>
+										<span>(no data-)SubList212</span></li>
+									<li data-popup-dismiss="true">SubList22, data-popup-dismiss="true"</li>
+									<li>SubList23</li>
+								</ul>
+							</li>
+							<li>Demo1 popup list8</li>
+						</ul>
+					</section>
+					<hr>
+					<section>
+						<h3>Demo2: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo2List</b>"
+							data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler"</p></h3>
+						<textarea id="eventLog"></textarea>
+						<button class="trigger-parent" data-toggle="popupDismiss" data-target="#demo2List" data-toggle-class="open" data-popup-handler="popupHandler" data-dismiss-handler="dismissHandler">
+							toggle popup
+						</button>
+						<ul id="demo2List" class="popup-list">
+							<li>Demo2 popup list1</li>
+							<li>Demo2 popup list2</li>
+							<li>Demo2 popup list3</li>
+							<li data-popup-dismiss="false">Demo2 popup list4, data-popup-dismiss="false"</li>
+							<li data-popup-dismiss="false">Demo2 popup list5, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+					<hr>
+					<section class="demo4-scope">
+						<h3>Demo3: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>#demo3List</b>"
+							data-popup-handler="popupList" data-dismiss-handler="dismissList"</p></h3>
+						<button id="tapId" class="trigger-parent" data-toggle="popupDismiss" data-target="#demo3List" data-popup-handler="popupList" data-dismiss-handler="dismissList">
+							toggle popup
+						</button>
+						<ul id="demo3List" class="popup-list">
+							<li>Demo3 popup list1</li>
+							<li>Demo3 popup list2</li>
+							<li>Demo3 popup list3</li>
+							<li data-popup-dismiss="false">Demo3 popup list4, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+					<hr>
+					<section class="demo4-scope">
+						<h3>Demo4: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>.demo4List</b>"
+							data-dismiss-scope=".demo4-scope"
+							data-popup-handler="popupList" data-dismiss-handler="dismissList"</p></h3>
+						<button id="demo4Btn" class="trigger-parent" data-toggle="popupDismiss" data-target=".demo4List" data-dismiss-scope=".demo4-scope" data-popup-handler="popupList" data-dismiss-handler="dismissList">
+							toggle popup
+						</button>
+						<ul class="popup-list demo4List">
+							<li>Demo4 popup list1</li>
+							<li>Demo4 popup list2</li>
+							<li>Demo4 popup list3</li>
+							<li data-popup-dismiss="false">Demo4 popup list4, data-popup-dismiss="false"</li>
+						</ul>
+					</section>
+					<section class="demo5-scope">
+						<h3>Demo5: <p>data-toggle="<b>popupDismiss</b>" data-target="<b>.popup-list</b>" data-target-parent="<b>.popup-list-parent</b>"
+							data-toggle-class="open"</p>
+						</h3>
+						<div class="popup-list-parent">
+							<button id="demo51Btn" class="trigger-parent" data-toggle="popupDismiss" data-target=".popup-list" data-target-parent=".demo5-scope"
+											data-toggle-class="open">
+								toggle popup
+							</button>
+							<ul class="popup-list demo51List">
+								<li>Demo51 popup list1</li>
+								<li>Demo51 popup list2</li>
+								<li>Demo51 popup list3</li>
+								<li data-popup-dismiss="false">Demo51 popup list51, data-popup-dismiss="false"</li>
+							</ul>
+						</div>
+						<div style="padding-top: 120px">
+							<button id="demo52Btn" class="trigger-parent" data-toggle="popupDismiss" data-target=".popup-list" data-target-parent="div"
+											data-toggle-class="open">
+								toggle popup
+							</button>
+							<ul class="popup-list demo52List">
+								<li>Demo52 popup list1</li>
+								<li>Demo52 popup list2</li>
+								<li>Demo52 popup list3</li>
+								<li data-popup-dismiss="false">Demo52 popup list52, data-popup-dismiss="false"</li>
+							</ul>
+						</div>
+						<div style="padding-top: 120px">
+							<button id="demo53Btn" class="trigger-parent" data-toggle="popupDismiss" data-target=".demo53List" data-target-parent="div"
+											data-toggle-class="open">
+								toggle popup
+							</button>
+							<ul class="dropdown-list demo53List">
+								<li>Demo53 popup list1</li>
+								<li>Demo53 popup list2</li>
+								<li>Demo53 popup list3</li>
+								<li data-popup-dismiss="false">Demo53 popup list53, data-popup-dismiss="false"</li>
+							</ul>
+						</div>
+					</section>
+				</div>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
+
+<!-- Script Demo *** JS -->
+<!--<script src="popupDismiss.min.js"></script>-->
+<!-- 0. ?init=auto-->
+<script src="../../../dist/assets/js/popupDismiss.min.js?init=auto"></script>
+
+<script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
+	// Demo's JS here
+	$(document).ready(function () {
+		initColor();
+
+//	1. To special items;
+// 		window.popup = new PopupDismiss(document.querySelectorAll('[data-toggle="popupDismiss"]'));
+//		window.popup = new PopupDismiss(document.querySelectorAll('.trigger-parent'));
+//		window.popup = new PopupDismiss(document.querySelectorAll('#tapId'));
+//		window.popup = new PopupDismiss(document.querySelector('[data-toggle="popupDismiss"]'));
+// 		window.popup = new PopupDismiss($('[data-toggle="popupDismiss"]'));
+// 		window.popup = new PopupDismiss($('.trigger-parent'));
+// 		window.popup = new PopupDismiss($('#tapId'));
+
+//	2. To all items on body;
+// 		window.popup = new PopupDismiss();
+// 		window.popup = new PopupDismiss($('.row'), true);
+
+//	3. To all subItems on element;
+// 		window.popup = new PopupDismiss(document.getElementById('demos'), true);
+	});
+
+	window.popupHandler = function()
+	{
+		outputTextArea("Popup handler triggering...");
+	};
+
+	window.dismissHandler = function()
+	{
+		outputTextArea("Dismiss handler triggering...");
+	};
+
+	function outputTextArea(output)
+	{
+		$('#eventLog').text($('#eventLog').text() + '\n' + (new Date()).toLocaleTimeString() + ' -- ' + output);
+		var textarea = document.getElementById('eventLog');
+		textarea.scrollTop = textarea.scrollHeight;
+	}
+
+	window.popupList = function ($target)
+	{
+//		$($target) && $($target).fadeIn();
+		$($target) && $($target).css('display', 'block');
+	};
+
+	window.dismissList = function ($target)
+	{
+//		$($target) && $($target).fadeOut();
+		$($target) && $($target).css('display', 'none');
+	};
+
+	function initColor()
+	{
+		$('[data-popup-dismiss="false"]').addClass('dismiss-false');
+		$('[data-popup-dismiss="true"]').addClass('dismiss-true');
+	}
+</script>
+</body>
+</html>

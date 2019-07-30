@@ -2,7 +2,7 @@
   "name": "YX-JS-ToolKit",
   "version": "1.0.0",
   "discription": "YX-JS-ToolKit is a toolkit for js common functions.",
-  "main": "./index.html",
+  "main": "pages/index.html",
   "scripts": {
     "jest:test": "jest test/components --coverage --color"
   },

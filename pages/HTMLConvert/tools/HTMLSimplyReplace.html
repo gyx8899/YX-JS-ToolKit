@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Tool: Simply replace the input html</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-touch-icon.png">
+	<link rel="icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon.png">
+
+	<!-- Style custom *** CSS -->
+	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+		/* Demo's CSS here */
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.js?type=split-ssc"></script>
+
+<!-- Script Fundebug code *** JS -->
+<script src="https://js.fundebug.cn/fundebug.0.3.6.min.js" apikey="f3b60739271056d85641a316cd13350f5960922b510427e3ec514bc3f0a74ac5"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div data-toggle="previewCode" data-target="#demoWrap">
+					<!--Demo's html here-->
+					<ul id="replaceList">
+						<li>
+							Replace: <input class="sub-string-source" title="source string" placeholder="String" type="text">
+							With: <input class="sub-string-dest" title="dest string" placeholder="String" type="text">
+							<button onclick="addReplaceString()">+</button>
+						</li>
+						<li>
+							Remove Property: <input class="property-name" title="property name" placeholder="property" type="text">
+							<button onclick="addRemoveProperty()">+</button>
+						</li>
+					</ul>
+
+					<form>
+						<input type="checkbox" title="unwrap body checkbox" id="checkUnwrap1" checked="checked">Unwrap from body?
+						<input type="checkbox" title="unwrap div checkbox" id="checkUnwrap2" checked="checked">Unwrap from div
+						class=WordSection?
+					</form>
+
+					<fieldset>
+						<legend>Input(String):</legend>
+						<textarea id="input-content" title="input" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
+
+					<button onclick="convertCode()">convert</button>
+					<fieldset>
+						<legend>Output(Result):</legend>
+						<textarea id="output-content" title="output" style="width: 100%; height: 200px;"></textarea>
+					</fieldset>
+
+					<h3 id="overview">Overview</h3>
+					<!--Introduction here-->
+					<p>
+
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
+
+<!-- Script Demo *** JS -->
+<script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
+	// Demo's JS here
+	function addReplaceString()
+	{
+		$("#replaceList").prepend('<li>' +
+				'Replace: <input class="sub-string-source" title="source string" placeholder="String" type="text">' +
+				'With: <input class="sub-string-dest" title="dest string" placeholder="String" type="text">' +
+				'<button onclick="addReplaceString()">+</button>' +
+				'</li>');
+	}
+
+	function addRemoveProperty()
+	{
+		$("#replaceList").append('<li>' +
+				'Remove Property: <input class="property-name" title="property name" placeholder="property" type="text">' +
+				'<button onclick="addRemoveProperty()">+</button>' +
+				'</li>');
+	}
+
+	function convertCode()
+	{
+		var sourceHtml = $('#input-content').val();
+		var resultString = '';
+
+		if (sourceHtml === '')
+		{
+			resultString = '';
+		}
+		else
+		{
+			var $liArray = $("#replaceList").find("li");
+			var $sourceStrArray = $liArray.find(".sub-string-source");
+			var $replaceStrArray = $liArray.find(".sub-string-dest");
+
+			for (var i = 0; i < $sourceStrArray.length; i++)
+			{
+				var source = $($sourceStrArray[i]).val();
+				var replace = $($replaceStrArray[i]).val();
+				if (source.length > 0 && replace.length > 0)
+				{
+					resultString = sourceHtml.replace(source, replace);
+				}
+			}
+			var removeProArray = $liArray.find(".property-name");
+			for (var j = 0; j < removeProArray.length; j++)
+			{
+				//	var regexpStr = '/\s'+removeProperty+'=('+'\''+'|\")?([A-Z])\w+('+'\''+'|\")?/g';
+				//	resultString = sourceHtml.replace(regexpStr,'');
+				var removeProperty = $(removeProArray[j]).val();
+				if (removeProperty === 'class')
+				{
+					resultString = sourceHtml.replace(/\sclass(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
+				}
+				else if (removeProperty === 'id')
+				{
+					resultString = sourceHtml.replace(/\sid(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
+				}
+				else if (removeProperty === 'style')
+				{
+					resultString = sourceHtml.replace(/\bstyle(\s)*=(\s)*('.*'|".*")/g, '');
+				}
+				else if (removeProperty === 'name')
+				{
+					resultString = sourceHtml.replace(/\sname(\s)*=(\s)*('|")?([A-Z])\w+('|")?/g, '');
+				}
+				else if (removeProperty === 'value')
+				{
+					resultString = sourceHtml.replace(/\svalue(\s)*=(\s)*('.*'|".*")/g, '');
+				}
+			}
+			//				Unwrap the 'html' tag, remove 'head' tag, and unwrap the 'body' tag;
+			if (document.getElementById("checkUnwrap1").checked === true)
+			{
+				sourceHtml = sourceHtml.replace(/<html[^>]*?>((.|\n)*?)<\/html>/g, '$1')
+						.replace(/<head[^>]*?>((.|\n)*?)<\/head>/g, '')
+						.replace(/<body[^>]*?>((.|\n)*?)<\/body>/g, '$1');
+			}
+
+			//			Unwrap parent father of "<div sclass=WordSection></div>";
+			if (document.getElementById("checkUnwrap2").checked === true)
+			{
+				sourceHtml = sourceHtml.replace(/<div\sclass=WordSection(\d)+>((.|\n)*?)<\/div>/g, '$2');
+			}
+
+			//			Trim the left and right whitespace;
+			sourceHtml = sourceHtml.replace(/(^\s*)/g, "").replace(/(\s*$)/g, "");
+
+			//			Remove the unknown 'o:p' tag;
+			sourceHtml = sourceHtml.replace(/<o:p[^>]*?>((.|\n)*?)<\/o:p>/g, '$1');
+
+			//			Remove the property of tags(name should be alphabet), except 'a' tag;
+			resultString = sourceHtml.replace(/<(\b[^a]\w*\b)(\s)?[^>]*>/g, '<$1>');
+
+			//			Remove empty tags
+			resultString = resultString.replace(/<span><\/span>/g, '');
+			resultString = resultString.replace(/<u><\/u>/g, '');
+
+			//			Remove 'span' tag (There may be some nested span tag, then should be replace twice)
+			resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
+			resultString = resultString.replace(/<span[^>]*?>((.|\n)*?)<\/span>/g, '$1');
+
+			//			Replace 'u' tag to 'a' tag;
+			resultString = resultString.replace(/<u>((.|\n)*?)<\/u>/g, '<a href="#">$1</a>');
+
+			//			Remove the un normal line break;
+			resultString = resultString.replace(/([^>\s])((\s)*(\n)(\s)*)(.)/g, '$1 $6');
+
+			//			Add classname to bold p(<b>)
+			resultString = resultString.replace(/<p><b>(.*)<\/b><\/p>/g, "<p class='title'><b>$1<\/b><\/p>");
+		}
+		$('#output-content').val(resultString);
+	}
+</script>
+
+</body>
+</html>

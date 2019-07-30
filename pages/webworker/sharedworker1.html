@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>SharedWorker1</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="152x152" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-152x152.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon-16x16.png">
+
+	<!-- Style custom *** CSS -->
+	<style id="demoCSS" type="text/css">
+		/* Demo's CSS here */
+
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.js?type=split-ssc"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<div id="demoHTML">
+					<!--Demo's html here-->
+					<textarea id="logger" style="min-height: 200px; width: 100%;"></textarea>
+					<div>
+						<label for="inputLabel">Chat:</label>
+						<input id="inputLabel" placeholder="please input:">
+						<button onclick="sendMessage();">Send</button>
+					</div>
+
+				</div>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
+
+<!-- Script Demo *** JS -->
+<script id="demoJS" type="text/javascript">
+	// Demo's JS here
+	var mySharedWorker = YX.SharedWorkers.getInstance({
+		workerUrl: './webworkers.js'
+	});
+	mySharedWorker.onMessage((msg) => {
+		let {event, callback, message} = msg.data;
+		// YX.Util.tool.consoleLog(`${msg.data.event}: ${msg.data.message}`);
+		console.log(`${event}: ${callback ? callback : ''} - ${message}`);
+		if (event === 'listenIsPrime')
+		{
+			isPrimeCallback();
+		}
+		if (event === 'chat')
+		{
+			logInfo(message);
+		}
+	});
+
+	// Case 1.0
+	mySharedWorker.postMessage({
+		type: 'get',
+		event: 'postEventPrime'
+	});
+	mySharedWorker.postMessage({
+		type: 'get',
+		event: 'postEventMessage'
+	});
+	mySharedWorker.postMessage({
+		type: 'get',
+		event: 'chat'
+	});
+
+	// Case 2:
+	mySharedWorker.postMessage({
+		type: 'apply',
+		event: 'listenIsPrime',
+		// method: 'isPrime', // function name or calling path
+		method: 'YX.Util.math.isPrime', // function name or calling path
+		params: 8, // one param or array params;
+		// params: [8], // one param or array params;
+		scripts: '../assets/js/common.js', // method dependency script files (relative/absolute) path;
+		// scripts: ['common.js', 'util.js'], // method dependency script files (relative/absolute) path;;
+		callback: 'isPrimeCallback', // function name or calling path
+		// callback: 'YX.Util.tool.consoleLog'
+	});
+
+	function isPrimeCallback(message = 'shareworker1: post message')
+	{
+		// Case 2.1
+		mySharedWorker.postMessage({
+			type: 'post',
+			event: 'postEventPrime',
+			message: message
+		});
+	}
+
+	// Case 2.1
+	mySharedWorker.postMessage({
+		type: 'post',
+		event: 'postEventMessage',
+		message: 'This is post message from ShareWork1'
+	});
+</script>
+<script type="text/javascript" src="common.js"></script>
+</body>
+</html>

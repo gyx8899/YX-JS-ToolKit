@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<title>Demo: Lazy load js file</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-touch-icon.png">
+	<link rel="icon" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon.png">
+
+	<!-- Style custom *** CSS -->
+	<style data-toggle="previewCode" data-target="#demoWrap" type="text/css">
+		/* Demo's CSS here */
+	</style>
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.js?type=split-ssc"></script>
+
+<!-- Script Fundebug code *** JS -->
+<script src="https://js.fundebug.cn/fundebug.0.3.6.min.js" apikey="f3b60739271056d85641a316cd13350f5960922b510427e3ec514bc3f0a74ac5"></script>
+
+<main>
+
+	<!-- Demos -->
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<div data-toggle="previewCode" data-target="#demoWrap">
+					<!--Demo's html here-->
+					<button onclick="loadJS()">Click to add load JS file</button>
+					<div id="show"></div>
+					<div id="remove">Removed when loaded JS</div>
+					<div id="new"></div>
+					<br><br>
+					<div class="">
+						<h5>Notice:</h5>
+						<p>Script could not only replace the 'src' property with new src, it would not take effect. It only loads
+							when the page is loading!</p>
+					</div>
+				</div>
+				<h3 id="overview">Overview</h3>
+				<!--Introduction here-->
+				<p>
+
+				</p>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
+
+<script type="text/javascript">
+	function themeHeaderFooterLoaded()
+	{
+		$.applyHeaderFooter('owl', {subTitle: 'Load new js file'});
+	}
+</script>
+
+<!-- Script Demo *** JS -->
+<script id="originJS" type="text/javascript" src="scripts/js-origin.js"></script>
+
+<script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
+	// Demo's JS here
+	function loadScript(url, callback)
+	{
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+
+		if (script.readyState)
+		{  //IE
+			script.onreadystatechange = function () {
+				if (script.readyState === "loaded" || script.readyState === "complete")
+				{
+					script.onreadystatechange = null;
+					callback && callback();
+				}
+			};
+		}
+		else
+		{  //Others
+			script.onload = function () {
+				callback && callback();
+			};
+		}
+
+		script.src = url;
+		document.body.appendChild(script);
+	}
+
+	function loadJS()
+	{
+		loadScript("scripts/js-new.js", function () {
+			// Remove old script or not, according your requirements
+			var originJS = document.getElementById('originJS');
+			originJS.parentNode.removeChild(originJS);
+
+			//destroy
+			document.getElementById('remove').innerHTML = '';
+
+			//reInit
+			document.getElementById('new').innerHTML = 'New when loaded JS';
+		})
+	}
+</script>
+
+</body>
+</html>

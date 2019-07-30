@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="Steper Kuo">
+	<!-- Status Bar Style -->
+	<!-- Safari: black, black-translucent -->
+	<meta name="apple-mobile-web-app-status-bar-style" content="yes">
+	<!-- Chrome, Firefox OS and Opera -->
+	<meta name="theme-color" content="#1ccacd">
+
+	<title>Test - WebWorker</title>
+
+	<!-- Favicons -->
+	<link rel="apple-touch-icon" sizes="57x57" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://gyx8899.github.io/YX-WebThemeKit/assets/img/favicon-16x16.png">
+	<link rel="manifest" href="../../manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="https://gyx8899.github.io/YX-WebThemeKit/assets/img/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<!--Jquery.js, HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+	<!--[if lt IE 9]>
+	<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+<body>
+
+<!-- Script Preload code *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/fn-pre-loader/preLoader.min.js?type=split-ssc"></script>
+
+<!-- Script Fundebug code *** JS -->
+<script src="https://js.fundebug.cn/fundebug.0.3.6.min.js"
+				apikey="f3b60739271056d85641a316cd13350f5960922b510427e3ec514bc3f0a74ac5"></script>
+
+<main>
+	<section id="demos">
+		<div class="row">
+			<div id="demoWrap" class="large-12 columns">
+				<h3 id="overview">Overview</h3>
+				<div id="demoHTML">
+					<h3>Check number is prime or not</h3>
+					<label for="inputLabel">Number:</label>
+					<input id="inputLabel" placeholder="number:" value="1000001111111111">
+					<button id="checkAction" onclick="checkIsPrimeNumber();">Check</button>
+					<div id="value"></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+
+<!-- Script Common *** JS -->
+<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+
+<!-- Script Config *** JS -->
+<script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
+<script>
+
+	function checkIsPrimeNumber()
+	{
+		let number = document.getElementById('inputLabel').value;
+		document.getElementById('value').innerHTML = 'checking in worker.js...';
+		YX.WebWorker
+				.getInstance({
+					workerUrl: window.location.origin + '/YX-JS-ToolKit/pages/webworker/webworkers.js'
+				})
+				.postMessage('YX.Util.math.isPrime', number, 'checkResultCallback', [
+					window.location.origin + '/YX-JS-ToolKit/dist/assets/js/common.min.js',
+				]);
+	}
+
+	function checkResultCallback(data)
+	{
+		document.getElementById('value').innerHTML = data;
+	}
+</script>
+</body>
+</html>
