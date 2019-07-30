@@ -18,7 +18,7 @@ const TIMINGS = {
 	ELASTIC_EASE_IN_OUT: makeEaseInOut(elastic),
 };
 
-function timingAnimate({draw = ()=>{}, value = 1, duration = 1000, timing = TIMINGS['LINEAR']})
+function animate({draw = ()=>{}, value = 1, duration = 1000, timing = TIMINGS['LINEAR']})
 {
 	let start = performance.now();
 

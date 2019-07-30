@@ -1,10 +1,10 @@
 /**
- * FullScreen v1.0.3.20190221
+ * FullScreen v1.0.4.20190617
  */
 class FullScreen {
 	constructor()
 	{
-		this.enterFullscreen = null;
+		this.browserPrefixName = '';
 		this.fullscreenEnabled = this.isFullScreenEnable();
 	}
 
@@ -20,22 +20,25 @@ class FullScreen {
 		{
 			// Chrome/71.0.3578.80, Edge/17.17134, Chrome/70.0.3538.77, Chrome/70.0.3538.102(Mac), Safari/601.2.7(MAC)
 			fullScreenEnable = document.webkitFullscreenEnabled;
+			this.browserPrefixName = 'webkit';
 		}
 		else if (document.mozFullScreenEnabled)
 		{
 			// Firefox/63.0
 			fullScreenEnable = document.mozFullScreenEnabled;
+			this.browserPrefixName = 'moz';
 		}
 		else if (document.msFullscreenEnabled)
 		{
 			// IE11
 			fullScreenEnable = document.msFullscreenEnabled;
+			this.browserPrefixName = 'ms';
 		}
 
 		return fullScreenEnable;
 	}
 
-	enterFullscreen(selector)
+	static enterFullscreen(selector)
 	{
 		const docElement = document.querySelector(selector);
 		if (docElement.requestFullscreen)
@@ -56,7 +59,7 @@ class FullScreen {
 		}
 	}
 
-	exitFullscreen()
+	static exitFullscreen()
 	{
 		if (FullScreen.isElementFullScreen())
 		{
@@ -85,7 +88,7 @@ class FullScreen {
 		return !!fullscreenElement
 	};
 
-	fullScreenChanged(enter, exit)
+	fullScreenChanged(enter, exit, context)
 	{
 		if (!this.fullscreenEnabled)
 		{
@@ -95,17 +98,15 @@ class FullScreen {
 		let fullScreenChangeEvent = (e) => {
 			if (FullScreen.isElementFullScreen())
 			{
-				enter && enter(e);
+				(context && enter) ? enter.call(context, e) : enter(e);
 			}
 			else
 			{
-				exit && exit(e);
+				(context && exit) ? exit.call(context, e) : exit(e);
 			}
 		};
 
-		this.prefixNames.forEach(prefixName => {
-			document.addEventListener(`${prefixName}fullscreenchange`, fullScreenChangeEvent);
-		});
+		document.addEventListener(`${this.browserPrefixName}fullscreenchange`, fullScreenChangeEvent);
 	};
 }
 
