@@ -1,8 +1,21 @@
 import React, {Component} from 'react';
+// 仅当 class name 复杂时引用
 import classNames from 'classnames';
+// 仅当 prop 类型复杂，且容易出错时引用
+import PropTypes from 'prop-types';
 
 // 强烈建议你不要创建自己的组件基类。 在 React 组件中，代码重用的主要方式是组合而不是继承。
-class ClassDemo extends Component {
+class Component extends Component {
+	// 不常用
+	static propTypes = {
+		hasError: PropTypes.bool,
+	};
+
+	// 不常用
+	static defaultProps = {
+		hasError: false,
+	};
+
 	// 常用
 	/**
 	 * 1. 如果不初始化 state 或不进行方法绑定，则不需要为 React 组件实现构造函数。
@@ -63,7 +76,7 @@ class ClassDemo extends Component {
 	 * 例如，实现 <Transition> 组件可能很方便，该组件会比较当前组件与下一组件，
 	 * 以决定针对哪些组件进行转场动画。
 	 */
-	static getDerivedStateFromProps() {
+	static getDerivedStateFromProps(nextProps, prevState) {
 
 	}
 
@@ -202,7 +215,7 @@ class ClassDemo extends Component {
 	}
 }
 
-export default ClassDemo;
+export default Component;
 
 /**
  * 挂载

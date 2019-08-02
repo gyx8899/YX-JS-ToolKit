@@ -5,6 +5,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "loadsh": "^0.0.4",
+    "prop-types": "^15.7.2",
     "raf-schd": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
