@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 // 强烈建议你不要创建自己的组件基类。 在 React 组件中，代码重用的主要方式是组合而不是继承。
-class Component extends Component {
+class _Component extends Component {
 	// 不常用
 	static propTypes = {
 		hasError: PropTypes.bool,
@@ -215,7 +215,7 @@ class Component extends Component {
 	}
 }
 
-export default Component;
+export default _Component;
 
 /**
  * 挂载
