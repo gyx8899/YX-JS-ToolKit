@@ -211,50 +211,57 @@ function timeChunk(ary, fn, count) {
 /**
  * Custom console log modal in function
  */
-let fnStyle = {};
-function consoleLog(...messages) {
+function _consoleLog() {
+	let fnStyle = {};
 	const STYLES = [
-		'font-size: 14px; color: #8665D5',
-		'font-size: 14px; color: #406AD5',
-		'font-size: 14px; color: #E9AC32',
-		'font-size: 14px; color: #3AC1D9',
-		'font-size: 14px; color: #FF7979',
-		'font-size: 14px; color: #39D084',
-		'font-size: 14px; color: #FF8E66',
-		'font-size: 14px; color: #44B1E6',
-		'font-size: 14px; color: #9e5648',
-		'font-size: 14px; color: #406ad5',
-		'font-size: 14px; color: #purple',
-		'font-size: 14px; color: #red',
-		'font-size: 14px; color: #teal',
-		'font-size: 14px; color: #yellow'
-	];
-	if (window.console && window.debug !== false) {
-		const fnNameMatcher = /([^(]+)@|at ([^(]+) \(/;
-		const fnName = function (str) {
-			const regexResult = fnNameMatcher.exec(str);
-			return regexResult[1] || regexResult[2];
-		};
-		const logLines = (new Error().stack).split('\n');
-		const callerName = fnName(logLines[2]);
+				'font-size: 14px; color: #8665D5',
+				'font-size: 14px; color: #406AD5',
+				'font-size: 14px; color: #E9AC32',
+				'font-size: 14px; color: #3AC1D9',
+				'font-size: 14px; color: #FF7979',
+				'font-size: 14px; color: #39D084',
+				'font-size: 14px; color: #FF8E66',
+				'font-size: 14px; color: #44B1E6',
+				'font-size: 14px; color: #9e5648',
+				'font-size: 14px; color: #406ad5',
+				'font-size: 14px; color: #purple',
+				'font-size: 14px; color: #red',
+				'font-size: 14px; color: #teal',
+				'font-size: 14px; color: #yellow'
+			],
+			FORMAT = '%c%s';
+	return function (...messages) {
 
-		if (!fnStyle[callerName]) {
-			fnStyle[callerName] = STYLES[Object.keys(fnStyle).length % STYLES.length];
-		}
+		if (window.debug !== false) {
+			const fnNameMatcher = /([^(]+)@|at ([^(]+) \(/;
+			const fnName = function (str) {
+				const regexResult = fnNameMatcher.exec(str);
+				return regexResult[1] || regexResult[2];
+			};
+			const logLines = (new Error().stack).split('\n');console.table(logLines);
+			const callerName = fnName(logLines[2]);
 
-		if (fnStyle.lastType !== callerName) {
-			console.groupEnd();
-			console.group(callerName);
-			fnStyle.lastType = callerName;
-		}
+			if (!fnStyle[callerName]) {
+				fnStyle[callerName] = STYLES[Object.keys(fnStyle).length % STYLES.length];
+			}
 
-		if (callerName !== null) {
-			console.log('%c%s', fnStyle[callerName], `${callerName}:`, ...messages);
-		} else {
-			console.log(...messages);
+			if (fnStyle.lastType !== callerName) {
+				console.groupEnd();
+				console.group(callerName);
+				fnStyle.lastType = callerName;
+			}
+
+			if (callerName !== null) {
+				console.log(FORMAT, fnStyle[callerName], `${callerName}:`, ...messages);
+			} else {
+				console.log(...messages);
+			}
+			return callerName;
 		}
 	}
 }
+
+const consoleLog = _consoleLog();
 
 /**
  * Dynamic set callback function in window

@@ -4,7 +4,7 @@
   "discription": "YX-JS-ToolKit is a toolkit for js common functions.",
   "main": "pages/index.html",
   "scripts": {
-    "jest:test": "jest test/components --coverage --color"
+    "jest:app": "jest test/app --coverage --color"
   },
   "repository": {
     "type": "git",

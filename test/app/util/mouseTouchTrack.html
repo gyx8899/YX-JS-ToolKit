@@ -53,7 +53,7 @@
 
 <!-- Script Common *** JS -->
 <!--<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>-->
-<script src="../../dist/assets/js/common.min.js"></script>
+<script src="../../../dist/assets/js/common.min.js"></script>
 
 <!-- Script Config *** JS -->
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
@@ -64,9 +64,10 @@
 	YX.Util.event.mouseTouchTrack(document.getElementById('target'), YX.Util.tool.consoleLog);
 
 	function testLog(a, b, c, d){
-		YX.Util.tool.consoleLog(...arguments);
+		return YX.Util.tool.consoleLog(...arguments);
 	}
-	testLog(1, '2', [3, '3'], {4: 44});
+	var result = testLog(1, '2', [3, '3'], {4: 44});
+	console.log(result);
 </script>
 
 </body>
