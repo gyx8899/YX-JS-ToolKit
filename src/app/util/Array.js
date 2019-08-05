@@ -28,7 +28,7 @@ function getArrayString(array) {
 			arrayItem = JSON.stringify(arrayItem);
 		}
 		return arrayItem.toString();
-	}).join(',');
+	}).join(', ');
 }
 
 /**

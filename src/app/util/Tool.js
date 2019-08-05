@@ -1,5 +1,3 @@
-import {getArrayString} from "./Array";
-
 /**
  * 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
  *
@@ -212,11 +210,10 @@ function timeChunk(ary, fn, count) {
 
 /**
  * Custom console log modal in function
- * @param fnArguments
  */
-let consoleLogTypes = {};
-function consoleLog(fnArguments) {
-	let typeStyle = [
+let fnStyle = {};
+function consoleLog(...messages) {
+	const STYLES = [
 		'font-size: 14px; color: #8665D5',
 		'font-size: 14px; color: #406AD5',
 		'font-size: 14px; color: #E9AC32',
@@ -233,27 +230,29 @@ function consoleLog(fnArguments) {
 		'font-size: 14px; color: #yellow'
 	];
 	if (window.console && window.debug !== false) {
-		let fnName = fnArguments.callee ? fnArguments.callee.name : '',
-				fnArgumentsArray = Array.prototype.slice.call(fnArguments, 0),
-				fnArgumentsString = getArrayString(fnArgumentsArray),
-				argumentsArray = Array.prototype.slice.call(arguments, 0),
-				surplusArgumentString = argumentsArray.length > 1 && argumentsArray.shift() && getArrayString(argumentsArray);
-		if (!consoleLogTypes[fnName]) {
-			consoleLogTypes[fnName] = {
-				typeCount: 0,
-				typeInfo: {}
-			};
+		const fnNameMatcher = /([^(]+)@|at ([^(]+) \(/;
+		const fnName = function (str) {
+			const regexResult = fnNameMatcher.exec(str);
+			return regexResult[1] || regexResult[2];
+		};
+		const logLines = (new Error().stack).split('\n');
+		const callerName = fnName(logLines[2]);
+
+		if (!fnStyle[callerName]) {
+			fnStyle[callerName] = STYLES[Object.keys(fnStyle).length % STYLES.length];
 		}
-		if (!consoleLogTypes[fnName].typeInfo[argumentsArray[0]]) {
-			consoleLogTypes[fnName].typeInfo[argumentsArray[0]] = typeStyle[consoleLogTypes[fnName].typeCount];
-			consoleLogTypes[fnName].typeCount++;
-		}
-		if (consoleLogTypes.lastType !== fnName) {
+
+		if (fnStyle.lastType !== callerName) {
 			console.groupEnd();
-			console.group(fnName);
-			consoleLogTypes.lastType = fnName;
+			console.group(callerName);
+			fnStyle.lastType = callerName;
 		}
-		window.console.log('%c%s', consoleLogTypes[fnName].typeInfo[argumentsArray[0]], fnName + (fnName ? ': (' : '') + fnArgumentsString + (fnArgumentsString ? ') ' : ' ') + surplusArgumentString);
+
+		if (callerName !== null) {
+			console.log('%c%s', fnStyle[callerName], `${callerName}:`, ...messages);
+		} else {
+			console.log(...messages);
+		}
 	}
 }
 

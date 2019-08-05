@@ -52,7 +52,8 @@
 </main>
 
 <!-- Script Common *** JS -->
-<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>
+<!--<script src="https://gyx8899.github.io/YX-JS-ToolKit/dist/assets/js/common.min.js"></script>-->
+<script src="../../dist/assets/js/common.min.js"></script>
 
 <!-- Script Config *** JS -->
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
@@ -60,8 +61,12 @@
 <!-- Script Demo *** JS -->
 <script data-toggle="previewCode" data-target="#demoWrap" type="text/javascript">
 	// Demo's JS here
-	mouseTouchTrack(document.getElementById('target'), consoleLog);
+	YX.Util.event.mouseTouchTrack(document.getElementById('target'), YX.Util.tool.consoleLog);
 
+	function testLog(a, b, c, d){
+		YX.Util.tool.consoleLog(...arguments);
+	}
+	testLog(1, '2', [3, '3'], {4: 44});
 </script>
 
 </body>
