@@ -1,0 +1,12 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "excel2json-new": "node ./demo/excel2json.js"
+  },
+  "dependencies": {
+    "node-xlsx": "^0.15.0"
+  }
+}
