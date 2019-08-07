@@ -238,7 +238,7 @@ function _consoleLog() {
 				const regexResult = fnNameMatcher.exec(str);
 				return regexResult[1] || regexResult[2];
 			};
-			const logLines = (new Error().stack).split('\n');console.table(logLines);
+			const logLines = (new Error().stack).split('\n');
 			const callerName = fnName(logLines[2]);
 
 			if (!fnStyle[callerName]) {
