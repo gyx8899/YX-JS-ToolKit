@@ -63,30 +63,32 @@ function getNodeArgs() {
 	return args;
 }
 
-function getDiffFolderFileNames(sourceFolder, destFolder) {
-	let sourceFiles = getDirectoryFileNames(sourceFolder),
-			destFiles = getDirectoryFileNames(destFolder);
-	let sourceFileNames = new Set(sourceFiles.map((name) => {
-						return name.slice(0, name.lastIndexOf('.'));
-					})),
-			destFileNames = new Set(destFiles.map((name) => {
-						return name.slice(0, name.lastIndexOf('.'));
-					}));
-	let difference = new Set(
-	    [...sourceFileNames].filter(x => !destFileNames.has(x)));
-	return Array.from(difference).map(filename => {
-		for (let i = 0; i < sourceFiles.length; i++) {
-			if (sourceFiles[i].indexOf(filename) === 0) {
-				return sourceFiles[i];
-			}
-		}
-	});
+function getNameFromFileName(fileName) {
+	return fileName.slice(0, fileName.lastIndexOf('.'));
 }
 
-module.exports.writeDataToFile = writeDataToFile;
-module.exports.readDataFromFile = readDataFromFile;
-module.exports.getDirectoryList = getDirectoryList;
-module.exports.getDirectoryFileNames = getDirectoryFileNames;
-module.exports.getDirectoryFolderNames = getDirectoryFolderNames;
-module.exports.getNodeArgs = getNodeArgs;
-module.exports.getDiffFolderFileNames = getDiffFolderFileNames;
+function getDiffFolderFileNames(sourceFolder, destFolder) {
+	let sourceFileNames = getDirectoryFileNames(sourceFolder),
+			destFileNames = getDirectoryFileNames(destFolder),
+			destFileMap = {},
+			resultFileNames = [];
+	for (let i = 0; i < destFileNames.length; i++) {
+		destFileMap[getNameFromFileName(destFileNames[i])] = destFileNames[i];
+	}
+	for (let i = 0; i < sourceFileNames.length; i++) {
+		if (!destFileMap[getNameFromFileName(sourceFileNames[i])]) {
+			resultFileNames.push(sourceFileNames[i]);
+		}
+	}
+	return resultFileNames;
+}
+
+module.exports = {
+	writeDataToFile,
+	readDataFromFile,
+	getDirectoryList,
+	getDirectoryFileNames,
+	getDirectoryFolderNames,
+	getNodeArgs,
+	getDiffFolderFileNames
+};

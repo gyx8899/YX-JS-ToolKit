@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "excel2json-new": "node ./demo/excel2json.js"
+    "excel2json": "node ./demo/excel2json.js"
   },
   "dependencies": {
     "node-xlsx": "^0.15.0"
