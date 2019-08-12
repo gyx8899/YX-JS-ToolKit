@@ -97,8 +97,7 @@ class _Component extends Component {
 
 	// 不常用
 	/**
-	 * 如果 shouldComponentUpdate() 返回 false，则不会调用 render()。
-	 * 如果 shouldComponentUpdate() 返回 false，则不会调用 componentDidUpdate()。
+	 * 如果 shouldComponentUpdate() 返回 false，则不会调用 render()，componentDidUpdate()。
 	 * 当 props 或 state 发生变化时，shouldComponentUpdate() 会在渲染执行之前被调用。
 	 * 返回值默认为 true。首次渲染或使用 forceUpdate() 时不会调用该方法。
 	 */

@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+const render = (Root = App) => {
+	ReactDOM.render(
+			<Root/>,
+			document.getElementById('root')
+	);
+};
+
 /***
  * ReactDOM.render(element, container[, callback])
  * ReactDOM.hydrate(element, container[, callback])
@@ -14,3 +17,15 @@ ReactDOM.render(
  * ReactDOM.findDOMNode(component)
  * ReactDOM.createPortal(child, container)
  */
+
+render();
+
+if (process.env.NODE_ENV === 'development') {
+	if (module.hot) {
+		module.hot.accept('./App', () => {
+			console.log('Hot reload just happened');
+			const NextApp = require('./App').default;
+			render(NextApp);
+		});
+	}
+}

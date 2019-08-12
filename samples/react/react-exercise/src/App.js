@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 // import Counter from './components/Counter';
 import Counter from './hook/Counter';
+import SearchResult from './hook/SearchResult';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <Counter />
+        <SearchResult/>
       </div>
     );
   }

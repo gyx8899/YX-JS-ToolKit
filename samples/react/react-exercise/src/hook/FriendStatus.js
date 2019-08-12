@@ -1,7 +1,7 @@
-import React, {useStatus, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 
 function FriendStatus(props) {
-	const [isOnline, setIsOnline] = useStatus(null);
+	const [isOnline, setIsOnline] = useState(null);
 
 	useEffect(() => {
 		function handleStatusChange(state) {
