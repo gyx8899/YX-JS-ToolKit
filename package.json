@@ -67,6 +67,7 @@
     "vue-jest": "^3.0.4"
   },
   "dependencies": {
+    "create-next-app-cli": "^0.1.0",
     "jquery": "^3.4.1"
   }
 }
