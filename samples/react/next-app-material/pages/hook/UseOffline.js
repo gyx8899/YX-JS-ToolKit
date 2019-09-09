@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 
 function useOffline() {
-	const [isOffline, setOffline] = useState(false);
+	const [isOffline, setOffline] = useState(!navigator.onLine);
 	const [isReOnline, setReOnline] = useState(false);
 
 	const onOffline = useCallback(() => {
@@ -28,15 +28,4 @@ function useOffline() {
 	return [isOffline, isReOnline];
 }
 
-function App () {
-	const [isOffline, isReOnline] = useOffline();
-
-	return (
-			<div>
-				<div>{isOffline ? '>Sorry, you are offline ...' : 'You are online!'}</div>
-				<div>{isReOnline ? '>You are Re-online ...' : ''}</div>
-			</div>
-	);
-}
-
-export default App;
+export default useOffline;
