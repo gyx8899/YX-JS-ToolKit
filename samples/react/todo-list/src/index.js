@@ -1,14 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import store from './redux/store';
+import configureStore from './redux/store';
+
+import {PersistGate} from "redux-persist/integration/react";
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 
+const renderLoading = () => {
+	return (
+			<div style={{textAlign: 'center', padding: '100px 0'}}>
+				Loading...
+			</div>
+	);
+};
+const { store, persistor } = configureStore();
+
 ReactDOM.render(
 		<Provider store={store}>
-			<App />
+			<PersistGate loading={renderLoading()} persistor={persistor}>
+				<App />
+			</PersistGate>
 		</Provider>,
 		document.getElementById('root')
 );
