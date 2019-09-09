@@ -1,4 +1,5 @@
 import React, {Fragment, useState} from "react";
+import {List, ListItem, Link} from '@material-ui/core';
 import useFetchData from "../hook/UseFetchData";
 
 function App() {
@@ -25,13 +26,15 @@ function App() {
 								<div>Loading ...</div>
 						)
 						: (
-								<ul>
+								<List>
 									{data.hits.map(item => (
-											<li key={item.objectID}>
-												<a href={item.url || item.story_url}>{item.title || item.story_title}</a>
-											</li>
+											<ListItem button key={item.objectID}>
+												<Link color="primary" underline="hover">
+													<a href={item.url || item.story_url}>{item.title || item.story_title}</a>
+												</Link>
+											</ListItem>
 									))}
-								</ul>
+								</List>
 						)}
 			</Fragment>
 	);
