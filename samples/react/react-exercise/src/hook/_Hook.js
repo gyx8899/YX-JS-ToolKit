@@ -9,6 +9,11 @@
  * 1. 只能在函数最外层调用 Hook。不要在循环、条件判断或者子函数中调用。
  * 2. 只能在 React 的函数组件中调用 Hook。不要在其他 JavaScript 函数中调用。
  * （还有一个地方可以调用 Hook —— 就是自定义的 Hook 中)
+ *
+ * React Hooks被开发出来主要是这三个理由：
+ * 难以复用类组件之间的逻辑
+ * 生命周期中经常包含一些莫名其妙的不相关逻辑
+ * 类组件难以被机器和人理解
  * */
 
 /**
@@ -55,6 +60,11 @@
  * 1. 接收一个 context 对象（React.createContext 的返回值）并返回该 context 的当前值。当前的 context 值由上层组件中距离当前组件最近的 <MyContext.Provider> 的 value prop 决定。
  * 2. 当组件上层最近的 <MyContext.Provider> 更新时，该 Hook 会触发重渲染，并使用最新传递给 MyContext provider 的 context value 值。
  * 3. 别忘记 useContext 的参数必须是 context 对象本身：
+ *
+ * context API现在是React的一部分，useContext仅仅是让你不用包裹也可以使用context。并且有一些开发这用context来管理整个应用的状态，这不是设计context的目的。通过文档可以看出：
+ * Context is designed to share data that can be considered “global” for a tree of React components, such as the current authenticated user, theme, or preferred language.
+ * Context是为了共享数据而被设计出来的，可以认为是React组件树的“全局”，比如当前已授权的用户、主题或者首选的语言。换句话说，就是那些预计不会频繁更新的东西。
+ * 文档中也建议有节制地使用context，因为“它会使得组件难以复用”。他们也提醒开发者，如果开发者不小心，context很容易触发不必要的重复渲染。
  * */
 
 /**
