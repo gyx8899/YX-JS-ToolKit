@@ -13,7 +13,7 @@ function getFileNameFromURL(url) {
 	};
 }
 
-function getURLParamByName(name, url = location.url.search) {
+function getURLParamByName(name, url = location.search) {
 	if (!!URLSearchParams) {
 		getURLParamByName = (name, url) => {
 			return new URLSearchParams(url).get(name);
