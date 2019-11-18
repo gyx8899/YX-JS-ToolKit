@@ -63,20 +63,21 @@
 <!-- Script Config *** JS -->
 <script src="https://gyx8899.github.io/YX-WebThemeKit/assets/js/yx-theme-config.min.js"></script>
 
-<script src="mvvm.js"></script>
+<script type="module" src="../../../src/app/components/MVVM.js"></script>
 
-<script>
+<script type="module">
+	import MVVM from '../../../src/app/components/MVVM.js';
 	let vm = null;
 	document.addEventListener('DOMContentLoaded', () => {
 		let opt = {el: '#app', data:{name: 'steper kuo', age: 30}};
-		vm = new Vue(opt);
+		vm = new MVVM(opt);
 
 		setTimeout(() => {
 			vm.data.age = 21;
 		}, 2000);
 
 		let config = {el: '#rating', data: {name: 'PG15', desc: '12324', showClass: 'show-rating'}};
-		let ratingVM = new Vue(config);
+		let ratingVM = new MVVM(config);
 
 		setTimeout(() => {
 			ratingVM.data.name = '18';
