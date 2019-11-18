@@ -1,1 +1,0 @@
-const MAX=3;
