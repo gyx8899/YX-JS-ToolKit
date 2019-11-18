@@ -1,5 +1,5 @@
-import ObserverNode from './ObserverNode'
-import ObserverClassName from './ObserverClassName'
+import ObserverNode from './ObserverNode.js'
+import ObserverClassName from './ObserverClassName.js'
 
 /**!
  * MVVM v1.0.1.20190416

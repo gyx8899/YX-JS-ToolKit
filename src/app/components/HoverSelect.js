@@ -1,5 +1,5 @@
-import {addClass, removeClass, hasClass} from './ClassName';
-import {getElements} from "../util/Element";
+import {addClass, removeClass, hasClass} from './ClassName.js';
+import {getElements} from "../util/Element.js";
 
 /**
  * HoverSelect: v1.0.2.20190407

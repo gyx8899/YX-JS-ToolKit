@@ -1,4 +1,4 @@
-import {call} from '../util/Tool';
+import {call} from '../util/Tool.js';
 
 class SharedWorkers {
 	constructor(options) {

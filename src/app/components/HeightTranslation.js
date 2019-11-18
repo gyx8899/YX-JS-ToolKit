@@ -1,5 +1,5 @@
-import {addClass, removeClass} from "./ClassName";
-import {insertStyleToHead} from "../util/Element";
+import {addClass, removeClass} from "./ClassName.js";
+import {insertStyleToHead} from "../util/Element.js";
 
 class HeightTranslation {
 	style = `
