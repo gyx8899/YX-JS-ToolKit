@@ -14,7 +14,9 @@ var PRECACHE_URLS = ['index.html', './', // Alias for index.html
 self.addEventListener('install', function (event) {
 	event.waitUntil(caches.open(PRECACHE).then(function (cache) {
 		return cache.addAll(PRECACHE_URLS);
-	}).then(self.skipWaiting()));
+	}).then(function () {
+		return self.skipWaiting();
+	}));
 });
 
 // The activate handler takes care of cleaning up old caches.
