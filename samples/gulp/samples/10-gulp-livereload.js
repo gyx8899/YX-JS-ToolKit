@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload');
 
 gulp.task('default', function () {
-		gulp.src('../livereload/*.less').pipe(less()).pipe(gulp.dest('../livereload/css')).pipe(livereload());
+		gulp.src('../livereload/src/*.less').pipe(less()).pipe(gulp.dest('../livereload/dist')).pipe(livereload());
 });
 
 //特别注意：若编译less的时候，同时执行其他操作，有可能引起页面刷新，而不是将样式植入页面

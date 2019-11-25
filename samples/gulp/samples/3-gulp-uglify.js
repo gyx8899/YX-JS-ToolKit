@@ -8,7 +8,7 @@ var gulp = require('gulp'),
     gulputil = require('gulp-util');
 
 gulp.task('minijs', function () {
-	gulp.src(['../minify/*.js', '!../minify/ignore/{script-hello}.js']).pipe(uglify({
+	gulp.src(['../minify/src/*.js', '!../minify/src/{script-hello}.js']).pipe(uglify({
 		// mangle: true,
 		// Not support except
 		mangle: {},
@@ -16,7 +16,7 @@ gulp.task('minijs', function () {
 		// Not support preserveComments
 	})).on('error', function (err) {
 		gulputil.log(gulputil.log(gulputil.colors.red('[Error]'), err.toString()));
-	}).pipe(gulp.dest('../minify/min'));
+	}).pipe(gulp.dest('../minify/dist'));
 });
 
 //# sourceMappingURL=3-gulp-uglify.js.map

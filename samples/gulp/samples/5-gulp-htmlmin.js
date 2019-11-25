@@ -16,7 +16,7 @@ gulp.task('htmlmin', function () {
 		minifyJS: true, //压缩页面JS
 		minifyCSS: true //压缩页面CSS
 	};
-	gulp.src('../htmlmin/*.html').pipe(htmlmin(options)).pipe(gulp.dest('../htmlmin/min'));
+	gulp.src('../htmlmin/src/*.html').pipe(htmlmin(options)).pipe(gulp.dest('../htmlmin/dist'));
 });
 
 //# sourceMappingURL=5-gulp-htmlmin.js.map

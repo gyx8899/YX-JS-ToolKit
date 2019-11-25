@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Export</title>
+</head>
+<body>
+
+<script type="module" src="./export.js"></script>
+<script type="module">
+	import {color, id, updateId} from './export.js';
+
+	console.log(id);
+	updateId('3333');
+	console.log(id);
+
+	console.log('color', color);
+	// color = '111111';  // Uncaught TypeError: Assignment to constant variable.
+	// console.log('color2', color);
+
+</script>
+</body>
+</html>

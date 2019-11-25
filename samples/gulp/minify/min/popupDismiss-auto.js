@@ -1,1 +1,0 @@
-function popupDismissCallback(){return new popupDismiss}loadScript("https://gyx8899.github.io/YX-JS-ToolKit/popupDismiss/jsPlugin/popupDismiss.js",popupDismissCallback);

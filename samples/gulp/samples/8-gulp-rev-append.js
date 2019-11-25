@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     rev = require('gulp-rev-append');
 
 gulp.task('default', function () {
-		gulp.src('../revappend/index.html').pipe(rev()).pipe(gulp.dest('../revappend/html'));
+		gulp.src('../revappend/src/index.html').pipe(rev()).pipe(gulp.dest('../revappend/dist'));
 });
 
 //# sourceMappingURL=8-gulp-rev-append.js.map

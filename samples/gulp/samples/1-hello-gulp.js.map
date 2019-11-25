@@ -1,1 +1,0 @@
-{"version":3,"sources":["1-hello-gulp.es6"],"names":[],"mappings":";;AAAA,IAAI,OAAO,QAAQ,MAAR,CAAX;;AAEA;AACA,KAAK,IAAL,CAAU,SAAV,EAAqB,YAAY;AAChC,SAAQ,GAAR,CAAY,oBAAZ;AACA,CAFD","file":"1-hello-gulp.js","sourcesContent":["let gulp = require('gulp');\r\n\r\n// Hello world\r\ngulp.task('default', function () {\r\n\tconsole.log(\"Gulp: hello world!\");\r\n});"]}

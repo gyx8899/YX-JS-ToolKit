@@ -3,10 +3,11 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 
 # testing
-/coverage
+coverage/
+*/gulp/*/dist/
 
 # production
 /build
@@ -18,8 +19,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
+package-lock.json
 
 # IDEA
 .idea/
-src/yarn.lock
 YX-JS-ToolKit.iml
