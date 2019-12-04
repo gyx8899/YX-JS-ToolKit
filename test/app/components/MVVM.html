@@ -34,16 +34,16 @@
 				<hr>
 				<div class="demo-list">
 					<div class="row">
-						<div id='app'>
-							<h3>姓名</h3>
-							<p>{{name}}</p>
-							<h3>年龄</h3>
+						<div id='app' class="{{idClass}}" data-id="{{dataId}}">
+							<h3 class="name {{toggleClass}}">姓名</h3>
+							<p data-id="{{dataId}}" data-toggle="{{dataToggle}}">{{name}}</p>
+							<h3 class="{{containerClass}}">年龄</h3>
 							<p>{{age}}</p>
 						</div>
-						<div id="rating" class="{{showClass}}">
-							<div class="side-bar"></div>
+						<div id="rating">
+							<div class="side-bar {{showClass}}"></div>
 							<div class="rating-content">
-								<div class="rating-container">
+								<div class="rating-container {{containerClass}}">
 									<div class="rating-name">{{name}}</div>
 									<div class="rating-divider"></div>
 									<div class="rating-desc">{{desc}}</div>
@@ -69,20 +69,25 @@
 	import MVVM from '../../../src/app/components/MVVM.js';
 	let vm = null;
 	document.addEventListener('DOMContentLoaded', () => {
-		let opt = {el: '#app', data:{name: 'steper kuo', age: 30}};
+		let opt = {el: '#app', data:{name: 'steper kuo', age: 11, idClass: 'id-11111', dataId: '111111', dataToggle: 'string-111111', toggleClass: 'class-111111', containerClass: 'container-1111'}};
 		vm = new MVVM(opt);
 
 		setTimeout(() => {
-			vm.data.age = 21;
-		}, 2000);
+			vm.data.age = 22;
+			vm.data.idClass = 'id-222222';
+			vm.data.dataId = 222222;
+			vm.data.toggleClass = 'class-222222';
+			vm.data.containerClass = 'container-222222';
+			vm.data.dataToggle = 'string-2222222';
+		}, 10000);
 
-		let config = {el: '#rating', data: {name: 'PG15', desc: '12324', showClass: 'show-rating'}};
+		let config = {el: '#rating', data: {name: 'name-11111', desc: 'desc-111111', showClass: 'show-rating', containerClass: 'container-11111'}};
 		let ratingVM = new MVVM(config);
 
 		setTimeout(() => {
-			ratingVM.data.name = '18';
-			ratingVM.data.desc = '000000';
-		});
+			ratingVM.data.name = 'name-22222';
+			ratingVM.data.desc = 'desc-22222';
+		}, 3000);
 	}, false);
 </script>
 </body>
