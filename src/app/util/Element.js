@@ -1,4 +1,4 @@
-import {hasClass, addClass, removeClass, toggleClass} from "../components/ClassName";
+import {hasClass, addClass, removeClass, toggleClass} from "./ClassName";
 import {uniqueArray} from "./Array";
 
 /**

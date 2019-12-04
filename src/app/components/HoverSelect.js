@@ -1,4 +1,4 @@
-import {addClass, removeClass, hasClass} from './ClassName.js';
+import {addClass, removeClass, hasClass} from '../util/ClassName.js';
 import {getElements} from "../util/Element.js";
 
 /**

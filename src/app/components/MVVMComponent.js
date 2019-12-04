@@ -1,5 +1,5 @@
 import MVVM from './MVVM.js';
-import {addClass, removeClass} from './ClassName.js';
+import {addClass, removeClass} from '../util/ClassName.js';
 import {addElement} from '../util/Element.js';
 
 class MVVMComponent

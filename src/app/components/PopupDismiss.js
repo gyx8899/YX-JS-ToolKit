@@ -1,5 +1,5 @@
 import Event from './Event.js';
-import {addClass, removeClass} from './ClassName.js';
+import {addClass, removeClass} from '../util/ClassName.js';
 
 /**!
  * Javascript plugin: popupDismiss v5.5.4.20190326
