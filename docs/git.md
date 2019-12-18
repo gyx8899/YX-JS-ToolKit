@@ -35,7 +35,8 @@ git commit
 # 2. 输入改动 Comment 注解
 # 3. 点击键盘键 Esc
 # 4. 鼠标点击 cmd 区域，将焦点重新聚焦 cmd
-# 5. Shift + Z, Shift + Z, 两次退出 Comment 编辑模式
+# 5.1 Shift + Z, Shift + Z, 两次退出 Comment 编辑模式
+# 5.2 vim 模式 - 1. ESC, 2. :set noreadonly 3. :wq  (root 权限 :wq!)
 
 # 推送本地仓库改动到中央仓库
 git push
