@@ -35,7 +35,7 @@ git commit
 # 2. 输入改动 Comment 注解
 # 3. 点击键盘键 Esc
 # 4. 鼠标点击 cmd 区域，将焦点重新聚焦 cmd
-# 5.1 Shift + Z, Shift + Z, 两次退出 Comment 编辑模式
+# 5.1 dos 模式 - Shift + Z, Shift + Z, 两次退出 Comment 编辑模式
 # 5.2 vim 模式 - 1. ESC, 2. :set noreadonly 3. :wq  (root 权限 :wq!)
 
 # 推送本地仓库改动到中央仓库
@@ -220,7 +220,46 @@ git reflog master
 
 - tag
 ```shell script
+# 查看 History 中已有的 tag
 git tag 
+v0.1
+v1.3
+
+# 查看特定模式的 tag
+git tag -l 'v1.8.5*'
+v1.8.5
+v1.8.5-rc0   # rc = Release Candidate
+v1.8.5-rc1
+v1.8.5.1
+v1.8.5.2
+
+# 两种标签：轻量标签（简单 - lightweight）和附注标签（详细 - annotated）
+# 轻量标签
+git tag v1.4.0
+# 附注标签
+git tag -a v1.4.1 -m "my version v1.4.1"
+
+# 查看具体标签信息
+git show v1.4.1
+
+# 某次提交忘记打标签，后期补打标签
+# 1. 查找提交记录
+git log --pretty=oneline
+9fceb02d0ae598e95dc970b74767f19372d61af8 updated rakefile
+# 2. 补打标签 + 校验和（或部分校验和）
+git tag -a v1.4.2 9fceb02
+
+# 共享标签，即推送标签到远程仓库
+git push orgin v1.4.2   # 推送指定的标签
+git push orgin --tags   # 推送所有本地的标签
+
+# 删除本地标签
+git tag -d v1.4.1
+# 将删除的本地标签，推送到远程仓库
+git push origin :refs/tags/v1.4.1
+
+# checkout 分支到指定 tag
+git checkout -b version2 v2.0.0
 ```
 
 - cherry-pick
