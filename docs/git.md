@@ -69,6 +69,10 @@ git checkout branch_name
 git checkout -b branch_name
 # 删除分支
 git branch -d branch_name
+# 查看分支 (a: all, r: remote, show-branch: and commits)
+git branch -a
+git branch -r
+git show-branch
 
 ## 合并分支
 git merge feature1
