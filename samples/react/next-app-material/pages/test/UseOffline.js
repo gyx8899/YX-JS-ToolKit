@@ -2,7 +2,7 @@ import React from "react";
 import dynamic from 'next/dynamic';
 
 const DynamicComponentWithNoSSR = dynamic(
-  () => import('./_UseOffline.js'),
+  () => import('./_useOffline.js'),
   { ssr: false }
 );
 

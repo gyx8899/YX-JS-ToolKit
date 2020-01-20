@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import useOffline from '../hook/UseOffline';
+import useOffline from '../hook/useOffline';
 import {SnackbarProvider, useSnackbar} from 'notistack';
 
 function App() {
