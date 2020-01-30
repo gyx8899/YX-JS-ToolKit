@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import useTabHidden from '../hook/UseTabHidden';
+import useTabHidden from '../hook/useTabHidden';
 
 function App() {
 	const [logs, setLogs] = useState([]);

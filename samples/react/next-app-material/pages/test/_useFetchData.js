@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from "react";
 import {List, ListItem, Link} from '@material-ui/core';
-import useFetchData from "../hook/UseFetchData";
+import useFetchData from "../hook/useFetchData";
 
 function App() {
 	const searchUrl = `https://hn.algolia.com/api/v1/search?query=`;
