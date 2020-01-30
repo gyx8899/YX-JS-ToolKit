@@ -1,5 +1,12 @@
 # Git 命令集
 
+- 初始化一个空的 Git 仓库 demo
+```shell script
+mkdir demo
+cd demo
+git init
+```
+
 - 克隆项目基本操作
 ```shell script
 git clone https://github.com/gyx8899/YX-JS-ToolKit.git
@@ -7,6 +14,8 @@ cd YX-JS-ToolKit
 
 # 查看本地仓库内容状态
 git status
+# s-short b-branch
+git status -sb
 
 # 查看本地仓库提交记录
 git log
@@ -37,6 +46,9 @@ git commit
 # 4. 鼠标点击 cmd 区域，将焦点重新聚焦 cmd
 # 5.1 dos 模式 - Shift + Z, Shift + Z, 两次退出 Comment 编辑模式
 # 5.2 vim 模式 - 1. ESC, 2. :set noreadonly 3. :wq  (root 权限 :wq!)
+# 简化 commit 的命令 -m
+git commmit -m "Comment text"
+
 
 # 推送本地仓库改动到中央仓库
 git push
@@ -119,7 +131,7 @@ git push origin -d feature2
 ```shell script
 # 用这一次新的commit, 合并上一次 commit。进而达到修复上一次 commit 的 comment 内容
 git add .
-git commit --ammend
+git commit --amend
 
 # rebase --interactive 的缩写，交互式 rebase，
 git rebase -i HEAD^^
