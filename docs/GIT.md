@@ -283,3 +283,18 @@ git checkout -b version2 v2.0.0
 git cherry-pick [--edit] [-n] [-m parent-number] [-s] [-x] [--ff] [-S[<keyid>]] <commit>…​
 git cherry-pick (--continue | --skip | --abort | --quit)
 ```
+
+- Questions
+    - SSL_read: SSL_ERROR_SYSCALL, errno 10054
+```shell script
+YX-JS-ToolKit\docs>git push
+fatal: unable to access 'https://github.com/gyx8899/YX-JS-ToolKit.git/': Op
+enSSL SSL_read: SSL_ERROR_SYSCALL, errno 10054
+```
+```shell script
+git config http.sslVerify "false"
+git config --global http.sslVerify "false"
+git push
+Username:
+Password:
+```
