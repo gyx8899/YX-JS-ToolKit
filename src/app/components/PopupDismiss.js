@@ -2,7 +2,7 @@ import Event from './Event.js';
 import {addClass, removeClass} from '../util/ClassName.js';
 
 /**!
- * Javascript plugin: popupDismiss v5.5.4.20190326
+ * Javascript plugin: popupDismiss v5.6.0.20200201
  */
 class Util {
 	// Utils
@@ -141,41 +141,6 @@ class Util {
 			resultElement = document.querySelectorAll(elements);
 		}
 		return resultElement;
-	}
-
-	static getUrlQueryParams(url)
-	{
-		let query = {},
-				searchStr = url ? (url.indexOf('?') !== -1 ? url.split('?')[1] : '') : window.location.search.substring(1),
-				queryParams = searchStr.split("&");
-		for (let i = 0; i < queryParams.length; i++)
-		{
-			let queryParam = queryParams[i].split("=");
-			if (queryParam.length > 1)
-			{
-				query[queryParam[0]] = queryParam[1];
-			}
-		}
-		return query;
-	}
-
-	static getScriptByName(scriptName)
-	{
-		let allScripts = document.getElementsByTagName("script");
-
-		if (scriptName)
-		{
-			for (let i = 0; i < allScripts.length; i++)
-			{
-				let script = allScripts.item(i);
-
-				if (script.src && script.src.split('?')[0].match(scriptName))
-				{
-					return script;
-				}
-			}
-		}
-		return null;
 	}
 }
 
@@ -433,46 +398,5 @@ class PopupDismiss extends Event {
 		}
 	}
 }
-
-// Downward compatibility
-window.popupDismiss = (elements) => {
-	console.warn('popupDismiss.min.js: [Deprecation] popupDismiss() is deprecated. Please use new PopupDismiss(elements) instead.');
-	return new PopupDismiss(elements);
-};
-
-window.popupDismissDelegate = (elements) => {
-	console.warn('popupDismiss.min.js: [Deprecation] popupDismissDelegate() is deprecated. Please use new PopupDismiss(elements, true) instead.');
-	return new PopupDismiss(elements, true);
-};
-
-/**
- * Auto init plugin if plugin.js?init=auto
- */
-(function () {
-	let pluginFileName = 'popupDismiss',
-			currentScript = Util.getScriptByName(pluginFileName);
-	if (!!currentScript)
-	{
-		let scriptParamInit = Util.getUrlQueryParams(currentScript['src'])['init'],
-				initPopupDismiss = () => {
-					window.popupDismisser = new PopupDismiss();
-				};
-		if (scriptParamInit === 'auto')
-		{
-			if (document.readyState !== "complete")
-			{
-				document.addEventListener('DOMContentLoaded', initPopupDismiss);
-			}
-			else
-			{
-				initPopupDismiss();
-			}
-		}
-	}
-	else
-	{
-		console.warn('popupDismiss.min.js: [Notice] PopupDismiss auto-initialization failed with compatibility issue if import with "[url]?init=auto"!');
-	}
-})();
 
 export default PopupDismiss;

@@ -1,67 +1,128 @@
 /**!
- * ResponsiveIFrame.js v1.0.0.20191025
+ * ResponsiveIFrame.js v1.1.4.20200213
+ */
+/**
+ * Webpack devDependency: babel-plugin-transform-runtime
+ * Webpack babel-loader plugins: "transform-runtime"
+ * Such as:
+ * {
+		test: /\.js$/,
+		exclude: /node_modules/,
+		use: {
+			loader: 'babel-loader',
+			options: {
+				presets: ["env", "stage-1"],
+				plugins: [
+					"transform-runtime"
+				]
+			}
+		}
  */
 
 class ResponsiveIFrame {
-	constructor() {
-		this.name = 'ResponsiveIFrame';
-		this.iframeIds = {};
-		this.listener = null;
-
-		this.iframeId = getURLParamByName(this.name);
-		if (this.iframeId) {
-			this.post();
+	constructor(selector, heightChangeCallback) {
+		this.heightChangeCallback = heightChangeCallback || (() => {});
+		const iframeElements = document.querySelectorAll(selector);
+		if (iframeElements && iframeElements.length) {
+			this._listeners = [];
+			[].forEach.call(iframeElements, (element) => {
+				this._listeners.push(this._listen(element));
+			});
 		}
 	}
 
-	listen(iframeId) {
-		if (!Object.keys(this.iframeIds).length) {
-			this.listener = this._listen();
+	destroy() {
+		if (this._listeners && this._listeners.length) {
+			this._listeners.forEach(_listener => _listener());
+			this._listeners = null;
 		}
-		this.iframeIds[iframeId] = document.getElementById(iframeId);
+	}
 
-		return () => {
-			delete this.iframeIds[iframeId];
+	_listen(iframeElement) {
+		const userAgent = navigator.userAgent;
+		const isIE11 = /Trident.*rv[ :]*11\./.test(userAgent);
+		const isEdge = userAgent.indexOf("Edge") > -1;
+		const isFireFox = userAgent.toLowerCase().indexOf('firefox') > -1;
 
-			if (!Object.keys(this.iframeIds).length) {
-				this.listener();
+		const _listenChange = (hasChange) => {
+			let iframeDocument = iframeElement.contentWindow.document;
+			const {scrollHeight, offsetHeight} = iframeDocument.body;
+			const {clientHeight: _clientHeight, scrollHeight: _scrollHeight, offsetHeight: _offsetHeight} = iframeDocument.documentElement;
+			let height = 0;
+			switch (hasChange) {
+				case undefined:
+					height = Math.max(scrollHeight, offsetHeight);
+					break;
+				case true:
+					height = Math.max(scrollHeight, offsetHeight, _offsetHeight);
+					break;
+				case false:
+					if (scrollHeight > _scrollHeight && isEdge) {
+						height = Math.max(offsetHeight, _offsetHeight, _scrollHeight);
+					} else {
+						height = Math.max(scrollHeight, offsetHeight, _offsetHeight, _clientHeight, _scrollHeight);
+					}
+					break;
+				default:
+					height = 0;
 			}
-		}
-	}
 
-	_listen() {
-		const msgEvent = (event) => {
-			let data = event.data;
-			if (typeof data === 'object') {
-				let {key, id, height} = data;
-				if (key === this.name && this.iframeIds[id]) {
-					this.iframeIds[id].height = height + 'px';
-				}
+			let heightValue = height + 'px';
+			if (iframeElement.getAttribute('height') !== heightValue || iframeElement.height !== heightValue) {
+				iframeElement.height = heightValue;
+				this.heightChangeCallback(height, iframeElement);
 			}
 		};
-		window.addEventListener('message', msgEvent);
-
-		return () => {
-			window.removeEventListener('message', msgEvent);
+		const listenChange = () => {
+			_listenChange();
+			let iframeDocEl = iframeElement.contentWindow.document.documentElement;
+			if (iframeDocEl.scrollHeight > iframeDocEl.clientHeight || isEdge) {
+				_listenChange(true);
+			}
+			if (iframeDocEl.scrollHeight > iframeDocEl.clientHeight || isEdge) {
+				_listenChange(false);
+			}
 		};
-	}
+		const listenChangeThrottle = throttle(listenChange, 100);
 
-	post() {
-		const _postMessage = (hasChange) => {
-			const body = document.body,
-					html = document.documentElement,
-					height = hasChange ? Math.max(body.scrollHeight, body.offsetHeight, html.offsetHeight) : Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-			const message = {
-				key: this.name,
-				id: this.iframeId,
-				height
-			};
-			parent.postMessage(message);
-		};
-		const postMessage = throttle(_postMessage, 100);
+		let hasListenLoadEvent = false;
 		let observer = null;
+		const observeIframe = () => {
+			listenChange();
+			let observeObj = iframeElement.contentWindow.document.body;
+			if (isIE11 || isEdge || isFireFox) {
+				observeObj.style.overflow = 'hidden';
+			}
+			observer = this._initObserve(observeObj, listenChange);
+		};
+		if (iframeElement.readyState !== "complete")
+		{
+			iframeElement.addEventListener('DOMContentLoaded', listenChange);
+			iframeElement.addEventListener('load', observeIframe);
+			hasListenLoadEvent = true;
+
+			iframeElement.readyState === undefined && listenChange();
+		}
+		else
+		{
+			observeIframe();
+		}
+		window.addEventListener('resize', listenChangeThrottle);
+
+		return () => {
+			observer && observer.disconnect();
+			if (hasListenLoadEvent) {
+				iframeElement.removeEventListener('DOMContentLoaded', listenChangeThrottle);
+				iframeElement.removeEventListener('load', observeIframe);
+			}
+			window.removeEventListener('resize', listenChangeThrottle);
+		};
+	}
+
+	_initObserve(element, mutationCallback) {
+		let _observer = null;
 		if (window.MutationObserver) {
-			observer = new MutationObserver((mutationsList) => {
+			_observer = new MutationObserver((mutationsList) => {
 				for (let mutation of mutationsList) {
 					let type = mutation.type;
 					switch (type) {
@@ -69,8 +130,8 @@ class ResponsiveIFrame {
 							if (mutation.addedNodes.length) {
 								[].forEach.call(mutation.addedNodes, (node) => {
 									if (node.tagName === 'IMG' || node.tagName === 'IFAME') {
-										node.addEventListener('load', _postMessage);
-										node.addEventListener('error', _postMessage);
+										node.addEventListener('load', mutationCallback);
+										node.addEventListener('error', mutationCallback);
 									}
 								});
 							}
@@ -87,42 +148,16 @@ class ResponsiveIFrame {
 					}
 				}
 				setTimeout(() => {
-					_postMessage(true);
-				}, 100);
+					mutationCallback();
+				}, 10);
 			});
-			observer.observe(document.body, {
+			_observer.observe(element, {
 				attributes: true,
 				childList: true,
 				subtree: true
 			});
 		}
-		window.addEventListener('load', postMessage);
-		window.addEventListener('resize', postMessage);
-
-		return () => {
-			observer && observer.disconnect();
-			window.removeEventListener('load', postMessage);
-			window.removeEventListener('resize', postMessage);
-		};
-	}
-}
-
-function getURLParamByName(name, url = location.search) {
-	if (!!URLSearchParams) {
-		return new URLSearchParams(url).get(name);
-	} else if (!!URL) {
-		return new URL(url).searchParams.get(name);
-	} else {
-		const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
-		// 获取地址栏的查询参数字符串
-		const search = url.indexOf('http') !== -1 ? url.split('?')[1] : url;
-		if (search) {
-			const r = decodeURIComponent(search.split('#')[0]).substring(1).match(reg);
-			if (r) {
-				return unescape(r[2]);
-			}
-		}
-		return '';
+		return _observer;
 	}
 }
 
