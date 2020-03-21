@@ -1,93 +1,75 @@
 /**
- * Event v1.1.2.20190724
+ * Event v1.1.3.20200321
  */
 class Event {
-	constructor()
-	{
-		this._cache = {};
-		this._unread = {};
+	constructor() {
+		this.cache = {};
+		this.unread = {};
 	}
 
-	on(key, fn, isFirst = false)
-	{
-		if (!this._cache[key])
-		{
-			this._cache[key] = [];
+	on(key, fn, isFirst = false) {
+		if (!this.cache[key]) {
+			this.cache[key] = [];
 		}
-		if (typeof fn === 'function')
-		{
-			this._cache[key][isFirst ? 'unshift' : 'push'](fn);
+		if (typeof fn === 'function') {
+			this.cache[key][isFirst ? 'unshift' : 'push'](fn);
 
-			let unReads = this._unread[key];
-			if (!!unReads)
-			{
-				unReads.forEach(args => {
+			const unReads = this.unread[key];
+			if (unReads) {
+				unReads.forEach((args) => {
 					this.trigger(key, ...args);
 				});
-				this._unread[key] = [];
-				delete this._unread[key];
+				this.unread[key] = [];
+				delete this.unread[key];
 			}
-		}
-		else
-		{
+		} else {
 			throw new Error(`Your listen on ${fn} is not one valid function!`);
 		}
 
 		return this;
 	}
 
-	off(key, fn)
-	{
-		let fns = this._cache[key];
-		if (fns !== undefined && fns.length !== 0)
-		{
-			let index = fns.indexOf(fn);
-			if (index >= 0)
-			{
-				this._cache[key].splice(index, 1);
+	off(key, fn) {
+		const fns = this.cache[key];
+		if (fns !== undefined && fns.length !== 0) {
+			const index = fns.indexOf(fn);
+			if (index >= 0) {
+				this.cache[key].splice(index, 1);
 			}
 		}
-		if (!fn)
-		{
-			delete this._cache[key];
+		if (!fn) {
+			delete this.cache[key];
 		}
 		return this;
 	}
 
-	once(key, fn)
-	{
-		let that = this,
-				newFn = function () {
-					fn.call(that, ...arguments);
-					that.off(key);
-				};
+	once(key, fn) {
+		const newFn = (...rest) => {
+			fn.call(this, ...rest);
+			this.off(key);
+		};
 		this.on(key, newFn);
 	}
 
-	trigger(key)
-	{
-		[].shift.call(arguments);
-		let args = [].slice.call(arguments),
-				cacheFns = this._cache[key];
-		if (!!cacheFns)
-		{
-			cacheFns.forEach(fn => {
+	trigger(_key, ...rest) {
+		const key = _key;
+		const args = [].slice.call(rest);
+		const cacheFns = this.cache[key];
+		if (cacheFns) {
+			cacheFns.forEach((fn) => {
 				fn.call(this, ...args);
 			});
-		}
-		else
-		{
-			this._unread[key] = this._unread[key] || [];
-			this._unread[key].push(arguments);
+		} else {
+			this.unread[key] = this.unread[key] || [];
+			this.unread[key].push(rest);
 		}
 
 		return this;
 	}
 
-	destroy()
-	{
-		Object.keys(this._cache).forEach(key => delete this._cache[key]);
-		Object.keys(this._unread).forEach(key => delete this._unread[key]);
+	destroy() {
+		Object.keys(this.cache).forEach((key) => delete this.cache[key]);
+		Object.keys(this.unread).forEach((key) => delete this.unread[key]);
 	}
 }
 
