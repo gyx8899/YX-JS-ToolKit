@@ -20,7 +20,7 @@ describe('Util Tool', function () {
 			return consoleLog(...arguments);
 		}
 		let args = [1, '2', [3, '3'], {4: 44}];
-		expect(testLog(...args)).toBe('consoleLog');
-		expect(global.console.log).toHaveBeenCalledWith(expect.any(String), expect.any(String), 'consoleLog:', ...args);
+		expect(testLog(...args)).toBe('testLog');
+		expect(global.console.log).toHaveBeenCalledWith(expect.any(String), expect.any(String), 'testLog:', ...args);
 	});
 });
