@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CSS Vars PonyFill</title>
+	<style type="text/css">
+		:root {
+			/* DEMO: options.preserveVars */
+			/*--background: url(image.jpg);*/
+			--color: red;
+		}
+
+		.test {
+			/* DEMO: options.preserveStatic */
+			display: block;
+
+			/* DEMO: options.updateURLs */
+			background: var(--background);
+
+			/* DEMO: options.variables */
+			color: var(--color);
+
+			/* Demo: Fallback */
+			font-size: var(--unknown, 16px);
+		}
+
+	</style>
+	<!-- Latest v2.x.x -->
+	<script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+
+</head>
+<body>
+<main>
+	<strong>Transformed CSS</strong>
+	<pre class="test"><code>
+.test {
+    display: block;
+    background: url(https://cdpn.io/boomboom/v2/image.jpg);
+    color: red;
+    font-size: 16px;
+}
+	</code></pre>
+</main>
+
+<!-- DEMO: Ignored via options.include -->
+<style data-ignore>
+	body {
+		margin: 1rem;
+		line-height: 1.4;
+		background: #f7f7f7;
+		font-family: sans-serif;
+	}
+
+	main {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+
+	pre {
+		width: 100%;
+	}
+
+	pre code {
+		display: block;
+		overflow: auto;
+		margin: 0;
+	}
+
+	a {
+		color: #888;
+	}
+</style>
+
+<script>
+	cssVars({
+		// Only styles from CodePen's CSS panel
+		include: 'style:not([data-ignore])',
+		// Treat all browsers as legacy
+		onlyLegacy: false,
+
+		// DEMO: Toggles to see results
+		// ----------------------------
+		// preserveStatic: false,
+		// preserveVars: true,
+		// updateURLs: false,
+		// variables: { '--color': 'purple' },
+		// ----------------------------
+
+		// Display transformed CSS
+		onComplete: function(cssText, styleNodes, cssVariables, benchmark) {
+			// var codeElm = document.querySelector('code');
+			//
+			// // Format CSS (external library)
+			// cssText = css_beautify(cssText);
+			//
+			// // Update <code> tag with CSS result
+			// codeElm.textContent = cssText;
+		}
+	});
+
+</script>
+</body>
+</html>
