@@ -4,7 +4,7 @@
   "discription": "YX-JS-ToolKit is a toolkit for js common functions.",
   "main": "pages/index.html",
   "scripts": {
-    "git-commit-push": "cd ../yx-env && git-commit-push.sh YX-JS-ToolKit",
+    "git-push": "cd ../yx-env && git-push.sh YX-JS-ToolKit",
     "jest:app": "jest test/app --coverage --color"
   },
   "repository": {
