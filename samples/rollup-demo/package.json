@@ -1,0 +1,29 @@
+{
+  "name": "rollup-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "01-rollup-esm": "rollup src/01.main.js -o dist/01.bundle-esm.js -f esm",
+    "01-rollup-cjs": "rollup src/01.main.js -o dist/01.bundle-cjs.js -f cjs",
+    "02-rollup-cjs": "rollup -c 02.rollup.config.js",
+    "03-rollup-cjs": "rollup -c 03.rollup.config.js",
+    "04-rollup-esm": "rollup -c 04.rollup.config.js",
+    "05-rollup-cjs": "rollup -c 05.rollup.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@rollup/plugin-babel": "^5.2.2",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
+    "rollup": "^2.38.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
+  }
+}
