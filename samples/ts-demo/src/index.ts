@@ -1,7 +1,8 @@
 import './styles/index.less';
 
-import Food from './modules/Food';
-import ScorePanel from "./modules/ScorePanel";
+// import Food from './modules/Food';
+// import ScorePanel from "./modules/ScorePanel";
+import GameControl from "./modules/GameControl";
 
 // const food = new Food();
 //
@@ -17,3 +18,5 @@ import ScorePanel from "./modules/ScorePanel";
 // {
 // 	scorePanel.addScore();
 // }
+
+const gameControl = new GameControl();
