@@ -4,7 +4,7 @@
   "description": "",
   "main": "MovieRentals.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "git-push": "cd ../../../yx-env && git-push.sh YX-JS-ToolKit/samples/ts-demo",
     "build": "webpack",
     "start": "webpack serve --open"
   },

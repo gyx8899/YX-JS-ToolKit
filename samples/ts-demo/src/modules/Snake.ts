@@ -8,46 +8,30 @@ class Snake{
 		this.element = document.getElementById('snake');
 		this.head = document.querySelector('#snake > div') as HTMLElement;
 		this.bodies = this.element.getElementsByTagName('div');
-		this.isLive = true;
 	}
 
-	getX() {
+	get X() {
 		return this.head.offsetLeft;
 	}
 
-	getY() {
+	get Y() {
 		return this.head.offsetTop;
 	}
 
-	setX(value: number, isCheck: boolean) {
+	set X(value: number) {
 		if (value >= 0 && value <= 290) {
-			if (!isCheck) {
 				this.head.style.left = `${value}px`;
-			}
 		} else {
-			console.log('Game over! 撞墙了！');
-			this.isLive = false;
+			throw Error('Game over! 撞墙了！')
 		}
 	}
 
-	setY(value: number, isCheck: boolean) {
+	set Y(value: number) {
 		if (value >= 0 && value <= 290) {
-			if (!isCheck) {
 				this.head.style.top = `${value}px`;
-			}
 		} else {
-			console.log('Game over! 撞墙了！');
-			this.isLive = false;
+			throw Error('Game over! 撞墙了！')
 		}
-	}
-
-	setHead(x: number, y: number) {
-		this.setX(x, false);
-		this.setY(y, false);
-	}
-	checkHead(x: number, y: number) {
-		this.setX(x, true);
-		this.setY(y, true);
 	}
 
 	addBodies() {
@@ -55,14 +39,12 @@ class Snake{
 	}
 
 	moveBody() {
-		if (this.isLive) {
-			for (let i = this.bodies.length - 1; i > 0; i--) {
-				const X = (this.bodies[i - 1] as HTMLElement).offsetLeft;
-				const Y = (this.bodies[i - 1] as HTMLElement).offsetTop;
-				console.log(`index: ${i}, (${X}, ${Y})`);
-				(this.bodies[i] as HTMLElement).style.left = `${X}px`;
-				(this.bodies[i] as HTMLElement).style.top = `${Y}px`;
-			}
+		for (let i = this.bodies.length - 1; i > 0; i--) {
+			const X = (this.bodies[i - 1] as HTMLElement).offsetLeft;
+			const Y = (this.bodies[i - 1] as HTMLElement).offsetTop;
+			console.log(`index: ${i}, (${X}, ${Y})`);
+			(this.bodies[i] as HTMLElement).style.left = `${X}px`;
+			(this.bodies[i] as HTMLElement).style.top = `${Y}px`;
 		}
 	}
 }

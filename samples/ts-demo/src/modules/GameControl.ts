@@ -7,6 +7,7 @@ class GameControl {
 	snake: Snake;
 	food: Food;
 	direction: string = '';
+	isLive: boolean = true;
 
 	constructor() {
 		this.scorePanel = new ScorePanel();
@@ -31,7 +32,7 @@ class GameControl {
 	}
 
 	getNextPosition(dir) {
-		let [x, y] = [this.snake.getX(), this.snake.getY()];
+		let [x, y] = [this.snake.X, this.snake.Y];
 		switch (dir) {
 			case 'ArrowUp':
 				y -= 10;
@@ -54,7 +55,7 @@ class GameControl {
 
 	start() {
 		setTimeout(() => {
-			if (this.direction && this.snake.isLive) {
+			if (this.direction && this.isLive) {
 				console.log('dir: ', this.direction);
 				const [x, y] = this.getNextPosition(this.direction);
 				console.log(x, y, this.food.getX(), this.food.getY());
@@ -63,10 +64,16 @@ class GameControl {
 					this.food.change();
 					this.scorePanel.addScore();
 				}
-				this.snake.checkHead(x, y);
-				this.snake.moveBody();
-				this.snake.setHead(x, y);
-				//
+				try {
+					this.snake.X = x;
+					this.snake.Y = y;
+				} catch (e) {
+					this.isLive = false;
+					alert('Game Over!');
+				}
+				if (this.isLive) {
+					this.snake.moveBody();
+				}
 				this.start();
 			}
 		}, 300);
