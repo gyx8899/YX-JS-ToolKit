@@ -1,15 +1,15 @@
 class Food {
-	element: HTMLElement;
+	private element: HTMLElement;
 
 	constructor() {
 		this.element = document.getElementById('food')!;
 	}
 
-	getX() {
+	get X() {
 		return this.element.offsetLeft;
 	}
 
-	getY() {
+	get Y() {
 		return this.element.offsetTop;
 	}
 
