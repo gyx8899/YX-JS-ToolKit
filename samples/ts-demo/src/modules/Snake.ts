@@ -1,67 +1,81 @@
-class Snake{
+class Snake {
 	head: HTMLElement;
 	bodies: HTMLCollection;
 	element: HTMLElement;
-	isLive: boolean;
 
 	constructor() {
-		this.element = document.getElementById('snake');
+		this.element = document.getElementById('snake')!;
 		this.head = document.querySelector('#snake > div') as HTMLElement;
 		this.bodies = this.element.getElementsByTagName('div');
-		this.isLive = true;
 	}
 
-	getX() {
+	get X() {
 		return this.head.offsetLeft;
 	}
 
-	getY() {
+	get Y() {
 		return this.head.offsetTop;
 	}
 
-	setX(value: number, isCheck: boolean) {
-		if (value >= 0 && value <= 290) {
-			if (!isCheck) {
-				this.head.style.left = `${value}px`;
-			}
-		} else {
-			console.log('Game over! 撞墙了！');
-			this.isLive = false;
+	set X(value: number) {
+		if (this.X === value) {
+			return;
 		}
-	}
-
-	setY(value: number, isCheck: boolean) {
-		if (value >= 0 && value <= 290) {
-			if (!isCheck) {
-				this.head.style.top = `${value}px`;
-			}
-		} else {
-			console.log('Game over! 撞墙了！');
-			this.isLive = false;
+		if (value < 0 || value > 290) {
+			throw new Error('蛇撞墙了！');
 		}
+
+		// 当新方向是反方向，即头部的新位置是身体的第一个节点的值
+		if (this.bodies[1] && (this.bodies[1] as HTMLElement).offsetLeft === value) {
+			if (value > this.X) {
+				value = this.X - 10;
+			} else {
+				value = this.X + 10;
+			}
+		}
+		this.moveBody();
+		this.head.style.left = `${value}px`;
+		this.checkHeadBody();
 	}
 
-	setHead(x: number, y: number) {
-		this.setX(x, false);
-		this.setY(y, false);
-	}
-	checkHead(x: number, y: number) {
-		this.setX(x, true);
-		this.setY(y, true);
+	set Y(value: number) {
+		if (this.Y === value) {
+			return;
+		}
+		if (value < 0 || value > 290) {
+			throw new Error('蛇撞墙了！');
+		}
+		// 当新方向是反方向，即头部的新位置是身体的第一个节点的值
+		if (this.bodies[1] && (this.bodies[1] as HTMLElement).offsetTop === value) {
+			if (value > this.Y) {
+				value = this.Y - 10;
+			} else {
+				value = this.Y + 10;
+			}
+		}
+		this.moveBody();
+		this.head.style.top = `${value}px`;
+		this.checkHeadBody();
 	}
 
-	addBodies() {
+	addBody() {
 		this.element.insertAdjacentHTML('beforeend', '<div></div>');
 	}
 
 	moveBody() {
-		if (this.isLive) {
-			for (let i = this.bodies.length - 1; i > 0; i--) {
-				const X = (this.bodies[i - 1] as HTMLElement).offsetLeft;
-				const Y = (this.bodies[i - 1] as HTMLElement).offsetTop;
-				console.log(`index: ${i}, (${X}, ${Y})`);
-				(this.bodies[i] as HTMLElement).style.left = `${X}px`;
-				(this.bodies[i] as HTMLElement).style.top = `${Y}px`;
+		for (let i = this.bodies.length - 1; i > 0; i--) {
+			let X = (this.bodies[i - 1] as HTMLElement).offsetLeft;
+			let Y = (this.bodies[i - 1] as HTMLElement).offsetTop;
+			(this.bodies[i] as HTMLElement).style.left = `${X}px`;
+			(this.bodies[i] as HTMLElement).style.top = `${Y}px`;
+		}
+	}
+
+	checkHeadBody() {
+		for (let i = 1; i < this.bodies.length; i++) {
+			let bd = this.bodies[i] as HTMLElement;
+			if (this.X === bd.offsetLeft && this.Y === bd.offsetTop) {
+				throw new Error('撞到自己了！');
 			}
 		}
 	}
