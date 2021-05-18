@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<script src="//res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body>
+
+<main>
+	<div class="btn-wechat-mp__wrap" v-if="false">
+	  <!-- 显示的按钮 -->
+	  <div class="btn-wechat-mp--show">
+		<div class="btn-wechat-mp__icon">
+		  <!-- 自定义的组件 -->
+		  <itv-icon type="i-applet" size="12" />
+		</div>
+		<span>立即使用</span>
+	  </div>
+	  <wx-open-launch-weapp id="launch-btn" username="wx8830763b00c18ac3" :path="pages/activity_invite/index?activityId=SX000012">
+		<!-- 必须写：占位的按钮 -->
+		<script type="text/wxtag-template">
+		  <style>
+			.ctn{width: 120px;height: 40px;}
+		  </style>
+		  <div class="ctn">打开小程序</div>
+		</script>
+	  </wx-open-launch-weapp>
+	</div>
+		<div class="row">
+			<div id="tools" class="large-12 columns">
+				<h4>Tools: </h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="HTMLConvert/index.html" class="demo-block">
+								<h5 class="classify">Convert:</h5>
+								<h5>string / html / word</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="weixin://dl/business/?t=3NdauBu2wii" class="demo-block">
+								<h5 class="classify">WX Url Scheme</h5>
+								<h5>测试跳转小程序指定页</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="pluginEnhance" class="large-12 columns">
+				<h4>Plugin: Enhancements</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="iScroll5/iScrollRefresh/index.html" class="demo-block">
+								<h5 class="classify">iScroll5</h5>
+								<h5>iScrollRefresh</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="iScroll5/iScrollHorizontal/index.html" class="demo-block">
+								<h5 class="classify">iScroll5</h5>
+								<h5>Up/down/left/right key</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="owlCarousel2/index.html" class="demo-block">
+								<h5 class="classify">owlCarousel2</h5>
+								<h5>Custom fixed demos</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="pluginCreate" class="large-12 columns">
+				<h4>Plugin: Creation in jQuery, JS</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="popupDismiss/index.html" class="demo-block">
+								<h5>Popup Dismiss</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="preloadImage/index.html" class="demo-block">
+								<h5>Preload image</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="performance" class="large-12 columns">
+				<h4>Performance optimization:</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="lazyLoad/index.html" class="demo-block">
+								<h5 class="classify">Files, widgets:</h5>
+								<h5>Lazy Load</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="stickyHeader/index.html" class="demo-block">
+								<h5 class="classify">Header</h5>
+								<h5>Sticky header</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="research" class="large-12 columns">
+				<h4>Research:</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="resizeEvent/index.html" class="demo-block">
+								<h5 class="classify">Resize event</h5>
+								<h5>Mobile browser header</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="setTimeoutAndInterval/index.html" class="demo-block">
+								<h5 class="classify">Timeout VS Interval</h5>
+								<h5>Differences demo</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="priorityScriptStyle/index.html" class="demo-block">
+								<h5 class="classify">Priority js/css file</h5>
+								<h5>Dynamic import</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="webworker/webworker.html" class="demo-block">
+								<h5 class="classify">WebWorker</h5>
+								<h5>Usefull using</h5>
+							</a>
+						</div>
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="webworker/sharedworker.html" class="demo-block">
+								<h5 class="classify">SharedWorker</h5>
+								<h5>Usefull using</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="jsTips" class="large-12 columns">
+				<h4>JS Tips:</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="../docs/tricks.md" class="demo-block">
+								<h5 class="classify">Javascript tricks</h5>
+								<h5>Tricks markdown</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="artPrograming" class="large-12 columns">
+				<h4>JS: The Art Of Programing</h4>
+				<hr>
+				<div class="demo-list">
+					<div class="row">
+						<div class="small-6 medium-4 large-3 columns">
+							<a href="../books/the-art-of-programing/index.html" class="demo-block">
+								<h5 class="classify">Demos in JS</h5>
+								<h5>Read and Test</h5>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+	<script>
+	var userAgent = window.navigator.userAgent.toLowerCase();
+	var is_android = /(android)/.test(userAgent);
+	var is_iphone = /(iphone|ios)/.test(userAgent);
+	var is_mobile = is_android || is_iphone;
+	var is_weixin_browser = /micromessenger/.test(userAgent);
+	
+	// 获取微信的版本号，如： 7.0.14
+	let wechat = navigator.userAgent.match(/MicroMessenger\/([\d\.]+)/i)
+
+	if (wechat) {
+	  let judgewechat = wechat[1].split('.')
+
+	  if (judgewechat[0] >= 7) {
+		if (judgewechat[1] >= 0) {
+		  if (judgewechat[2] >= 12) {
+			// 微信版本是 7.0.12及以上
+		  }
+		}
+	  }
+	}
+	</script>
+	<script>
+	/*
+		wx.config({
+		  debug: true,
+		  beta: true,
+		  appId: data.appid,
+		  timestamp: data.timestamp,
+		  nonceStr: data.noncestr,
+		  signature: data.signature,
+		  jsApiList: [''], // 备注：这里有一个坑，这项不能是 []，会不显按钮...
+		  openTagList: ['wx-open-launch-weapp']
+		})
+		wx.ready(() => {
+		  // 显示小程序跳转按钮
+		  console.log('显示小程序跳转按钮 - Ready');
+		})
+		wx.error(function (res) {
+		  // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名
+		  console.log('error', res);
+		});
+		*/
+	</script>
+	<script>
+	  var btn = document.getElementById('launch-btn');
+	  btn.addEventListener('launch', function (e) {
+		console.log('success');
+	  });
+	  btn.addEventListener('error', function (e) {
+		console.log('fail', e.detail);
+	  });
+	</script>
+
+</body>
+</html>
